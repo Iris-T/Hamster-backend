@@ -1,0 +1,57 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: hamster
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 2 # 初始化时建立物理连接的个数。默认0
+      max-active: 10 # 最大连接池数量，默认8
+      min-idle: 1 # 最小连接池数量
+      max-wait: 2000 # 获取连接时最大等待时间，单位毫秒。
+      pool-prepared-statements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      max-pool-prepared-statement-per-connection-size: -1 # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      # ……druid节点下的其它参数见官方文档：https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8
+
+      # 启用Druid内置的Filter，会使用默认的配置。可自定义配置，见下方的各个filter节点。
+      filters: stat,wall
+
+
+      # StatViewServlet监控器。开启后，访问http://域名/druid/index.html
+      stat-view-servlet:
+        enabled: true # 开启 StatViewServlet，即开启监控功能
+        login-username: foxiris # 访问监控页面时登录的账号
+        login-password: foxiris # 密码
+        reset-enable: false # 是否允许重置数据（在页面的重置按钮）。（停用后，依然会有重置按钮，但重置后不会真的重置数据）
+
+
+      # 配置 WebStatFilter（StatFilter监控器中的Web模板）
+      web-stat-filter:
+        enabled: true # 开启 WebStatFilter，即开启监控功能中的 Web 监控功能
+        url-pattern: /* # 映射地址，即统计指定地址的web请求
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*' # 不统计的web请求，如下是不统计静态资源及druid监控页面本身的请求
+        session-stat-enable: true # 是否启用session统计
+        session-stat-max-count: 1 # session统计的最大个数，默认是1000。当统计超过这个数，只统计最新的
+
+      filter:
+        wall:
+          enabled: true  # 开启SQL防火墙功能
+          config:
+            select-allow: true # 允许执行Select查询操作
+            create-table-allow: false # 不允许创建表
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: cn.iris.hamster.bean.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
