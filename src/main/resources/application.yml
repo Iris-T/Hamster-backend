@@ -55,3 +55,7 @@ mybatis-plus:
     cache-enabled: true
     lazy-loading-enabled: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  data:
+    secret: A/foxiris?P/hamster?D/20221228

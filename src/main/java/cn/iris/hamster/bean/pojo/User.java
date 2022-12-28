@@ -1,18 +1,30 @@
 package cn.iris.hamster.bean.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
 /**
  * 用户表
+ * @author Iris
  * @TableName user
  */
+@TableName(value ="user")
 @Data
 public class User implements Serializable {
+    @Serial
+    @TableField(exist = false)
+    private static final long serialVersionUID = 5295888814991568084L;
     /**
      * 用户ID
      */
+    @TableId
     private Long id;
 
     /**
@@ -75,7 +87,6 @@ public class User implements Serializable {
      */
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean equals(Object that) {

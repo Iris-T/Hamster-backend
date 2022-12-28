@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author asus
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2022-12-27 14:40:20
 * @Entity bean.pojo.cn.iris.hamster.User
 */
+@Repository
 public interface UserMapper extends BaseMapper<User> {
 
 }
