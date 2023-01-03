@@ -7,22 +7,37 @@ package cn.iris.hamster.common.constants;
  * @ClassName CommonConstants
  * @date 2022/12/28 15:18
  */
-public class CommonConstants {
+public interface CommonConstants {
 
     /**
      * 启用状态
      */
-    public static final String STATUS_ENABLE = "0";
+    String STATUS_ENABLE = "0";
     /**
      * 停用状态
      */
-    public static final String STATUS_DISABLE = "1";
+    String STATUS_DISABLE = "1";
     /**
      * 性别女
      */
-    public static final String GENDER_FEMALE = "0";
+    String GENDER_FEMALE = "0";
     /**
      * 性别男
      */
-    public static final String GENDER_MALE = "1";
+    String GENDER_MALE = "1";
+    /**
+     * Redis存储Key前缀
+     */
+    String REDIS_CACHE_TOKEN_PREFIX = "User:";
+    String REDIS_AUTHORITY_KEY_PREFIX = "GrantedAuthority:";
+
+    /**
+     * Token TTL
+     */
+    Long TOKEN_TTL_MILLISECONDS = 1000 * 60 * 60 * 12L;
+    Long TOKEN_TTL_SECONDS = 60 * 60 * 12L;
+    /**
+     * 角色字符串前缀
+     */
+    String ROLE_PREFIX = "ROLE_";
 }

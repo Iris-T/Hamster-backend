@@ -19,18 +19,26 @@ import java.util.Collection;
  */
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginUser implements UserDetails {
 
     /**
      * 用户信息
      */
     private User user;
+    private final Collection<? extends GrantedAuthority> authorities;
+
+    public LoginUser(User user) {
+        this(user, null);
+    }
+
+    public LoginUser(User user, Collection<? extends GrantedAuthority> authorities) {
+        this.user = user;
+        this.authorities = authorities;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override

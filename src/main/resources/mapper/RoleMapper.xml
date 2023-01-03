@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iris.hamster.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Role">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="key" column="key" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,key,
+        status,create_by,create_time,
+        update_by,update_time,remark
+    </sql>
+
+    <select id="getRolesByUid" resultType="cn.iris.hamster.bean.pojo.Role">
+        select distinct r.id,
+                        r.`name`,
+                        `key`,
+                        r.`status`,
+                        r.create_by,
+                        r.create_time,
+                        r.update_by,
+                        r.update_time,
+                        r.remark
+        from `role` r
+                 left join user_role ur on ur.rid = r.id
+        where ur.uid = #{uid}
+    </select>
+</mapper>

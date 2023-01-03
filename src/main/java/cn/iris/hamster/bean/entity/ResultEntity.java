@@ -58,12 +58,20 @@ public class ResultEntity<T> {
         return success(msg, null);
     }
 
+    public static ResultEntity success(Object data) {
+        return success(null, data);
+    }
+
     public static ResultEntity error() {
         return error("服务器错误,请联系管理员");
     }
 
     public static ResultEntity error(String msg) {
         return error(msg, null);
+    }
+
+    public static ResultEntity error(Object data) {
+        return error(null, data);
     }
 
     public static ResultEntity unAuthorized() {
@@ -74,12 +82,20 @@ public class ResultEntity<T> {
         return unAuthorized(msg, null);
     }
 
+    public static ResultEntity unAuthorized(Object data) {
+        return unAuthorized(null, data);
+    }
+
     public static ResultEntity forbidden() {
         return forbidden("无权限访问");
     }
 
     public static ResultEntity forbidden(String msg) {
         return forbidden(msg, null);
+    }
+
+    public static ResultEntity forbidden(Object data) {
+        return forbidden(null, data);
     }
 
 }

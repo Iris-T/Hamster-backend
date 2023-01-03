@@ -1,6 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
-import cn.iris.hamster.bean.dto.UserLoginDto;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,81 +11,60 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 用户表
- * @author Iris
- * @TableName user
+ * 角色表
+ * @TableName role
  */
-@TableName(value ="user")
+@TableName(value ="role")
 @Data
-public class User implements Serializable {
+public class Role implements Serializable {
     @Serial
     @TableField(exist = false)
-    private static final long serialVersionUID = 5295888814991568084L;
+    private static final long serialVersionUID = -4221487243095473061L;
     /**
-     * 用户ID
+     * 主键
      */
     @TableId
     private Long id;
 
     /**
-     * 登录用户名
-     */
-    private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 用户姓名
+     * 角色名称
      */
     private String name;
 
     /**
-     * 性别-0为女,1为男
+     * 角色权限字符
      */
-    private String gender;
+    private String key;
 
     /**
-     * 身份证号
-     */
-    private String idNo;
-
-    /**
-     * 手机/座机号
-     */
-    private String phone;
-
-    /**
-     * 地址
-     */
-    private String address;
-
-    /**
-     * 用户状态-0为正常,1为停用
+     * 权限状态-0为正常,1为停用
      */
     private String status;
 
     /**
-     * 创建人ID
+     * 
      */
     private Long createBy;
 
     /**
-     * 创建时间
+     * 
      */
     private Date createTime;
 
     /**
-     * 更新者ID
+     * 
      */
     private Long updateBy;
 
     /**
-     * 更新时间
+     * 
      */
     private Date updateTime;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
 
     @Override
@@ -99,20 +78,16 @@ public class User implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        Role other = (Role) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getGender() == null ? other.getGender() == null : this.getGender().equals(other.getGender()))
-            && (this.getIdNo() == null ? other.getIdNo() == null : this.getIdNo().equals(other.getIdNo()))
-            && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getAddress() == null ? other.getAddress() == null : this.getAddress().equals(other.getAddress()))
+            && (this.getKey() == null ? other.getKey() == null : this.getKey().equals(other.getKey()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()));
     }
 
     @Override
@@ -120,18 +95,14 @@ public class User implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getGender() == null) ? 0 : getGender().hashCode());
-        result = prime * result + ((getIdNo() == null) ? 0 : getIdNo().hashCode());
-        result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
-        result = prime * result + ((getAddress() == null) ? 0 : getAddress().hashCode());
+        result = prime * result + ((getKey() == null) ? 0 : getKey().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         return result;
     }
 
@@ -142,18 +113,14 @@ public class User implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", username=").append(username);
-        sb.append(", password=").append(password);
         sb.append(", name=").append(name);
-        sb.append(", gender=").append(gender);
-        sb.append(", idNo=").append(idNo);
-        sb.append(", phone=").append(phone);
-        sb.append(", address=").append(address);
+        sb.append(", key=").append(key);
         sb.append(", status=").append(status);
         sb.append(", createBy=").append(createBy);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateBy=").append(updateBy);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

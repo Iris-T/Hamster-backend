@@ -2,6 +2,7 @@ package cn.iris.hamster.common.exception;
 
 
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -147,7 +149,6 @@ public class DefaultExceptionAdvice {
         return generateResponse(ResultEntity.error(), e);
     }
 
-
     @ExceptionHandler({BindException.class})
     public ResponseEntity<?> handleBindException(BindException e) {
         String message = e.getBindingResult().getAllErrors().iterator().next().getDefaultMessage();
@@ -156,6 +157,14 @@ public class DefaultExceptionAdvice {
         }
         logger.error("异常", e);
         return generateResponse(ResultEntity.error(message), e);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<?> handAccessDeniedException(AccessDeniedException e) {
+        String msg = e.getMessage();
+        logger.debug("用户{}ID{}跨权限访问被拦截", UserUtils.getUserName(), UserUtils.getUserId());
+        return generateResponse(ResultEntity.forbidden(msg), e);
     }
 
 

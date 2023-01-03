@@ -1,7 +1,13 @@
 package cn.iris.hamster.service;
 
+import cn.iris.hamster.bean.dto.UserLoginDto;
+import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
 * @author asus
@@ -10,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
 
+    /**
+     * 查询用户权限信息
+     * @param uid 用户ID
+     * @return 拼接字符串
+     */
+    String getUserAuthorityInfo(String uid);
 }

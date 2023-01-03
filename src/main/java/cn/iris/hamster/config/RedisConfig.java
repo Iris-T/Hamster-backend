@@ -1,4 +1,4 @@
-package cn.iris.hamster.common.config;
+package cn.iris.hamster.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
