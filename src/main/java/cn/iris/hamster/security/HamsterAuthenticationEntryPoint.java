@@ -29,7 +29,7 @@ public class HamsterAuthenticationEntryPoint implements AuthenticationEntryPoint
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ServletOutputStream outputStream = response.getOutputStream();
-        ResultEntity resp = ResultEntity.unAuthorized("尚未登录，请登陆后再进行操作");
+        ResultEntity resp = ResultEntity.unAuthorized("尚未登录，请登录后再进行操作");
         outputStream.write(JSONUtil.toJsonStr(resp).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();

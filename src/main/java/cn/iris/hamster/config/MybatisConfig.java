@@ -14,14 +14,14 @@ import java.util.Collections;
  * Mybatis-plus配置类
  *
  * @author Iris
- * @ClassName MyabtisConfig
+ * @ClassName MybatisConfig
  * @date 2022/12/30 10:19
  */
 
 @EnableTransactionManagement
 @Configuration
 @MapperScan("cn.iris.hamster.mapper")
-public class MyabtisConfig {
+public class MybatisConfig {
 
     @Bean
     public PaginationInnerInterceptor paginationInnerInterceptor() {

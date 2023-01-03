@@ -29,11 +29,12 @@
     </sql>
 
     <select id="getPermsByUid" resultType="java.lang.String">
-        SELECT DISTINCT p.`key`
+        SELECT DISTINCT p.p_key
         FROM user_role ur
                  LEFT JOIN role_permission rp on ur.rid = rp.rid
                  LEFT JOIN permission p on rp.pid = p.id
-        WHERE p.`key` is not null
+        WHERE p.p_key is not null
+        AND p.status = '0'
         AND ur.uid = #{uid}
     </select>
 </mapper>

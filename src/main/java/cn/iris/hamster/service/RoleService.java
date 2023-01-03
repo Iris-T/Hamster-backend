@@ -1,5 +1,6 @@
 package cn.iris.hamster.service;
 
+import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -27,4 +28,12 @@ public interface RoleService extends IService<Role> {
      * @return List->String
      */
     List<Role> getRolesByUid(Long id);
+
+    /**
+     * 更改角色状态
+     * @param role 角色对象
+     * @param type 操作行为类型
+     * @return 操作结果
+     */
+    ResultEntity changeStatus(Role role, Integer type);
 }

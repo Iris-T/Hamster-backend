@@ -60,6 +60,15 @@ mybatis-plus:
     lazy-loading-enabled: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+#配置swagger配置
+knife4j:
+  basic:
+    username: hamster
+    password: hamster@master
+    enable: true #开启认证
+  production: false #默认是false ,屏蔽所有Swagger的相关资源
+  enable: true #是否开启swagger
+
 jwt:
   data:
     secret: A/foxiris?P/hamster?D/20221228

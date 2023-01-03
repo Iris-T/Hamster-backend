@@ -1,5 +1,7 @@
 package cn.iris.hamster.service.impl;
 
+import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.constants.CommonConstants;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.service.RoleService;
@@ -28,6 +30,26 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     @Override
     public List<Role> getRolesByUid(Long id) {
         return getRolesByUid(String.valueOf(id));
+    }
+
+    @Override
+    public ResultEntity changeStatus(Role role, Integer type) {
+        int res;
+        // 启用
+        if (type.toString().equals(CommonConstants.STATUS_ENABLE)) {
+            if (CommonConstants.STATUS_ENABLE.equals(role.getStatus())) {
+                return ResultEntity.error("已被启用");
+            }
+            role.setStatus(CommonConstants.STATUS_ENABLE);
+            res = roleMapper.updateById(role);
+        } else { // 禁用
+            if (CommonConstants.STATUS_DISABLE.equals(role.getStatus())) {
+                return ResultEntity.error("已被禁用");
+            }
+            role.setStatus(CommonConstants.STATUS_DISABLE);
+            res = roleMapper.updateById(role);
+        }
+        return res > 0 ? ResultEntity.success("修改状态成功") : ResultEntity.error();
     }
 }
 

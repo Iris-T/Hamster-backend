@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.iris.hamster.mapper.RoleMapper">
+<mapper namespace="cn.iris.hamster.mapper.PermissionMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Role">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Permission">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="key" column="key" jdbcType="VARCHAR"/>
@@ -17,23 +17,13 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,key,
-        status,create_by,create_time,
-        update_by,update_time,remark
+        id,name,p_key,status,create_by,create_time,update_by,update_time,remark
     </sql>
 
-    <select id="getRolesByUid" resultType="cn.iris.hamster.bean.pojo.Role">
-        select distinct r.id,
-                        r.`name`,
-                        r.r_key,
-                        r.`status`,
-                        r.create_by,
-                        r.create_time,
-                        r.update_by,
-                        r.update_time,
-                        r.remark
-        from `role` r
-                 left join user_role ur on ur.rid = r.id
-        where r.status = '0' and ur.uid = #{uid}
+    <select id="isKeyExist" resultType="java.lang.Integer">
+        SELECT count(`id`)
+        FROM `permission`
+        WHERE `status` = '0'
+          AND `p_key` = #{key};
     </select>
 </mapper>

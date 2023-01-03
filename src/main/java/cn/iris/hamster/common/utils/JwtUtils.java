@@ -21,6 +21,7 @@ public class JwtUtils {
     private String secret;
     private String header;
 
+
     /**生产token
      * @param userName
      * @return

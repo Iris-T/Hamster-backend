@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
  * 安全配置类
@@ -36,7 +37,13 @@ public class SecurityConfig {
      */
     private static final String[] URL_WHITELIST = {
             "/login",
-            "/logout"
+            "/logout",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            // swagger-boostrap-ui
+            "/doc.html"
     };
 
     @Autowired

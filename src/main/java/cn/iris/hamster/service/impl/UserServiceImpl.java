@@ -2,19 +2,15 @@ package cn.iris.hamster.service.impl;
 
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.mapper.RoleMapper;
 import cn.iris.hamster.mapper.UserMapper;
 import cn.iris.hamster.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static cn.iris.hamster.common.constants.CommonConstants.*;
@@ -45,7 +41,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         } else {
             List<Role> roles = roleMapper.getRolesByUid(uid);
             if (roles.size() > 0) {
-                authority = roles.stream().map(r -> ROLE_PREFIX + r.getKey()).collect(Collectors.joining(",")).concat(",");
+                authority = roles.stream().map(r -> ROLE_PREFIX + r.getRKey()).collect(Collectors.joining(",")).concat(",");
             }
             // 获取权限信息
             List<String> perms = userMapper.getPermsByUid(uid);

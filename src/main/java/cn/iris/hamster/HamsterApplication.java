@@ -1,8 +1,13 @@
 package cn.iris.hamster;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Iris
@@ -11,9 +16,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("cn.iris.hamster.mapper")
 public class HamsterApplication {
+    private static final Logger log =LoggerFactory.getLogger(HamsterApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(HamsterApplication.class, args);
+
+        ConfigurableApplicationContext context = SpringApplication.run(HamsterApplication.class, args);
+        ServerProperties bean = context.getBean(ServerProperties.class);
+        log.info("文档已开启:http://localhost:{}/doc.html", bean.getPort());
     }
 
 }

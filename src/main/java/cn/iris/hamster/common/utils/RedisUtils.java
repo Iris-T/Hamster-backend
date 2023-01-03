@@ -602,7 +602,7 @@ public class RedisUtils {
     }
 
     /**
-     * 获取有序集 key 中成员 member 的排名 。
+     * 获取有序集 pKey 中成员 member 的排名 。
      * 其中有序集成员按 score 值递减 (从大到小) 排序。
      * @param key
      * @param start
