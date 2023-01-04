@@ -1,14 +1,10 @@
 package cn.iris.hamster.common.utils;
 
-import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import cn.iris.hamster.common.constants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 公共工具类
@@ -41,5 +37,12 @@ public class CommonUtils {
        BigInteger bi = new BigInteger(appendStr, 2);
 
        return Long.valueOf(bi.toString());
+   }
+
+   public static String checkStatus(String status) {
+       if (CommonConstants.STATUS_ENABLE.equals(status) || CommonConstants.STATUS_DISABLE.equals(status)) {
+           return status;
+       }
+       return CommonConstants.STATUS_ENABLE;
    }
 }

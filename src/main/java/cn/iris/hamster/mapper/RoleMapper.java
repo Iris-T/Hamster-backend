@@ -23,6 +23,13 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return 角色列表
      */
     List<Role> getRolesByUid(String uid);
+
+    /**
+     * key是否存在
+     * @param key
+     * @return
+     */
+    Integer isKeyExist(String key);
 }
 
 

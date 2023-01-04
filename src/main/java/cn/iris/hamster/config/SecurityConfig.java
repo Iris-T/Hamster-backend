@@ -1,5 +1,6 @@
 package cn.iris.hamster.config;
 
+import cn.iris.hamster.common.exception.DefaultExceptionAdvice;
 import cn.iris.hamster.security.*;
 import cn.iris.hamster.security.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
  * 安全配置类
@@ -31,13 +35,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class SecurityConfig extends WebMvcConfigurationSupport {
     /**
      * 端口白名单
      */
     private static final String[] URL_WHITELIST = {
             "/login",
-            "/logout",
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/v2/api-docs",
@@ -114,15 +117,4 @@ public class SecurityConfig {
                 .addFilter(jwtFilter)
                 .build();
     }
-
-    /**
-     * 配置跨域访问
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
 }

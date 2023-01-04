@@ -19,6 +19,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,8 +35,9 @@ import java.sql.SQLException;
  * @date 2022/12/28 14:34
  */
 
-@RestControllerAdvice(basePackages = {"cn.iris.hamster"})
+@RestControllerAdvice(basePackages = {"cn.iris.hamster.controller"})
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice
 @Component
 public class DefaultExceptionAdvice {
     private static final Logger logger = LoggerFactory.getLogger(DefaultExceptionAdvice.class);

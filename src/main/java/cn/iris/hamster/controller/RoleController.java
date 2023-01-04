@@ -6,8 +6,7 @@ import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.service.RoleService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
  * @date 2023/1/3 13:58
  */
 
-@Api("角色操作接口")
 @RestController
 @RequestMapping("/role")
 @PreAuthorize("hasRole('admin')")
@@ -29,15 +27,13 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @ApiOperation("获取所有角色")
     @GetMapping("list")
     public ResultEntity list(Role role) {
         return ResultEntity.success(roleService.list());
     }
 
-    @ApiOperation("获取指定ID角色")
-    @GetMapping("query/{rid}")
-    public ResultEntity query(@PathVariable Long rid) {
+    @GetMapping("query")
+    public ResultEntity query(Long rid) {
         Role role = roleService.getById(rid);
         if (ObjectUtil.isEmpty(role)) {
             return ResultEntity.error("数据不存在");
@@ -48,20 +44,26 @@ public class RoleController {
         return ResultEntity.success(role);
     }
 
-    @ApiOperation("保存角色信息")
     @PostMapping("save")
     public ResultEntity save(Role role) {
-        boolean res = roleService.saveOrUpdate(role);
-        return res ? ResultEntity.success("更新成功") : ResultEntity.error("更新失败");
+        return roleService.saveRole(role);
     }
 
-    @ApiOperation("修改角色启用状态")
-    @PostMapping("/changeStatus/{rid}/{type}")
-    public ResultEntity changeStatus(@PathVariable Long rid, @PathVariable Integer type) {
+    @PostMapping("changeStatus")
+    public ResultEntity changeStatus(Long rid, Integer type) {
         Role role = roleService.getById(rid);
         if (ObjectUtil.isEmpty(role)) {
-            ResultEntity.error("数据不存在");
+            return ResultEntity.error("数据不存在");
         }
         return roleService.changeStatus(role, type);
+    }
+
+    @PostMapping("isKeyExist")
+    public ResultEntity isKeyExist(String key) {
+        if (StringUtils.isBlank(key)) {
+            return ResultEntity.error("数据为空");
+        }
+
+        return roleService.isKeyExist(key) ? ResultEntity.error("关键字重复") : ResultEntity.success("关键字可使用");
     }
 }

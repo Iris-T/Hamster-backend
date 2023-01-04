@@ -2,7 +2,6 @@ package cn.iris.hamster.config;
 
 import cn.iris.hamster.common.utils.UserUtils;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +11,12 @@ import java.util.Date;
  * 数据填充处理器
  *
  * @author Iris
- * @ClassName HamsterMetaObejctHandler
+ * @ClassName HamsterMetaObjectHandler
  * @date 2023/1/3 9:29
  */
 
 @Component
-public class HamsterMetaObejctHandler implements MetaObjectHandler {
+public class HamsterMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         long now = System.currentTimeMillis();

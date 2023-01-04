@@ -36,4 +36,18 @@ public interface RoleService extends IService<Role> {
      * @return 操作结果
      */
     ResultEntity changeStatus(Role role, Integer type);
+
+    /**
+     * 存储角色信息
+     * @param role 角色类信息
+     * @return
+     */
+    ResultEntity saveRole(Role role);
+
+    /**
+     * 关键字是否存在
+     * @param key
+     * @return
+     */
+    boolean isKeyExist(String key);
 }

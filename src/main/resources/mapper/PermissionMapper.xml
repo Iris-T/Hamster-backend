@@ -23,7 +23,6 @@
     <select id="isKeyExist" resultType="java.lang.Integer">
         SELECT count(`id`)
         FROM `permission`
-        WHERE `status` = '0'
-          AND `p_key` = #{key};
+        WHERE `p_key` = #{key};
     </select>
 </mapper>

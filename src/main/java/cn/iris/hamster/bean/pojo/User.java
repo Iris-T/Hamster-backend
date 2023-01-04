@@ -1,9 +1,7 @@
 package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.bean.dto.UserLoginDto;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,7 +22,7 @@ public class User implements Serializable {
     /**
      * 用户ID
      */
-    @TableId
+    @TableId(type = IdType.INPUT)
     private Long id;
 
     /**
@@ -70,21 +68,25 @@ public class User implements Serializable {
     /**
      * 创建人ID
      */
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 更新者ID
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
 

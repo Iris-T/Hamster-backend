@@ -22,4 +22,11 @@ public interface UserService extends IService<User> {
      * @return 拼接字符串
      */
     String getUserAuthorityInfo(String uid);
+
+    /**
+     * 存储更新用户信息
+     * @param user
+     * @return
+     */
+    ResultEntity saveUser(User user);
 }

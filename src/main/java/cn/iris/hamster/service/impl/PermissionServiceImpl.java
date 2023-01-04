@@ -1,6 +1,8 @@
 package cn.iris.hamster.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.mapper.PermissionMapper;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.service.PermissionService;
@@ -52,8 +54,42 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return res > 0 ? ResultEntity.success("修改状态成功") : ResultEntity.error();
     }
 
+    @Override
+    public ResultEntity savePerm(Permission perm) {
+        // 检查字段是否正确
+        if (!isPermValid(perm)) {
+            return ResultEntity.error("提交的数据格式错误");
+        }
+
+        // 检查权限状态设置
+        perm.setStatus(CommonUtils.checkStatus(perm.getStatus()));
+
+        // 检查关键字重复
+        if (isKeyExist(perm.getPKey())) {
+            return ResultEntity.error("权限关键字重复");
+        }
+
+        boolean res = saveOrUpdate(perm);
+
+        // 更新管理员角色的权限
+
+
+        return res ? ResultEntity.success("更新成功")
+                : ResultEntity.error("更新失败");
+    }
+
+    @Override
+    public boolean isKeyExist(String key) {
+        return permissionMapper.isKeyExist(key) > 0;
+    }
+
     private boolean isPermValid(Permission perm) {
-        return StringUtils.isNotEmpty(perm.getName())
+        boolean temp = true;
+        if (ObjectUtil.isNotEmpty(perm.getId())) {
+            temp = ObjectUtil.isNotEmpty(getById(perm.getId()));
+        }
+        return temp
+                && StringUtils.isNotEmpty(perm.getName())
                 && StringUtils.isNotEmpty(perm.getPKey())
                 && StringUtils.isNotEmpty(perm.getStatus());
     }

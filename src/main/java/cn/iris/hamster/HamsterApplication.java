@@ -19,10 +19,7 @@ public class HamsterApplication {
     private static final Logger log =LoggerFactory.getLogger(HamsterApplication.class);
 
     public static void main(String[] args) {
-
-        ConfigurableApplicationContext context = SpringApplication.run(HamsterApplication.class, args);
-        ServerProperties bean = context.getBean(ServerProperties.class);
-        log.info("文档已开启:http://localhost:{}/doc.html", bean.getPort());
+        SpringApplication.run(HamsterApplication.class, args);
     }
 
 }

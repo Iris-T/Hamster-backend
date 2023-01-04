@@ -26,4 +26,18 @@ public interface PermissionService extends IService<Permission> {
      * @return
      */
     ResultEntity changeStatus(Permission perm, Integer type);
+
+    /**
+     * 存储更新权限信息
+     * @param perm
+     * @return
+     */
+    ResultEntity savePerm(Permission perm);
+
+    /**
+     * 返回关键字查询结果
+     * @param key
+     * @return
+     */
+    boolean isKeyExist(String key);
 }
