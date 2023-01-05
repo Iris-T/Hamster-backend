@@ -20,6 +20,16 @@
         id,name,p_key,status,create_by,create_time,update_by,update_time,remark
     </sql>
 
+    <insert id="updateAdminR_P">
+        INSERT INTO role_permission(rid, pid, `status`) VALUE ('1', #{pid}, '0')
+    </insert>
+
+    <update id="changeStatus">
+        UPDATE role_permission
+        SET `status` = #{status}
+        WHERE pid = #{pid}
+    </update>
+
     <select id="isKeyExist" resultType="java.lang.Integer">
         SELECT count(`id`)
         FROM `permission`

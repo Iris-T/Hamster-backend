@@ -22,6 +22,21 @@
         update_by,update_time,remark
     </sql>
 
+    <insert id="insertR_P">
+        insert into role_permission(rid, pid, `status`) values
+        <foreach collection="pids" item="pid" index="index" open="" close="" separator=",">
+            (#{rid}, #{pid}, #{status})
+        </foreach>
+    </insert>
+
+    <update id="changeStatus">
+        update user_role set `status` = #{status} where rid = #{rid}
+    </update>
+
+    <delete id="deleteR_P">
+        delete from role_permission where rid = #{rid}
+    </delete>
+
     <select id="getRolesByUid" resultType="cn.iris.hamster.bean.pojo.Role">
         select distinct r.id,
                         r.`name`,
@@ -34,10 +49,14 @@
                         r.remark
         from `role` r
                  left join user_role ur on ur.rid = r.id
-        where r.status = '0' and ur.uid = #{uid}
+        where r.status = '0'
+          and ur.status = '0'
+          and ur.uid = #{uid}
     </select>
 
     <select id="isKeyExist" resultType="java.lang.Integer">
-        select count(*) from role where r_key = #{key}
+        select count(*)
+        from role
+        where r_key = #{key}
     </select>
 </mapper>

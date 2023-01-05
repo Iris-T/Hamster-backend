@@ -28,13 +28,25 @@
         update_time
     </sql>
 
+    <delete id="deleteU_R">
+        DELETE FROM user_role WHERE uid = #{uid}
+    </delete>
+
+    <insert id="insertU_R">
+        INSERT INTO user_role(uid, rid, status) VALUES
+        <foreach collection="rids" item="rid" index="index" open="" close="" separator=",">
+            (#{uid}, #{rid}, #{status})
+        </foreach>
+    </insert>
+
     <select id="getPermsByUid" resultType="java.lang.String">
         SELECT DISTINCT p.p_key
         FROM user_role ur
                  LEFT JOIN role_permission rp on ur.rid = rp.rid
                  LEFT JOIN permission p on rp.pid = p.id
         WHERE p.p_key is not null
-        AND p.status = '0'
-        AND ur.uid = #{uid}
+          AND p.status = '0'
+          AND rp.status = '0'
+          AND ur.uid = #{uid}
     </select>
 </mapper>

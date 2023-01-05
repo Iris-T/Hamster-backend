@@ -50,4 +50,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     boolean isKeyExist(String key);
+
+    /**
+     * 对角色赋权,覆盖原有权限信息
+     * @param rid
+     * @param pids
+     * @return
+     */
+    ResultEntity grant(Long rid, List<Long> pids);
 }

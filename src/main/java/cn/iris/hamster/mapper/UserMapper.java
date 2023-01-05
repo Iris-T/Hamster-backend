@@ -21,6 +21,21 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 权限key字符列表
      */
     List<String> getPermsByUid(String uid);
+
+    /**
+     * 删除用户角色
+     * @param uid
+     */
+    void deleteU_R(Long uid);
+
+    /**
+     * 批量插入用户角色信息
+     * @param uid
+     * @param rids
+     * @param status
+     * @return
+     */
+    int insertU_R(Long uid, List<Long> rids, String status);
 }
 
 

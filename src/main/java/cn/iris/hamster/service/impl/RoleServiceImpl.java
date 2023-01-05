@@ -45,36 +45,53 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
             }
             role.setStatus(CommonConstants.STATUS_ENABLE);
             res = roleMapper.updateById(role);
+            // 禁用相关用户_角色信息
+            roleMapper.changeStatus(role.getId(), CommonConstants.STATUS_DISABLE);
         } else { // 禁用
             if (CommonConstants.STATUS_DISABLE.equals(role.getStatus())) {
                 return ResultEntity.error("已被禁用");
             }
             role.setStatus(CommonConstants.STATUS_DISABLE);
             res = roleMapper.updateById(role);
+            // 启用相关用户_角色信息
+            roleMapper.changeStatus(role.getId(), CommonConstants.STATUS_ENABLE);
         }
         return res > 0 ? ResultEntity.success("修改状态成功") : ResultEntity.error();
     }
 
     @Override
     public ResultEntity saveRole(Role role) {
+        role.setStatus(CommonUtils.checkStatus(role.getStatus()));
+
         if (!isRoleValid(role)) {
             return ResultEntity.error("提交的数据格式错误");
         }
-
-        role.setStatus(CommonUtils.checkStatus(role.getStatus()));
 
         // 检查关键字重复
         if (isKeyExist(role.getRKey())) {
             return ResultEntity.error("权限关键字重复");
         }
 
-        boolean res = saveOrUpdate(role);
+        boolean res = ObjectUtil.isNotEmpty(role.getId()) ? updateById(role) : save(role);
         return res ? ResultEntity.success("更新成功") : ResultEntity.error("更新失败");
     }
 
     @Override
     public boolean isKeyExist(String key) {
         return roleMapper.isKeyExist(key) > 0;
+    }
+
+    @Override
+    public ResultEntity grant(Long rid, List<Long> pids) {
+        // 删除
+        roleMapper.deleteR_P(rid);
+
+        if (pids.size() == 0) {
+            return ResultEntity.success("更新角色权限成功");
+        }
+        // 赋权
+        Integer cnt = roleMapper.insertR_P(rid, pids, CommonConstants.STATUS_ENABLE);
+        return cnt == pids.size() ? ResultEntity.success("更新角色权限成功") : ResultEntity.error("更新角色权限失败");
     }
 
     private boolean isRoleValid(Role role) {

@@ -49,4 +49,9 @@ public class SystemController {
         return userService.saveUser(user);
     }
 
+    @PostMapping("/user/grant")
+    public ResultEntity userGrant(Long uid, @RequestBody List<Long> rids) {
+        return userService.userGrant(uid, rids);
+    }
+
 }

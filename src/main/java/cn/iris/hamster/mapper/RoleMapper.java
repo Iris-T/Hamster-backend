@@ -30,6 +30,25 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return
      */
     Integer isKeyExist(String key);
+
+    /**
+     * 对角色权限进行批量更新
+     * @param rid
+     * @param pids
+     */
+    Integer insertR_P(Long rid, List<Long> pids, String status);
+
+    /**
+     * 对指定角色ID权限进行删除
+     * @param rid
+     */
+    void deleteR_P(Long rid);
+
+    /**
+     * 修改对应角色ID的用户_角色信息启用状态
+     * @param rid
+     */
+    void changeStatus(Long rid, String status);
 }
 
 

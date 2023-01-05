@@ -4,13 +4,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.mapper.RoleMapper;
 import cn.iris.hamster.mapper.UserMapper;
 import cn.iris.hamster.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +69,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         boolean res = saveOrUpdate(user);
         return res ? ResultEntity.success("更新成功") : ResultEntity.error("更新失败");
+    }
+
+    @Override
+    public ResultEntity userGrant(Long uid, List<Long> rids) {
+        userMapper.deleteU_R(uid);
+
+        if (rids.size() == 0) {
+            return ResultEntity.success("更新用户角色成功");
+        }
+
+        int cnt = userMapper.insertU_R(uid, rids, STATUS_ENABLE);
+        return cnt == rids.size() ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
     }
 
     private boolean isUserValid(User user) {

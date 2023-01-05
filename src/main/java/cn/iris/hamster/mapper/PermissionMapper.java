@@ -20,6 +20,18 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @return boolean值
      */
     Integer isKeyExist(String key);
+
+    /**
+     * 更新系统管理员权限信息
+     * @param pid
+     */
+    void updateAdminR_P(Long pid);
+
+    /**
+     * 修改对应pid的角色_权限信息启用状态
+     * @param pid
+     */
+    void changeStatus(Long pid, String status);
 }
 
 

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 角色管理接口
  *
@@ -65,5 +67,10 @@ public class RoleController {
         }
 
         return roleService.isKeyExist(key) ? ResultEntity.error("关键字重复") : ResultEntity.success("关键字可使用");
+    }
+
+    @PostMapping("grant")
+    public ResultEntity grant(Long rid, @RequestBody List<Long> pids) {
+        return roleService.grant(rid, pids);
     }
 }

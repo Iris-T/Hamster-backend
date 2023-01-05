@@ -44,38 +44,46 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             }
             perm.setStatus(CommonConstants.STATUS_ENABLE);
             res = permissionMapper.updateById(perm);
+            // 启用对应权限角色_权限记录
+            permissionMapper.changeStatus(perm.getId(), CommonConstants.STATUS_ENABLE);
         } else { // 禁用
             if (CommonConstants.STATUS_DISABLE.equals(perm.getStatus())) {
                 return ResultEntity.error("已被禁用");
             }
             perm.setStatus(CommonConstants.STATUS_DISABLE);
             res = permissionMapper.updateById(perm);
+            // 禁用对应权限的角色_权限记录
+            permissionMapper.changeStatus(perm.getId(), CommonConstants.STATUS_DISABLE);
         }
         return res > 0 ? ResultEntity.success("修改状态成功") : ResultEntity.error();
     }
 
     @Override
     public ResultEntity savePerm(Permission perm) {
+        // 检查权限状态设置
+        perm.setStatus(CommonUtils.checkStatus(perm.getStatus()));
+
         // 检查字段是否正确
         if (!isPermValid(perm)) {
             return ResultEntity.error("提交的数据格式错误");
         }
-
-        // 检查权限状态设置
-        perm.setStatus(CommonUtils.checkStatus(perm.getStatus()));
 
         // 检查关键字重复
         if (isKeyExist(perm.getPKey())) {
             return ResultEntity.error("权限关键字重复");
         }
 
-        boolean res = saveOrUpdate(perm);
+        int cnt = 0;
+        if (ObjectUtil.isNotEmpty(perm.getId())) {
+            cnt = permissionMapper.updateById(perm);
+        } else {
+            cnt = permissionMapper.insert(perm);
+            // 更新管理员角色的权限
+            permissionMapper.updateAdminR_P(perm.getId());
+        }
 
-        // 更新管理员角色的权限
-
-
-        return res ? ResultEntity.success("更新成功")
-                : ResultEntity.error("更新失败");
+        return cnt > 0 ? ResultEntity.success("操作成功")
+                : ResultEntity.error("操作失败");
     }
 
     @Override

@@ -29,4 +29,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity saveUser(User user);
+
+    /**
+     * 赋予用户角色
+     * @param uid
+     * @param rids
+     * @return
+     */
+    ResultEntity userGrant(Long uid, List<Long> rids);
 }
