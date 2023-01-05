@@ -5,6 +5,7 @@ import cn.iris.hamster.bean.entity.LoginUser;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
@@ -63,7 +64,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         user.setAddress(null);
         user.setName(null);
         user.setPhone(null);
-        redisUtils.set(jwtUtils.getHeader(), user, TOKEN_TTL_SECONDS);
+        redisUtils.set(REDIS_CACHE_TOKEN_PREFIX + user.getId(), user, TOKEN_TTL_SECONDS);
 
         response.setHeader(jwtUtils.getHeader(), token);
         ResultEntity res = ResultEntity.success("登录成功");
