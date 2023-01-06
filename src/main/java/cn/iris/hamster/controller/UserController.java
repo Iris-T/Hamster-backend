@@ -30,4 +30,14 @@ public class UserController {
     public ResultEntity updateInfo(@RequestBody User user) {
         return userService.saveUser(user);
     }
+
+    @PostMapping("/bind")
+    public ResultEntity bind(Long uid, Long cid) {
+        return userService.userBind(uid, cid);
+    }
+
+    @PostMapping("/disband")
+    public ResultEntity disbind(Long uid) {
+        return userService.userDisbind(uid);
+    }
 }

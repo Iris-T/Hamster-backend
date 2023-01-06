@@ -37,4 +37,34 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity userGrant(Long uid, List<Long> rids);
+
+    /**
+     * 将指定用户添加到对应企业，同时赋予co_admin权限
+     * @param uid
+     * @param cid
+     * @return
+     */
+    ResultEntity addCoAdmin(Long uid, Long cid);
+
+    /**
+     * 取消指定用户的co_admin权限信息
+     * @param uid
+     * @return
+     */
+    ResultEntity delCoAdmin(Long uid);
+
+    /**
+     * 用户绑定至指定企业
+     * @param uid
+     * @param cid
+     * @return
+     */
+    ResultEntity userBind(Long uid, Long cid);
+
+    /**
+     * 取消用户和企业的绑定
+     * @param uid
+     * @return
+     */
+    ResultEntity userDisbind(Long uid);
 }

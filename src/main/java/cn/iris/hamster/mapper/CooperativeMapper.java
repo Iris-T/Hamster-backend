@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Cooperative;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author asus
@@ -9,6 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-01-05 15:55:35
 * @Entity cn.iris.hamster.bean.pojo.Cooperative
 */
+
+@Mapper
 public interface CooperativeMapper extends BaseMapper<Cooperative> {
 
 }

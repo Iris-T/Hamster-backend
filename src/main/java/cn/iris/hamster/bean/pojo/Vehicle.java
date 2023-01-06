@@ -37,7 +37,7 @@ public class Vehicle implements Serializable {
     private Double load;
 
     /**
-     * 车辆状态,参考枚举VehicleStatusEnum,0-未使用,1-运输中,2-检修,3-停用,4-报废
+     * 车辆状态,参考枚举VehicleStatusEnum,0-闲置,1-作业,2-检修,3-停用
      */
     private String status;
 

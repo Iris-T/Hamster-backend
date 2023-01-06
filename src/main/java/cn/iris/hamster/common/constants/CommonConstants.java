@@ -40,4 +40,14 @@ public interface CommonConstants {
      * 角色字符串前缀
      */
     String ROLE_PREFIX = "ROLE_";
+
+    /**
+     * 角色关键字字符
+     */
+    String ROLE_ADMIN = "admin";
+    String ROLE_KEEPER = "keeper";
+    String ROLE_OPERATOR = "operator";
+    String ROLE_CO = "co";
+    String ROLE_NORMAL = "normal";
+    String ROLE_CO_ADMIN = "co_admin";
 }

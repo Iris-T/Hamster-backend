@@ -36,6 +36,35 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     int insertU_R(Long uid, List<Long> rids, String status);
+
+    /**
+     * 在co_user中查询指定用户的绑定状态
+     * @param uid
+     * @return
+     */
+    int isbind(Long uid);
+
+    /**
+     * 在co_user中绑定指定用户和企业信息
+     * @param uid
+     * @param cid
+     * @return
+     */
+    int bind(Long uid, Long cid);
+
+    /**
+     * 取消指定用户的绑定信息
+     * @param uid
+     * @return
+     */
+    int disbind(Long uid);
+
+    /**
+     * 查看用户是否绑定指定企业
+     * @param uid
+     * @param cid
+     */
+    int isUserBindCo(Long uid, Long cid);
 }
 
 

@@ -2,18 +2,24 @@ package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.pojo.Cooperative;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
+import cn.iris.hamster.mapper.CooperativeMapper;
 import cn.iris.hamster.mapper.RoleMapper;
 import cn.iris.hamster.mapper.UserMapper;
 import cn.iris.hamster.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private UserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private CooperativeMapper cooperativeMapper;
 
+    @Transactional(rollbackFor = BaseException.class)
     @Override
     public String getUserAuthorityInfo(String uid) {
         String authority = "";
@@ -73,14 +82,52 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public ResultEntity userGrant(Long uid, List<Long> rids) {
-        userMapper.deleteU_R(uid);
+        return updateUserRole(uid, rids) ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
+    }
 
-        if (rids.size() == 0) {
-            return ResultEntity.success("更新用户角色成功");
+    @Transactional(rollbackFor = BaseException.class)
+    @Override
+    public ResultEntity addCoAdmin(Long uid, Long cid) {
+        // 查询用户和企业是否存在
+        User user = userMapper.selectById(uid);
+        Cooperative cooperative = cooperativeMapper.selectById(cid);
+        if (ObjectUtil.isEmpty(user) || ObjectUtil.isEmpty(cooperative)) {
+            return ResultEntity.error("绑定信息有误");
         }
+        // 查询用户是否绑定对应企业
+        int cnt = userMapper.isUserBindCo(uid, cid);
+        if (cnt == 0) {
+            return ResultEntity.error("用户尚未绑定企业信息");
+        }
+        // 更新用户角色权限
+        Role role = roleMapper.selectOne(new QueryWrapper<Role>().eq("r_key", ROLE_CO_ADMIN));
+        boolean res = updateUserRole(user.getId(), Collections.singletonList(role.getId()));
+        return res ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
+    }
 
-        int cnt = userMapper.insertU_R(uid, rids, STATUS_ENABLE);
-        return cnt == rids.size() ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
+    @Transactional(rollbackFor = BaseException.class)
+    @Override
+    public ResultEntity delCoAdmin(Long uid) {
+        Role role = roleMapper.selectOne(new QueryWrapper<Role>().eq("r_key", ROLE_CO));
+        boolean res = updateUserRole(uid, Collections.singletonList(role.getId()));
+        return res ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
+    }
+
+    @Override
+    public ResultEntity userBind(Long uid, Long cid) {
+        // 查询用户绑定企业状态
+        int cnt = userMapper.isbind(uid);
+        if (cnt > 0) {
+            return ResultEntity.error("用户已绑定企业");
+        }
+        // 添加绑定数据
+        cnt = userMapper.bind(uid, cid);
+        return cnt > 0 ? ResultEntity.success("绑定成功") : ResultEntity.error("绑定失败");
+    }
+
+    @Override
+    public ResultEntity userDisbind(Long uid) {
+        return userMapper.disbind(uid) > 0 ? ResultEntity.success("取消绑定成功") : ResultEntity.error("取消绑定失败");
     }
 
     private boolean isUserValid(User user) {
@@ -90,8 +137,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         return temp;
     }
+
+    private boolean updateUserRole(Long uid, List<Long> rids) {
+        userMapper.deleteU_R(uid);
+        if (rids.size() == 0) {
+            return true;
+        }
+        int cnt = userMapper.insertU_R(uid, rids, STATUS_ENABLE);
+        return cnt == rids.size();
+    }
 }
-
-
-
-

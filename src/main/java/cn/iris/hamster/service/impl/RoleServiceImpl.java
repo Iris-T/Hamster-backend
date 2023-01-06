@@ -3,6 +3,7 @@ package cn.iris.hamster.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.iris.hamster.bean.pojo.Role;
@@ -11,6 +12,7 @@ import cn.iris.hamster.mapper.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -81,6 +83,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         return roleMapper.isKeyExist(key) > 0;
     }
 
+    @Transactional(rollbackFor = BaseException.class)
     @Override
     public ResultEntity grant(Long rid, List<Long> pids) {
         // 删除

@@ -32,11 +32,19 @@
         DELETE FROM user_role WHERE uid = #{uid}
     </delete>
 
+    <delete id="disbind">
+        DELETE FROM co_user WHERE uid = #{uid}
+    </delete>
+
     <insert id="insertU_R">
         INSERT INTO user_role(uid, rid, status) VALUES
         <foreach collection="rids" item="rid" index="index" open="" close="" separator=",">
             (#{uid}, #{rid}, #{status})
         </foreach>
+    </insert>
+
+    <insert id="bind">
+        INSERT INTO co_user(cid, uid) VALUE (#{cid}, #{uid})
     </insert>
 
     <select id="getPermsByUid" resultType="java.lang.String">
@@ -48,5 +56,12 @@
           AND p.status = '0'
           AND rp.status = '0'
           AND ur.uid = #{uid}
+    </select>
+
+    <select id="isbind" resultType="java.lang.Integer">
+        SELECT count(*) FROM co_user WHERE uid = #{uid}
+    </select>
+    <select id="isUserBindCo" resultType="java.lang.Integer">
+        SELECT count(*) FROM co_user WHERE uid = #{uid} AND cid = #{cid}
     </select>
 </mapper>

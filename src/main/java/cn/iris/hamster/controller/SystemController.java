@@ -54,4 +54,30 @@ public class SystemController {
         return userService.userGrant(uid, rids);
     }
 
+    @PostMapping("/co/addAdmin")
+    public ResultEntity addCoAdmin(Long uid, Long cid) {
+        if (ObjectUtil.isEmpty(uid) || ObjectUtil.isEmpty(cid)) {
+            return ResultEntity.error("请求参数错误");
+        }
+        return userService.addCoAdmin(uid, cid);
+    }
+
+    @PostMapping("/co/delAdmin")
+    public ResultEntity delAdmin(Long uid) {
+        if (ObjectUtil.isEmpty(uid)) {
+            return ResultEntity.error("请求参数错误");
+        }
+        return userService.delCoAdmin(uid);
+    }
+
+    @PostMapping("/co/bind")
+    public ResultEntity userBind(Long uid, Long cid) {
+        return userService.userBind(uid, cid);
+    }
+
+    @PostMapping("/co/disbind")
+    public ResultEntity userDisbind(Long uid) {
+        return userService.userDisbind(uid);
+    }
+
 }
