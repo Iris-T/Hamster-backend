@@ -64,4 +64,8 @@
     <select id="isUserBindCo" resultType="java.lang.Integer">
         SELECT count(*) FROM co_user WHERE uid = #{uid} AND cid = #{cid}
     </select>
+
+    <select id="getCurUserCoId" resultType="java.lang.Long">
+        SELECT cid FROM co_user WHERE uid = #{uid}
+    </select>
 </mapper>

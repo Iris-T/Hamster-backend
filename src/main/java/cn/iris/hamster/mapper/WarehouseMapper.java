@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Warehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author asus
@@ -9,8 +10,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-01-05 15:56:56
 * @Entity cn.iris.hamster.bean.pojo.Warehouse
 */
-public interface WarehouseMapper extends BaseMapper<Warehouse> {
 
+@Mapper
+public interface WarehouseMapper extends BaseMapper<Warehouse> {
 }
 
 

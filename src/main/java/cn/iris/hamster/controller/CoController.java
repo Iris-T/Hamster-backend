@@ -1,5 +1,14 @@
 package cn.iris.hamster.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.pojo.Cooperative;
+import cn.iris.hamster.common.utils.UserUtils;
+import cn.iris.hamster.service.CooperativeService;
+import cn.iris.hamster.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,9 +20,56 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/1/6 9:56
  */
 
+@PreAuthorize("hasAnyRole('admin', 'co_admin')")
 @RequestMapping("co")
 @RestController
 public class CoController {
+    @Autowired
+    private CooperativeService cooperativeService;
+    @Autowired
+    private UserService userService;
 
+    /**
+     * 添加或更新企业信息，仅限系统管理员和企业管理员操作
+     * @param co
+     * @return
+     */
 
+    @PostMapping("save")
+    public ResultEntity save(Cooperative co) {
+        return cooperativeService.saveCo(co);
+    }
+
+    /**
+     * 添加企业管理员
+     * @param uid
+     * @param cid
+     * @return
+     */
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/addAdmin")
+    public ResultEntity addCoAdmin(Long uid, Long cid) {
+        if (ObjectUtil.isEmpty(uid) || ObjectUtil.isEmpty(cid)) {
+            return ResultEntity.error("请求参数错误");
+        }
+        return userService.addCoAdmin(uid, cid);
+    }
+
+    @PostMapping("/delAdmin")
+    public ResultEntity delAdmin(Long uid) {
+        if (ObjectUtil.isEmpty(uid)) {
+            return ResultEntity.error("请求参数错误");
+        }
+        return userService.delCoAdmin(uid);
+    }
+
+    @PostMapping("/userBind")
+    public ResultEntity userBind(Long uid, Long cid) {
+        return userService.userBind(uid, cid);
+    }
+
+    @PostMapping("/userDisbind")
+    public ResultEntity userDisbind(Long uid) {
+        return userService.userDisbind(uid);
+    }
 }

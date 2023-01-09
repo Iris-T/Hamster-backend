@@ -65,6 +65,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @param cid
      */
     int isUserBindCo(Long uid, Long cid);
+
+    /**
+     * 获取当前用户绑定的企业ID
+     * @param uid
+     * @return
+     */
+    long getCurUserCoId(Long uid);
 }
 
 

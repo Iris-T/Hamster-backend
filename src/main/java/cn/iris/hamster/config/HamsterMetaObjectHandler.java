@@ -1,5 +1,6 @@
 package cn.iris.hamster.config;
 
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.utils.UserUtils;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -24,6 +25,7 @@ public class HamsterMetaObjectHandler implements MetaObjectHandler {
         metaObject.setValue("updateTime", new Date(now));
         metaObject.setValue("createBy", UserUtils.getUserId());
         metaObject.setValue("updateBy", UserUtils.getUserId());
+        metaObject.setValue("status", CommonConstants.STATUS_ENABLE);
     }
 
     @Override

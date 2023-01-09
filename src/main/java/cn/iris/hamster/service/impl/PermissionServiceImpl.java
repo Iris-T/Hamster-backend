@@ -82,8 +82,8 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             permissionMapper.updateAdminR_P(perm.getId());
         }
 
-        return cnt > 0 ? ResultEntity.success("操作成功")
-                : ResultEntity.error("操作失败");
+        return cnt > 0 ? ResultEntity.success("更新权限信息成功")
+                : ResultEntity.error("更新权限信息失败");
     }
 
     @Override

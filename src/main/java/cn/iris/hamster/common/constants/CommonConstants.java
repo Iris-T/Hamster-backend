@@ -26,6 +26,12 @@ public interface CommonConstants {
      */
     String GENDER_MALE = "1";
     /**
+     * 仓库类型,0-企业私有,1-公共仓库
+     */
+    String WH_PRIVATE = "0";
+    String WH_PUBLIC = "1";
+
+    /**
      * Redis存储Key前缀
      */
     String REDIS_CACHE_TOKEN_PREFIX = "User:";
