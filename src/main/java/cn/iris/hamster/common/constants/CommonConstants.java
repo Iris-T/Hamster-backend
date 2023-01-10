@@ -10,20 +10,14 @@ package cn.iris.hamster.common.constants;
 public interface CommonConstants {
 
     /**
-     * 启用状态
+     * 通用状态-0启用,1停用
      */
     String STATUS_ENABLE = "0";
-    /**
-     * 停用状态
-     */
     String STATUS_DISABLE = "1";
     /**
-     * 性别女
+     * 性别-0女,1男
      */
     String GENDER_FEMALE = "0";
-    /**
-     * 性别男
-     */
     String GENDER_MALE = "1";
     /**
      * 仓库类型,0-企业私有,1-公共仓库

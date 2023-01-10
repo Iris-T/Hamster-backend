@@ -25,7 +25,6 @@ public class HamsterMetaObjectHandler implements MetaObjectHandler {
         metaObject.setValue("updateTime", new Date(now));
         metaObject.setValue("createBy", UserUtils.getUserId());
         metaObject.setValue("updateBy", UserUtils.getUserId());
-        metaObject.setValue("status", CommonConstants.STATUS_ENABLE);
     }
 
     @Override

@@ -15,7 +15,7 @@ public enum VehicleStatusEnum {
     /**
      * 车辆状态枚举
      */
-    UNUSED("0", "限制"),
+    UNUSED("0", "闲置"),
     WORK("1", "作业"),
     CHECK("2", "检修"),
     DISUSE("3", "停用")
