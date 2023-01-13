@@ -62,7 +62,8 @@ public class CargoServiceImpl extends ServiceImpl<CargoMapper, Cargo>
 
     private boolean isCargoValid(Cargo cargo) {
         return StringUtils.isNotEmpty(cargo.getName())
-                && StringUtils.isNotEmpty(cargo.getType());
+                && StringUtils.isNotEmpty(cargo.getType())
+                && ObjectUtils.isNotEmpty(cargo.getWeight());
     }
 }
 

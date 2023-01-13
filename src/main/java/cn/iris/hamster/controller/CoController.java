@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/1/6 9:56
  */
 
-@PreAuthorize("hasAnyRole('admin', 'co_admin')")
+@PreAuthorize("hasAuthority('co:op')")
 @RequestMapping("co")
 @RestController
 public class CoController {

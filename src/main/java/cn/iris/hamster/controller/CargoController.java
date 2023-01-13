@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/1/9 14:34
  */
 
-@PreAuthorize("hasAnyRole('co_admin', 'co')")
+@PreAuthorize("hasAuthority('cargo:op')")
 @RequestMapping("cargo")
 @RestController
 public class CargoController {

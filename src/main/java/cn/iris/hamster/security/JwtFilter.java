@@ -60,6 +60,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
         // token正常
         String uid = claims.getId();
         User user = userService.getById(uid);
+        user.setPassword(null);
         // 获取用户信息
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, token, userDetailService.getAuthority(uid));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

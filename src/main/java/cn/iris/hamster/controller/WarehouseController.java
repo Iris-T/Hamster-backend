@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/1/6 16:26
  */
 
-@PreAuthorize("hasAnyRole('admin', 'wh_keeper')")
+@PreAuthorize("hasAuthority('wh:op')")
 @RestController
 @RequestMapping("wh")
 public class WarehouseController {
