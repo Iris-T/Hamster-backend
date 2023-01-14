@@ -7,9 +7,12 @@ import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,8 +30,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/userinfo")
-    public User getUserInfo() {
-        return UserUtils.getUserInfo();
+    public ResultEntity getUserInfo() {
+        Map<String, Object> res = new HashMap<>();
+        res.put("info", UserUtils.getUserInfo());
+        // 将角色和权限封装为list
+        res.put("authority", UserUtils.getAuthority().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        return ResultEntity.success(res);
     }
 
     @PostMapping("/update")
