@@ -1,5 +1,6 @@
 package cn.iris.hamster.security;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.UserUtils;
@@ -20,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
  * Jwt监听器
@@ -61,6 +64,15 @@ public class JwtFilter extends BasicAuthenticationFilter {
         String uid = claims.getId();
         User user = userService.getById(uid);
         user.setPassword(null);
+        LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
+        LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
+
+        // 校验token距离过期时间间隔,小于一小时则进行刷新
+        if (Duration.between(now, exp).toHours() < 1) {
+            // 刷新Token并返回
+            String newToken = jwtUtils.createToken(user.getUsername(), user.getId());
+            response.setHeader("authorization", newToken);
+        }
         // 获取用户信息
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, token, userDetailService.getAuthority(uid));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

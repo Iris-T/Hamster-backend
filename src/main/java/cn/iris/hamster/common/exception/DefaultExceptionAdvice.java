@@ -3,6 +3,7 @@ package cn.iris.hamster.common.exception;
 
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.common.utils.UserUtils;
+import io.jsonwebtoken.JwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -151,6 +152,7 @@ public class DefaultExceptionAdvice {
         return generateResponse(ResultEntity.error(), e);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({BindException.class})
     public ResponseEntity<?> handleBindException(BindException e) {
         String message = e.getBindingResult().getAllErrors().iterator().next().getDefaultMessage();
@@ -167,6 +169,14 @@ public class DefaultExceptionAdvice {
         String msg = e.getMessage();
         logger.debug("用户{}ID{}跨权限访问被拦截", UserUtils.getUserName(), UserUtils.getUserId());
         return generateResponse(ResultEntity.forbidden(msg), e);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({JwtException.class})
+    public ResponseEntity<?> handleJWTException(JwtException e) {
+        String msg = e.getMessage();
+        logger.debug("用户{}{}", UserUtils.getUserId(), e.getMessage());
+        return generateResponse(ResultEntity.error(msg), e);
     }
 
 

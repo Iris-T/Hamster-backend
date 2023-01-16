@@ -48,6 +48,10 @@ public class JwtUtils {
         return createToken(loginUser.getUsername(), String.valueOf(loginUser.getUser().getId()));
     }
 
+    public String createToken(String username, Long id) {
+        return createToken(username, String.valueOf(id));
+    }
+
     /**解析token
      * @param token
      * @return
