@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Permission
 */
 
-@Mapper
 public interface PermissionMapper extends BaseMapper<Permission> {
 
     /**

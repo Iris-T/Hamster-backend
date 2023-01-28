@@ -171,12 +171,12 @@ public class DefaultExceptionAdvice {
         return generateResponse(ResultEntity.forbidden(msg), e);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({JwtException.class})
     public ResponseEntity<?> handleJWTException(JwtException e) {
         String msg = e.getMessage();
         logger.debug("用户{}{}", UserUtils.getUserId(), e.getMessage());
-        return generateResponse(ResultEntity.error(msg), e);
+        return generateResponse(ResultEntity.unAuthorized(msg), e);
     }
 
 

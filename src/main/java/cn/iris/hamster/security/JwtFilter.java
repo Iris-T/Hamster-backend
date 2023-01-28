@@ -66,8 +66,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
         user.setPassword(null);
         LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
         LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
-
-        // 校验token距离过期时间间隔,小于一小时则进行刷新
+        // 校验token距离过期时间间隔,未过期且小于一小时则进行刷新
         if (Duration.between(now, exp).toHours() < 1) {
             // 刷新Token并返回
             String newToken = jwtUtils.createToken(user.getUsername(), user.getId());

@@ -20,7 +20,7 @@ import java.util.Collections;
 
 @EnableTransactionManagement
 @Configuration
-@MapperScan("cn.iris.hamster.mapper")
+//@MapperScan("cn.iris.hamster.mapper")
 public class MybatisConfig {
 
     @Bean

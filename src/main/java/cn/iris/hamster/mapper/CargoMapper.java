@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Cargo
 */
 
-@Mapper
 public interface CargoMapper extends BaseMapper<Cargo> {
 
 }

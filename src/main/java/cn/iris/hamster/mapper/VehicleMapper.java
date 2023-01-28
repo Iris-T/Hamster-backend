@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Vehicle
 */
 
-@Mapper
 public interface VehicleMapper extends BaseMapper<Vehicle> {
 
 }

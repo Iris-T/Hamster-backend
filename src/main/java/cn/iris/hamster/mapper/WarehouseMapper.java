@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Warehouse
 */
 
-@Mapper
 public interface WarehouseMapper extends BaseMapper<Warehouse> {
 }
 

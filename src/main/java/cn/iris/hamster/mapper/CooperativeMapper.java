@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Cooperative
 */
 
-@Mapper
 public interface CooperativeMapper extends BaseMapper<Cooperative> {
 
 }

@@ -13,7 +13,6 @@ import java.util.List;
 * @Entity cn.iris.hamster.bean.pojo.Role
 */
 
-@Mapper
 public interface RoleMapper extends BaseMapper<Role> {
 
     /**
