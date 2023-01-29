@@ -42,11 +42,6 @@ public class Vehicle implements Serializable {
     private String status;
 
     /**
-     * 所属企业ID
-     */
-    private Long cooperative;
-
-    /**
      * 当前所在仓库
      */
     private Long localWh;
@@ -93,7 +88,6 @@ public class Vehicle implements Serializable {
             && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
             && (this.getLoad() == null ? other.getLoad() == null : this.getLoad().equals(other.getLoad()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCooperative() == null ? other.getCooperative() == null : this.getCooperative().equals(other.getCooperative()))
             && (this.getLocalWh() == null ? other.getLocalWh() == null : this.getLocalWh().equals(other.getLocalWh()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -110,7 +104,6 @@ public class Vehicle implements Serializable {
         result = prime * result + ((getPlateNo() == null) ? 0 : getPlateNo().hashCode());
         result = prime * result + ((getLoad() == null) ? 0 : getLoad().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getCooperative() == null) ? 0 : getCooperative().hashCode());
         result = prime * result + ((getLocalWh() == null) ? 0 : getLocalWh().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -130,7 +123,6 @@ public class Vehicle implements Serializable {
         sb.append(", plateNo=").append(plateNo);
         sb.append(", load=").append(load);
         sb.append(", status=").append(status);
-        sb.append(", cooperative=").append(cooperative);
         sb.append(", localWh=").append(localWh);
         sb.append(", createBy=").append(createBy);
         sb.append(", createTime=").append(createTime);

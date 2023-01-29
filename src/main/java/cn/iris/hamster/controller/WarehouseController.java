@@ -40,13 +40,4 @@ public class WarehouseController {
         return warehouseService.changeStatus(wh, type);
     }
 
-    @PostMapping("changeType")
-    public ResultEntity changeType(Long wid, String type) {
-        Warehouse wh = warehouseService.getById(wid);
-        if (ObjectUtils.isEmpty(wh)) {
-            return ResultEntity.error("数据不存在");
-        }
-        return warehouseService.changeType(wh, type);
-    }
-
 }

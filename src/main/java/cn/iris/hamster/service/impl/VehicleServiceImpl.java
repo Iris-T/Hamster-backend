@@ -79,24 +79,14 @@ public class VehicleServiceImpl extends ServiceImpl<VehicleMapper, Vehicle>
         if (VehicleStatusEnum.WORK.getKey().equals(vehicle.getStatus())) {
             return ResultEntity.error("车辆尚有作业任务,无法修改所在仓库");
         }
-        Warehouse warehouse = warehouseMapper.selectById(wid);
-        if (isWhValid(vehicle, warehouse)) {
-            vehicle.setLocalWh(wid);
-            int cnt = vehicleMapper.updateById(vehicle);
-            return cnt > 0 ? ResultEntity.success("更新车辆所属仓库成功") : ResultEntity.error("更新车辆所属仓库失败");
-        }
-        return ResultEntity.error("仓库非公共仓库");
-    }
-
-    private boolean isWhValid(Vehicle vehicle, Warehouse warehouse) {
-        return vehicle.getCooperative().equals(warehouse.getCooperative())
-                && CommonConstants.WH_PUBLIC.equals(warehouse.getType());
+        vehicle.setLocalWh(wid);
+        int cnt = vehicleMapper.updateById(vehicle);
+        return cnt > 0 ? ResultEntity.success("更新车辆所属仓库成功") : ResultEntity.error("更新车辆所属仓库失败");
     }
 
     private boolean isVehicleValid(Vehicle vehicle) {
         return StringUtils.isNotEmpty(vehicle.getPlateNo())
                 && ObjectUtils.isNotEmpty(vehicle.getLoad())
-                && ObjectUtils.isNotEmpty(vehicle.getCooperative())
                 && ObjectUtils.isNotEmpty(vehicle.getLocalWh());
     }
 }

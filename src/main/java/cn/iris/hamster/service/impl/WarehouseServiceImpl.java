@@ -38,14 +38,6 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
         if (ObjectUtils.isEmpty(wh.getId())) {
             // 检查仓库数据关键字段，若不存在则进行填充
             wh.setId(CommonUtils.randId());
-            if (ObjectUtils.isEmpty(wh.getCooperative())) {
-                // 可能为空(系统管理员操作)
-                wh.setCooperative(userMapper.getCurUserCoId(UserUtils.getUserId()));
-            }
-            if (StringUtils.isEmpty(wh.getType())) {
-                // 若未设置仓库类型，则设置为公共仓库
-                wh.setType(CommonConstants.WH_PUBLIC);
-            }
             cnt = warehouseMapper.insert(wh);
         } else {
             cnt = warehouseMapper.updateById(wh);
@@ -77,31 +69,6 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
             }
         }
         return res > 0 ? ResultEntity.success("修改仓库状态成功") : ResultEntity.error("修改仓库状态失败");
-    }
-
-    @Override
-    public ResultEntity changeType(Warehouse wh, String type) {
-        int res = 0;
-        switch (type) {
-            case CommonConstants.WH_PRIVATE -> {
-                if (CommonConstants.WH_PRIVATE.equals(wh.getType())) {
-                    return ResultEntity.error("参数无效");
-                }
-                wh.setType(CommonConstants.WH_PRIVATE);
-                res = warehouseMapper.updateById(wh);
-            }
-            case CommonConstants.WH_PUBLIC -> {
-                if (CommonConstants.WH_PUBLIC.equals(wh.getType())) {
-                    return ResultEntity.error("参数无效");
-                }
-                wh.setType(CommonConstants.WH_PUBLIC);
-                res = warehouseMapper.updateById(wh);
-            }
-            default -> {
-                return ResultEntity.error("参数错误");
-            }
-        }
-        return res > 0 ? ResultEntity.success("修改仓库类型成功") : ResultEntity.error("修改仓库类型失败");
     }
 
     private boolean isWhValid(Warehouse wh) {

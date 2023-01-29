@@ -48,6 +48,16 @@ public class Cargo implements Serializable {
     private Long cooperativeId;
 
     /**
+     * 验存点/发货仓
+     */
+    private Long startWh;
+
+    /**
+     * 收货仓
+     */
+    private Long endWh;
+
+    /**
      * 
      */
     private Long createBy;

@@ -25,12 +25,4 @@ public interface WarehouseService extends IService<Warehouse> {
      * @return
      */
     ResultEntity changeStatus(Warehouse wh, String type);
-
-    /**
-     * 修改仓库类型
-     * @param wh 仓库ID
-     * @param type 仓库类型 - CommonConstants
-     * @return
-     */
-    ResultEntity changeType(Warehouse wh, String type);
 }

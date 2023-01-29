@@ -37,16 +37,6 @@ public class Warehouse implements Serializable {
     private String address;
 
     /**
-     * 信息录入企业ID
-     */
-    private Long cooperative;
-
-    /**
-     * 仓库类型-0企业私有,1公共仓库
-     */
-    private String type;
-
-    /**
      * 仓库使用状态-0为正常,1为停用
      */
     private String status;
@@ -92,8 +82,6 @@ public class Warehouse implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getAddress() == null ? other.getAddress() == null : this.getAddress().equals(other.getAddress()))
-            && (this.getCooperative() == null ? other.getCooperative() == null : this.getCooperative().equals(other.getCooperative()))
-            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -109,8 +97,6 @@ public class Warehouse implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getAddress() == null) ? 0 : getAddress().hashCode());
-        result = prime * result + ((getCooperative() == null) ? 0 : getCooperative().hashCode());
-        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -129,8 +115,6 @@ public class Warehouse implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", address=").append(address);
-        sb.append(", cooperative=").append(cooperative);
-        sb.append(", type=").append(type);
         sb.append(", status=").append(status);
         sb.append(", createBy=").append(createBy);
         sb.append(", createTime=").append(createTime);
