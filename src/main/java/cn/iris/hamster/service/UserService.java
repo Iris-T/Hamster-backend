@@ -1,12 +1,10 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.dto.UserLoginDto;
+import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -14,6 +12,8 @@ import java.util.List;
 * @description 针对表【user(用户表)】的数据库操作Service
 * @createDate 2022-12-27 14:40:20
 */
+
+
 public interface UserService extends IService<User> {
 
     /**
@@ -67,4 +67,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity userDisbind(Long uid);
+
+    /**
+     * 更新用户密码
+     *
+     * @param rePwdDto
+     * @return
+     */
+    ResultEntity rePwd(RePwdDto rePwdDto);
 }

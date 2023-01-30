@@ -12,7 +12,6 @@ import java.util.List;
 * @createDate 2022-12-27 14:40:20
 * @Entity bean.pojo.cn.iris.hamster.User
 */
-@Repository
 public interface UserMapper extends BaseMapper<User> {
 
     /**

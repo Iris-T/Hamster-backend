@@ -2,7 +2,9 @@ package cn.iris.hamster.security;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.utils.JwtUtils;
+import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -37,6 +39,8 @@ public class JwtFilter extends BasicAuthenticationFilter {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
+    private RedisUtils redisUtils;
+    @Autowired
     private UserService userService;
     @Autowired
     private UserDetailServiceImpl userDetailService;
@@ -64,14 +68,14 @@ public class JwtFilter extends BasicAuthenticationFilter {
         String uid = claims.getId();
         User user = userService.getById(uid);
         user.setPassword(null);
-        LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
-        LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
-        // 校验token距离过期时间间隔,未过期且小于一小时则进行刷新
-        if (Duration.between(now, exp).toHours() < 1) {
-            // 刷新Token并返回
-            String newToken = jwtUtils.createToken(user.getUsername(), user.getId());
-            response.setHeader("authorization", newToken);
-        }
+//        LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
+//        LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
+//        // 校验token距离过期时间间隔,未过期且小于一小时则进行刷新
+//        if (Duration.between(now, exp).toHours() < 1) {
+//            // 刷新Token并返回
+//            String newToken = jwtUtils.createToken(user.getUsername(), user.getId());
+//            response.setHeader("authorization", newToken);
+//        }
         // 获取用户信息
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, token, userDetailService.getAuthority(uid));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

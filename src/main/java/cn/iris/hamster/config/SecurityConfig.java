@@ -41,12 +41,7 @@ public class SecurityConfig extends WebMvcConfigurationSupport {
      */
     private static final String[] URL_WHITELIST = {
             "/login",
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**",
-            // swagger-boostrap-ui
-            "/doc.html"
+            "/druid/**"
     };
 
     @Autowired
@@ -65,14 +60,6 @@ public class SecurityConfig extends WebMvcConfigurationSupport {
     @Lazy
     @Autowired
     private JwtFilter jwtFilter;
-
-    /**
-     * 配置加密方式
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     /**
      * 获取AuthenticationManager（认证管理器），登录时认证使用

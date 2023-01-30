@@ -1,14 +1,15 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Cooperative;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
+import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.mapper.CooperativeMapper;
 import cn.iris.hamster.mapper.RoleMapper;
 import cn.iris.hamster.mapper.UserMapper;
@@ -16,6 +17,7 @@ import cn.iris.hamster.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private RoleMapper roleMapper;
     @Autowired
     private CooperativeMapper cooperativeMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional(rollbackFor = BaseException.class)
     @Override
@@ -128,6 +133,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public ResultEntity userDisbind(Long uid) {
         return userMapper.disbind(uid) > 0 ? ResultEntity.success("取消绑定成功") : ResultEntity.error("取消绑定失败");
+    }
+
+    @Override
+    public ResultEntity rePwd(RePwdDto rePwdDto) {
+        Long userId = UserUtils.getUserId();
+        User user = userMapper.selectById(userId);
+        if (ObjectUtil.isEmpty(user)) {
+            return ResultEntity.error("用户数据不存在");
+        }
+        if (!passwordEncoder.matches(rePwdDto.getOldPassword(), user.getPassword())) {
+            return ResultEntity.error("原密码校验错误，请重新输入");
+        }
+
+        user.setPassword(passwordEncoder.encode(rePwdDto.getNewPassword()));
+        int update = userMapper.updateById(user);
+
+        if (update > 0) {
+        // 删除当前登录凭证
+            redisUtils.del(REDIS_CACHE_TOKEN_PREFIX + userId);
+            redisUtils.del(REDIS_AUTHORITY_KEY_PREFIX + userId);
+            // 删除服务器内用户信息
+            UserUtils.delUserInfo();
+            return ResultEntity.success("更新成功");
+        } else {
+            return ResultEntity.error("更新失败");
+        }
     }
 
     private boolean isUserValid(User user) {

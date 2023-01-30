@@ -1,10 +1,13 @@
 package cn.iris.hamster.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +31,21 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @PostMapping("/rePwd")
+    public ResultEntity rePwd(@RequestBody RePwdDto rePwdDto) {
+        System.out.println(rePwdDto);
+        if (rePwdDto.isAnyBlank()) {
+            return ResultEntity.error("错误的请求参数");
+        }
+        if (rePwdDto.getOldPassword().equals(rePwdDto.getNewPassword())) {
+            return ResultEntity.error("新旧密码不能相同");
+        }
+        if (!rePwdDto.getNewPassword().equals(rePwdDto.getReConfirmPassword())) {
+            return ResultEntity.error("两次输入密码不同");
+        }
+        return userService.rePwd(rePwdDto);
+    }
 
     @GetMapping("/userinfo")
     public ResultEntity getUserInfo() {

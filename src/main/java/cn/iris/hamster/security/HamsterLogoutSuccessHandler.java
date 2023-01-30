@@ -38,13 +38,14 @@ public class HamsterLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (authentication != null){
+            Long userId = UserUtils.getUserId();
+            // 删除Redis数据
+            redisUtils.del(CommonConstants.REDIS_AUTHORITY_KEY_PREFIX + userId);
+            redisUtils.del(CommonConstants.REDIS_CACHE_TOKEN_PREFIX + userId);
+            // 删除LocalThread存储数据
+            UserUtils.delUserInfo();
             // 手动退出
             new SecurityContextLogoutHandler().logout(request, response, authentication);
-            // 删除LocalThread存储数据
-            Long userId = UserUtils.getUserId();
-            UserUtils.setUserInfo(null);
-            // 删除Redis数据
-            redisUtils.expire(CommonConstants.REDIS_AUTHORITY_KEY_PREFIX + userId, 0);
         }
         response.setContentType("application/json;charset=utf-8");
         ServletOutputStream outputStream = response.getOutputStream();

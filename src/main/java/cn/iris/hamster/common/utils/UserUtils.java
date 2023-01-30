@@ -44,6 +44,12 @@ public class UserUtils {
         setThreadLocalData(KEY_USERINFO, user);
     }
 
+    public static void delUserInfo() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        SecurityContextHolder.clearContext();
+        setThreadLocalData(KEY_USERINFO, null);
+    }
+
     /**
      * 获取当前用户Token
      * @return Token字符串
