@@ -75,4 +75,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity rePwd(RePwdDto rePwdDto);
+
+    /**
+     * 获取当前用户展示的菜单
+     * @return
+     */
+    ResultEntity getMenu();
 }

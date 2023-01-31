@@ -1,5 +1,6 @@
 package cn.iris.hamster.mapper;
 
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
@@ -71,6 +72,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     long getCurUserCoId(Long uid);
+
+    /**
+     * 获取uid对应的菜单展示组件
+     * @param userId
+     * @return
+     */
+    List<Permission> getMenuByUid(Long userId);
 }
 
 

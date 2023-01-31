@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Cooperative;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.exception.BaseException;
@@ -21,7 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,6 +162,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         } else {
             return ResultEntity.error("更新失败");
         }
+    }
+
+    @Override
+    public ResultEntity getMenu() {
+        Long userId = UserUtils.getUserId();
+        List<Permission> perms = userMapper.getMenuByUid(userId);
+        List<Permission> menu = getMenuTree(perms);
+        return ResultEntity.success(menu);
+    }
+
+    /**
+     * 将扁平结构转换为嵌套结构
+     * @param perms
+     * @return
+     */
+    private List<Permission> getMenuTree(List<Permission> perms) {
+        ArrayList<Permission> menu = new ArrayList<>();
+        for (Permission perm : perms) {
+            if (perm.getParentId().equals(0L)) {
+                perm.setChild(getChildren(perm.getId(), perms));
+                menu.add(perm);
+            }
+        }
+        menu.sort(Comparator.comparingLong(Permission::getId));
+        return menu;
+    }
+
+    /**
+     * 查找指定id菜单的子菜单
+     * @param id
+     * @param perms
+     * @return
+     */
+    private List<Permission> getChildren(Long id, List<Permission> perms) {
+        ArrayList<Permission> children = new ArrayList<>();
+        for (Permission perm : perms) {
+            if (id.equals(perm.getParentId())) {
+                perm.setChild(getChildren(perm.getId(), perms));
+                children.add(perm);
+            }
+        }
+        children.sort(Comparator.comparingLong(Permission::getId));
+        return children;
     }
 
     private boolean isUserValid(User user) {

@@ -29,11 +29,15 @@
     </sql>
 
     <delete id="deleteU_R">
-        DELETE FROM user_role WHERE uid = #{uid}
+        DELETE
+        FROM user_role
+        WHERE uid = #{uid}
     </delete>
 
     <delete id="disbind">
-        DELETE FROM co_user WHERE uid = #{uid}
+        DELETE
+        FROM co_user
+        WHERE uid = #{uid}
     </delete>
 
     <insert id="insertU_R">
@@ -59,13 +63,30 @@
     </select>
 
     <select id="isbind" resultType="java.lang.Integer">
-        SELECT count(*) FROM co_user WHERE uid = #{uid}
+        SELECT count(*)
+        FROM co_user
+        WHERE uid = #{uid}
     </select>
     <select id="isUserBindCo" resultType="java.lang.Integer">
-        SELECT count(*) FROM co_user WHERE uid = #{uid} AND cid = #{cid}
+        SELECT count(*)
+        FROM co_user
+        WHERE uid = #{uid}
+          AND cid = #{cid}
     </select>
 
     <select id="getCurUserCoId" resultType="java.lang.Long">
-        SELECT cid FROM co_user WHERE uid = #{uid}
+        SELECT cid
+        FROM co_user
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="getMenuByUid" resultType="cn.iris.hamster.bean.pojo.Permission">
+        SELECT p.id, p.name, p.icon, p.parent_id
+        FROM user_role ur
+                 LEFT JOIN role_permission rp on rp.rid = ur.rid
+                 LEFT JOIN permission p on p.id = rp.pid
+        WHERE ur.uid = #{uid}
+          AND p.is_menu = '0'
+        ORDER BY p.parent_id
     </select>
 </mapper>

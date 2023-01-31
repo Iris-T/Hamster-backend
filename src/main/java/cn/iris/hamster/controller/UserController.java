@@ -56,6 +56,11 @@ public class UserController {
         return ResultEntity.success(res);
     }
 
+    @GetMapping("/menu")
+    public ResultEntity getMenu() {
+        return userService.getMenu();
+    }
+
     @PostMapping("/update")
     public ResultEntity updateInfo(@RequestBody User user) {
         return userService.saveUser(user);
