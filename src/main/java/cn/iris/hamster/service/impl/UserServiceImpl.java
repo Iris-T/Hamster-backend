@@ -165,19 +165,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public ResultEntity getMenu() {
+    public List<Permission> getMenu() {
         Long userId = UserUtils.getUserId();
         List<Permission> perms = userMapper.getMenuByUid(userId);
-        List<Permission> menu = getMenuTree(perms);
-        return ResultEntity.success(menu);
-    }
 
-    /**
-     * 将扁平结构转换为嵌套结构
-     * @param perms
-     * @return
-     */
-    private List<Permission> getMenuTree(List<Permission> perms) {
+        // 将扁平结构转换为嵌套结构
         ArrayList<Permission> menu = new ArrayList<>();
         for (Permission perm : perms) {
             if (perm.getParentId().equals(0L)) {

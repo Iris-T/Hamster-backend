@@ -81,12 +81,13 @@
     </select>
 
     <select id="getMenuByUid" resultType="cn.iris.hamster.bean.pojo.Permission">
-        SELECT p.id, p.name, p.icon, p.parent_id
+        SELECT p.id, p.name, p.icon, p.path, p.parent_id
         FROM user_role ur
                  LEFT JOIN role_permission rp on rp.rid = ur.rid
                  LEFT JOIN permission p on p.id = rp.pid
         WHERE ur.uid = #{uid}
           AND p.is_menu = '0'
+          AND p.status = '0'
         ORDER BY p.parent_id
     </select>
 </mapper>

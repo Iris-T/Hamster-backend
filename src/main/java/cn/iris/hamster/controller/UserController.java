@@ -53,12 +53,14 @@ public class UserController {
         res.put("info", UserUtils.getUserInfo());
         // 将角色和权限封装为list
         res.put("authority", UserUtils.getAuthority().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        // 封装用户菜单数据
+        res.put("menu", userService.getMenu());
         return ResultEntity.success(res);
     }
 
     @GetMapping("/menu")
     public ResultEntity getMenu() {
-        return userService.getMenu();
+        return ResultEntity.success(userService.getMenu());
     }
 
     @PostMapping("/update")

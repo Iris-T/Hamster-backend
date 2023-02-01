@@ -39,11 +39,6 @@ public class Permission implements Serializable {
     private String pKey;
 
     /**
-     * 父ID，第一级为0
-     */
-    private Long parentId;
-
-    /**
      * 是否展示为菜单组件,0为是,1为否
      */
     private String isMenu;
@@ -52,6 +47,16 @@ public class Permission implements Serializable {
      * icon图标值
      */
     private String icon;
+
+    /**
+     * 路由路径
+     */
+    private String path;
+
+    /**
+     * 父ID，第一级为0
+     */
+    private Long parentId;
 
     /**
      * 权限状态-0为正常,1为停用

@@ -2,6 +2,7 @@ package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -80,5 +81,5 @@ public interface UserService extends IService<User> {
      * 获取当前用户展示的菜单
      * @return
      */
-    ResultEntity getMenu();
+    List<Permission> getMenu();
 }
