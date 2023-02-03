@@ -26,7 +26,7 @@ public class Cooperative implements Serializable {
     private Long id;
 
     /**
-     * 企业名称
+     * 合作伙伴名
      */
     private String name;
 

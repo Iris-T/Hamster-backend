@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 货物表

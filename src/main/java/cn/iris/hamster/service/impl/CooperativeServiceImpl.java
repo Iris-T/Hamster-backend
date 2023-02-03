@@ -39,6 +39,11 @@ public class CooperativeServiceImpl extends ServiceImpl<CooperativeMapper, Coope
         return cnt > 0 ? ResultEntity.success("更新企业信息成功") : ResultEntity.error("更新企业信息失败");
     }
 
+    @Override
+    public Integer monthlyNewCoCount() {
+        return cooperativeMapper.monthlyNewCoCount();
+    }
+
     private boolean isCoValid(Cooperative co) {
         boolean temp = true;
         if (ObjectUtil.isNotEmpty(co.getId())) {

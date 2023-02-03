@@ -2,7 +2,6 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Cooperative;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author asus
@@ -13,6 +12,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 public interface CooperativeMapper extends BaseMapper<Cooperative> {
 
+    /**
+     * 每月新增合作伙伴数
+     * @return
+     */
+    Integer monthlyNewCoCount();
 }
 
 

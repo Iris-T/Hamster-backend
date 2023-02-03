@@ -19,4 +19,9 @@ public interface CooperativeService extends IService<Cooperative> {
     ResultEntity saveCo(Cooperative co);
 
 
+    /**
+     * 每月新增合作伙伴数量
+     * @return
+     */
+    Integer monthlyNewCoCount();
 }
