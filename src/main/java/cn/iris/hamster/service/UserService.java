@@ -1,9 +1,11 @@
 package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.dto.RePwdDto;
+import cn.iris.hamster.bean.dto.UserQueryDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.vo.UserRoleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -82,4 +84,21 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<Permission> getMenu();
+
+    /**
+     * 获取用户分页列表
+     *
+     * @param cur     当前页
+     * @param size   列表大小
+     * @param query 查询条件
+     * @return
+     */
+    List<UserRoleVo> listByLimit(Integer cur, Integer size, UserQueryDto query);
+
+    /**
+     * 获取当前条件的用户总数
+     * @param query 查询条件
+     * @return
+     */
+    Integer getCountByLimit(UserQueryDto query);
 }

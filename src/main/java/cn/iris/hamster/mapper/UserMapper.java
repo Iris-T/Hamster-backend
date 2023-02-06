@@ -1,9 +1,11 @@
 package cn.iris.hamster.mapper;
 
+import cn.iris.hamster.bean.dto.UserQueryDto;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.vo.UserRoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -79,6 +81,22 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     List<Permission> getMenuByUid(Long userId);
+
+    /**
+     * 获取当前页指定大小的用户列表
+     * @param query 查询条件
+     * @param start 开始下标
+     * @param end 结束下标
+     * @return
+     */
+    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("end") Integer end, @Param("query") UserQueryDto query);
+
+    /**
+     * 获取满足指定条件的用户总数
+     * @param query 查询条件
+     * @return
+     */
+    Integer getCountByLimit(@Param("query") UserQueryDto query);
 }
 
 

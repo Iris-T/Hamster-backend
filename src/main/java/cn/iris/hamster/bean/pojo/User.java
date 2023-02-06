@@ -1,12 +1,16 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.common.utils.CommonUtils;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户表
@@ -16,6 +20,8 @@ import lombok.EqualsAndHashCode;
 @TableName(value ="user")
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
     @Serial
     @TableField(exist = false)
@@ -89,4 +95,8 @@ public class User implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    public User(Long id, String username, String password, String name, String gender, String idNo, String phone, String address) {
+        this(id, username, password, name, gender, idNo, phone, address, "0", null, null, null, null);
+    }
 }

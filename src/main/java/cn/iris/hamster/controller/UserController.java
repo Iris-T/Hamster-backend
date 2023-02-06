@@ -80,14 +80,6 @@ public class UserController {
         return userService.userDisbind(uid);
     }
 
-    @PreAuthorize("hasRole('admin')")
-    @GetMapping("/list")
-    public ResultEntity userList() {
-        List<User> users = userService.list();
-        users = users.stream().peek(user -> user.setPassword(null)).collect(Collectors.toList());
-        return ResultEntity.success(users);
-    }
-
     @PreAuthorize("hasAuthority('user:query')")
     @GetMapping("/query")
     public ResultEntity userQuery(Long uid) {

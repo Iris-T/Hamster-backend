@@ -2,11 +2,14 @@ package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.RePwdDto;
+import cn.iris.hamster.bean.dto.UserQueryDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Cooperative;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.vo.UserRoleVo;
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
@@ -22,10 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.iris.hamster.common.constants.CommonConstants.*;
@@ -179,6 +179,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         menu.sort(Comparator.comparingLong(Permission::getId));
         return menu;
+    }
+
+    @Override
+    public List<UserRoleVo> listByLimit(Integer cur, Integer size, UserQueryDto query) {
+        System.out.println(query);
+        if (ObjectUtil.isEmpty(cur) || cur < 1) {
+            cur = 1;
+        }
+        if (ObjectUtil.isEmpty(size)) {
+            size = DEFAULT_PAGE_SIZE;
+        }
+        int start = size * (cur - 1);
+        int end = start + size;
+        // 根据条件返回用户列表
+        return userMapper.listByLimit(start, end, query);
+    }
+
+    @Override
+    public Integer getCountByLimit(UserQueryDto query) {
+        return userMapper.getCountByLimit(query);
     }
 
     /**

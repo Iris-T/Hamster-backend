@@ -1,10 +1,12 @@
 package cn.iris.hamster.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.StaticInfoVo;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
+import cn.iris.hamster.common.utils.MockUtils;
 import cn.iris.hamster.service.CargoService;
 import cn.iris.hamster.service.CooperativeService;
 import cn.iris.hamster.service.UserService;
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +42,8 @@ public class SystemController {
     private CooperativeService coService;
     @Autowired
     private CargoService cargoService;
+    @Autowired
+    private MockUtils mockUtils;
 
     /**
      * 获取系统静态数值信息
@@ -108,5 +113,26 @@ public class SystemController {
         data.put("car", carInfo);
         data.put("wh", whInfo);
         return ResultEntity.success(data);
+    }
+
+    @PostMapping("batchMockUsers")
+    public ResultEntity batchMockUsers(Integer size) {
+        if (ObjectUtil.isEmpty(size)) {
+            return ResultEntity.error("参数错误");
+        }
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            count += userService.save(mockUtils.getFakeUser()) ? 1 : 0;
+            // 休眠半秒
+            try {
+                Thread.sleep(1000);
+                System.out.println("休眠1秒");
+            } catch (InterruptedException e) {
+                throw new BaseException("批量添加失败,已添加"+size+"条用户数据");
+            }
+        }
+        return count == size
+                ? ResultEntity.success("批量添加"+size+"条用户数据成功")
+                : ResultEntity.error("批量添加失败,已添加"+size+"条用户数据");
     }
 }

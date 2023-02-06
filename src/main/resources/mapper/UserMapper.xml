@@ -90,4 +90,51 @@
           AND p.status = '0'
         ORDER BY p.parent_id
     </select>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.UserRoleVo">
+        SELECT u.id as id,
+        u.username as username,
+        u.name as `name`,
+        u.gender as gender,
+        ID_NO,
+        phone,
+        address,
+        u.status as `status`,
+        u.create_by as create_by,
+        u.create_time as create_time,
+        u.update_by as update_by,
+        u.update_time as update_time,
+        r.name as `role`
+        FROM `user` u
+        LEFT JOIN user_role ur on u.id = ur.uid
+        LEFT JOIN `role` r on ur.rid = r.id
+        WHERE 1 = 1
+        <if test='query.status == "0" or query.status == "1"'>
+            AND u.`status` = #{query.status}
+        </if>
+        <if test="query.keyword != null and query.keyword != ''">
+            AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
+            OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
+        </if>
+        <if test='query.gender == "0" or query.gender == "1"'>
+            AND u.gender = #{query.gender}
+        </if>
+        ORDER BY u.id
+        LIMIT #{start}, #{end}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        SELECT DISTINCT COUNT(*) FROM `user` u
+        WHERE 1 = 1
+        <if test='query.status == "0" or query.status == "1"'>
+            AND u.`status` = #{query.status}
+        </if>
+        <if test="query.keyword != null and query.keyword != ''">
+            AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
+            OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
+        </if>
+        <if test='query.gender == "0" or query.gender == "1"'>
+            AND u.gender = #{query.gender}
+        </if>
+    </select>
 </mapper>
