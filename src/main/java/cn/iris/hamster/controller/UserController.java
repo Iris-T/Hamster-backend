@@ -63,11 +63,6 @@ public class UserController {
         return ResultEntity.success(userService.getMenu());
     }
 
-    @PostMapping("/update")
-    public ResultEntity updateInfo(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
-
     @PreAuthorize("hasAuthority('co:user:bind')")
     @PostMapping("/bind")
     public ResultEntity bind(Long uid, Long cid) {
@@ -90,17 +85,4 @@ public class UserController {
         user.setPassword(null);
         return ResultEntity.success(user);
     }
-
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/save")
-    public ResultEntity userSave(User user) {
-        return userService.saveUser(user);
-    }
-
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/grant")
-    public ResultEntity userGrant(Long uid, @RequestBody List<Long> rids) {
-        return userService.userGrant(uid, rids);
-    }
-
 }

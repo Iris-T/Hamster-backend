@@ -1,24 +1,20 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.dto.RePwdDto;
-import cn.iris.hamster.bean.dto.UserQueryDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Cooperative;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserRoleVo;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
-import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.mapper.CooperativeMapper;
 import cn.iris.hamster.mapper.RoleMapper;
 import cn.iris.hamster.mapper.UserMapper;
 import cn.iris.hamster.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,52 +69,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             redisUtils.set(redisKey, authority, TOKEN_TTL_SECONDS);
         }
         return authority;
-    }
-
-    @Override
-    public ResultEntity saveUser(User user) {
-        if (!isUserValid(user)) {
-            return ResultEntity.error("数据格式有误");
-        }
-
-        user.setId(CommonUtils.randId());
-        user.setStatus(CommonUtils.checkStatus(user.getStatus()));
-
-        boolean res = saveOrUpdate(user);
-        return res ? ResultEntity.success("更新成功") : ResultEntity.error("更新失败");
-    }
-
-    @Override
-    public ResultEntity userGrant(Long uid, List<Long> rids) {
-        return updateUserRole(uid, rids) ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
-    }
-
-    @Transactional(rollbackFor = BaseException.class)
-    @Override
-    public ResultEntity addCoAdmin(Long uid, Long cid) {
-        // 查询用户和企业是否存在
-        User user = userMapper.selectById(uid);
-        Cooperative cooperative = cooperativeMapper.selectById(cid);
-        if (ObjectUtil.isEmpty(user) || ObjectUtil.isEmpty(cooperative)) {
-            return ResultEntity.error("绑定信息有误");
-        }
-        // 查询用户是否绑定对应企业
-        int cnt = userMapper.isUserBindCo(uid, cid);
-        if (cnt == 0) {
-            return ResultEntity.error("用户尚未绑定企业信息");
-        }
-        // 更新用户角色权限
-        Role role = roleMapper.selectOne(new QueryWrapper<Role>().eq("r_key", ROLE_CO_ADMIN));
-        boolean res = updateUserRole(user.getId(), Collections.singletonList(role.getId()));
-        return res ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
-    }
-
-    @Transactional(rollbackFor = BaseException.class)
-    @Override
-    public ResultEntity delCoAdmin(Long uid) {
-        Role role = roleMapper.selectOne(new QueryWrapper<Role>().eq("r_key", ROLE_CO));
-        boolean res = updateUserRole(uid, Collections.singletonList(role.getId()));
-        return res ? ResultEntity.success("更新用户角色成功") : ResultEntity.error("更新用户角色失败");
     }
 
     @Override
@@ -182,23 +132,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public List<UserRoleVo> listByLimit(Integer cur, Integer size, UserQueryDto query) {
-        System.out.println(query);
-        if (ObjectUtil.isEmpty(cur) || cur < 1) {
-            cur = 1;
+    public List<UserRoleVo> listByLimit(QueryDto query) {
+        if (ObjectUtil.isEmpty(query.getCur()) || query.getCur() < 1) {
+            query.setCur(1);
         }
-        if (ObjectUtil.isEmpty(size)) {
-            size = DEFAULT_PAGE_SIZE;
+        if (ObjectUtil.isEmpty(query.getSize())) {
+            query.setSize(DEFAULT_PAGE_SIZE);
         }
-        int start = size * (cur - 1);
-        int end = start + size;
         // 根据条件返回用户列表
-        return userMapper.listByLimit(start, end, query);
+        return userMapper.listByLimit(query.getStartIndex(), query);
     }
 
     @Override
-    public Integer getCountByLimit(UserQueryDto query) {
+    public Integer getCountByLimit(QueryDto query) {
         return userMapper.getCountByLimit(query);
+    }
+
+    @Transactional(rollbackFor = BaseException.class)
+    @Override
+    public ResultEntity changeUserRole(Long uid, Long rid) {
+        // 删除原有角色绑定
+        userMapper.deleteU_R(uid);
+        // 增加新角色绑定
+        int i = userMapper.insertU_R(uid, rid, STATUS_ENABLE);
+        return i > 0 ? ResultEntity.success("修改用户角色信息成功") : ResultEntity.error("修改用户角色信息失败");
     }
 
     /**
@@ -225,14 +182,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             temp = ObjectUtil.isNotEmpty(getById(user.getId()));
         }
         return temp;
-    }
-
-    private boolean updateUserRole(Long uid, List<Long> rids) {
-        userMapper.deleteU_R(uid);
-        if (rids.size() == 0) {
-            return true;
-        }
-        int cnt = userMapper.insertU_R(uid, rids, STATUS_ENABLE);
-        return cnt == rids.size();
     }
 }

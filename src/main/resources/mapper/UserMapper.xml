@@ -41,10 +41,7 @@
     </delete>
 
     <insert id="insertU_R">
-        INSERT INTO user_role(uid, rid, status) VALUES
-        <foreach collection="rids" item="rid" index="index" open="" close="" separator=",">
-            (#{uid}, #{rid}, #{status})
-        </foreach>
+        INSERT INTO user_role(uid, rid, `status`) VALUE (#{uid}, #{rid}, #{status})
     </insert>
 
     <insert id="bind">
@@ -120,7 +117,7 @@
             AND u.gender = #{query.gender}
         </if>
         ORDER BY u.id
-        LIMIT #{start}, #{end}
+        LIMIT #{start}, #{query.size}
     </select>
 
     <select id="getCountByLimit" resultType="java.lang.Integer">

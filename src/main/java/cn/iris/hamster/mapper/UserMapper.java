@@ -1,6 +1,6 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.dto.UserQueryDto;
+import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserRoleVo;
@@ -33,11 +33,11 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 批量插入用户角色信息
      * @param uid
-     * @param rids
+     * @param rid
      * @param status
      * @return
      */
-    int insertU_R(Long uid, List<Long> rids, String status);
+    int insertU_R(Long uid, Long rid, String status);
 
     /**
      * 在co_user中查询指定用户的绑定状态
@@ -89,14 +89,14 @@ public interface UserMapper extends BaseMapper<User> {
      * @param end 结束下标
      * @return
      */
-    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("end") Integer end, @Param("query") UserQueryDto query);
+    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("query") QueryDto query);
 
     /**
      * 获取满足指定条件的用户总数
      * @param query 查询条件
      * @return
      */
-    Integer getCountByLimit(@Param("query") UserQueryDto query);
+    Integer getCountByLimit(@Param("query") QueryDto query);
 }
 
 

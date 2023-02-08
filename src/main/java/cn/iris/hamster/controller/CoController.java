@@ -34,33 +34,9 @@ public class CoController {
      * @param co
      * @return
      */
-
     @PostMapping("save")
     public ResultEntity save(Cooperative co) {
         return cooperativeService.saveCo(co);
-    }
-
-    /**
-     * 添加企业管理员
-     * @param uid
-     * @param cid
-     * @return
-     */
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/addAdmin")
-    public ResultEntity addCoAdmin(Long uid, Long cid) {
-        if (ObjectUtil.isEmpty(uid) || ObjectUtil.isEmpty(cid)) {
-            return ResultEntity.error("请求参数错误");
-        }
-        return userService.addCoAdmin(uid, cid);
-    }
-
-    @PostMapping("/delAdmin")
-    public ResultEntity delAdmin(Long uid) {
-        if (ObjectUtil.isEmpty(uid)) {
-            return ResultEntity.error("请求参数错误");
-        }
-        return userService.delCoAdmin(uid);
     }
 
     @PostMapping("/userBind")

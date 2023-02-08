@@ -1,7 +1,7 @@
 package cn.iris.hamster.service;
 
+import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.dto.RePwdDto;
-import cn.iris.hamster.bean.dto.UserQueryDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
@@ -25,36 +25,6 @@ public interface UserService extends IService<User> {
      * @return 拼接字符串
      */
     String getUserAuthorityInfo(String uid);
-
-    /**
-     * 存储更新用户信息
-     * @param user
-     * @return
-     */
-    ResultEntity saveUser(User user);
-
-    /**
-     * 赋予用户角色
-     * @param uid
-     * @param rids
-     * @return
-     */
-    ResultEntity userGrant(Long uid, List<Long> rids);
-
-    /**
-     * 将指定用户添加到对应企业，同时赋予co_admin权限
-     * @param uid
-     * @param cid
-     * @return
-     */
-    ResultEntity addCoAdmin(Long uid, Long cid);
-
-    /**
-     * 取消指定用户的co_admin权限信息
-     * @param uid
-     * @return
-     */
-    ResultEntity delCoAdmin(Long uid);
 
     /**
      * 用户绑定至指定企业
@@ -88,17 +58,23 @@ public interface UserService extends IService<User> {
     /**
      * 获取用户分页列表
      *
-     * @param cur     当前页
-     * @param size   列表大小
      * @param query 查询条件
      * @return
      */
-    List<UserRoleVo> listByLimit(Integer cur, Integer size, UserQueryDto query);
+    List<UserRoleVo> listByLimit(QueryDto query);
 
     /**
      * 获取当前条件的用户总数
      * @param query 查询条件
      * @return
      */
-    Integer getCountByLimit(UserQueryDto query);
+    Integer getCountByLimit(QueryDto query);
+
+    /**
+     * 修改用户角色
+     * @param uid 用户ID
+     * @param rid 角色ID
+     * @return
+     */
+    ResultEntity changeUserRole(Long uid, Long rid);
 }
