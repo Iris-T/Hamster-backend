@@ -2,6 +2,7 @@ package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.dto.RePwdDto;
+import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
@@ -77,4 +78,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity changeUserRole(Long uid, Long rid);
+
+    /**
+     * 更新用户个人资料
+     * @param user
+     * @return
+     */
+    ResultEntity updateInfo(UserReProfileDto user);
 }

@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.dto.UserReProfileDto;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;

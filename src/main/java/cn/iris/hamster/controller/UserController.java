@@ -1,10 +1,8 @@
 package cn.iris.hamster.controller;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.iris.hamster.bean.dto.RePwdDto;
+import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,6 @@ public class UserController {
 
     @PostMapping("/rePwd")
     public ResultEntity rePwd(@RequestBody RePwdDto rePwdDto) {
-        System.out.println(rePwdDto);
         if (rePwdDto.isAnyBlank()) {
             return ResultEntity.error("错误的请求参数");
         }
@@ -45,6 +41,11 @@ public class UserController {
             return ResultEntity.error("两次输入密码不同");
         }
         return userService.rePwd(rePwdDto);
+    }
+
+    @PostMapping("/reProfile")
+    public ResultEntity updateInfo(@RequestBody UserReProfileDto user) {
+        return userService.updateInfo(user);
     }
 
     @GetMapping("/userinfo")
@@ -73,16 +74,5 @@ public class UserController {
     @PostMapping("/disband")
     public ResultEntity disbind(Long uid) {
         return userService.userDisbind(uid);
-    }
-
-    @PreAuthorize("hasAuthority('user:query')")
-    @GetMapping("/query")
-    public ResultEntity userQuery(Long uid) {
-        User user = userService.getById(uid);
-        if (ObjectUtil.isEmpty(user)) {
-            return ResultEntity.error("用户不存在");
-        }
-        user.setPassword(null);
-        return ResultEntity.success(user);
     }
 }

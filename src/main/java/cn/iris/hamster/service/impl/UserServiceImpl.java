@@ -1,8 +1,11 @@
 package cn.iris.hamster.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.dto.RePwdDto;
+import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
@@ -154,8 +157,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 删除原有角色绑定
         userMapper.deleteU_R(uid);
         // 增加新角色绑定
-        int i = userMapper.insertU_R(uid, rid, STATUS_ENABLE);
-        return i > 0 ? ResultEntity.success("修改用户角色信息成功") : ResultEntity.error("修改用户角色信息失败");
+        userMapper.insertU_R(uid, rid, STATUS_ENABLE);
+        return ResultEntity.success("修改用户角色信息成功");
+    }
+
+    @Override
+    public ResultEntity updateInfo(UserReProfileDto user) {
+        User updateUser = new User();
+        updateUser.setId(UserUtils.getUserId());
+        // 数据复制时忽略空值
+        BeanUtil.copyProperties(user, updateUser, CopyOptions.create().ignoreNullValue());
+        userMapper.updateById(updateUser);
+        return ResultEntity.success("个人信息更新成功");
     }
 
     /**
