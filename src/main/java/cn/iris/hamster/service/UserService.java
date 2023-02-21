@@ -73,16 +73,16 @@ public interface UserService extends IService<User> {
 
     /**
      * 修改用户角色
+     *
      * @param uid 用户ID
      * @param rid 角色ID
-     * @return
      */
-    ResultEntity changeUserRole(Long uid, Long rid);
+    void changeUserRole(Long uid, Long rid);
 
     /**
      * 更新用户个人资料
      * @param user
      * @return
      */
-    ResultEntity updateInfo(UserReProfileDto user);
+    ResultEntity reProfile(UserReProfileDto user);
 }

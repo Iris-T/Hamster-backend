@@ -5,7 +5,6 @@ import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,7 +44,7 @@ public class UserController {
 
     @PostMapping("/reProfile")
     public ResultEntity updateInfo(@RequestBody UserReProfileDto user) {
-        return userService.updateInfo(user);
+        return userService.reProfile(user);
     }
 
     @GetMapping("/userinfo")

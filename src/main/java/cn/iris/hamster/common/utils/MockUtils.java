@@ -42,6 +42,13 @@ public class MockUtils {
         String username = (String) info.get("Password");
         String gender = "Male".equals(info.get("Gender")) ? "1" : "0";
         String idNo = (String) info.get("Chain_ID_Card");
-        return new User(CommonUtils.randId(), username, passwordEncoder.encode(DEFAULT_PWD), name, gender, idNo, phone, address);
+        return new User().setId(CommonUtils.randId())
+                .setUsername(username)
+                .setPassword(passwordEncoder.encode(DEFAULT_PWD))
+                .setName(name)
+                .setGender(gender)
+                .setIdNo(idNo)
+                .setPhone(phone)
+                .setAddress(address);
     }
 }

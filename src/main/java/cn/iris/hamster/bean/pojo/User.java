@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 用户表
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
  */
 @TableName(value ="user")
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +33,12 @@ public class User implements Serializable {
      */
     @TableId(type = IdType.INPUT)
     private Long id;
+
+    /**
+     * 权限角色ID
+     */
+    @TableField(exist = false)
+    private Long rid;
 
     /**
      * 登录用户名
@@ -95,8 +103,4 @@ public class User implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
-    public User(Long id, String username, String password, String name, String gender, String idNo, String phone, String address) {
-        this(id, username, password, name, gender, idNo, phone, address, "0", null, null, null, null);
-    }
 }

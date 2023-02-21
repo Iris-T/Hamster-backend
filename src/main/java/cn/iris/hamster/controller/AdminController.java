@@ -3,7 +3,6 @@ package cn.iris.hamster.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.QueryDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserRoleVo;
 import cn.iris.hamster.common.constants.CommonConstants;
@@ -16,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -75,47 +75,45 @@ public class AdminController {
         return ResultEntity.success("更新用户状态成功");
     }
 
+    @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/user/add")
-    public ResultEntity saveOrUpdate(User user) {
-        boolean res = false;
-        if (ObjectUtil.isEmpty(user.getId())) {
-            // 新增用户
-            long cnt = userService.count(new QueryWrapper<User>().eq("ID_NO", user.getIdNo()));
-            if (cnt > 0) {
-                return ResultEntity.error("身份证件号已被录入，请核对");
-            }
-            user.setId(CommonUtils.randId());
-            if (StringUtils.isEmpty(user.getPassword())) {
-                user.setPassword(passwordEncoder.encode("123456"));
-            }
-            res = userService.save(user);
-        } else {
-            return ResultEntity.error("参数错误");
-        }
-        return res ? ResultEntity.success("插入用户数据成功") : ResultEntity.error("插入用户数据失败");
-    }
-
-    @PostMapping("/user/update")
-    public ResultEntity updateUser(User user) {
+    public ResultEntity saveOrUpdate(@RequestBody User user) {
+        boolean res;
         if (ObjectUtil.isNotEmpty(user.getId())) {
-            // 更新用户
-            long cnt = userService.count(new QueryWrapper<User>().eq("id", user.getId()).eq("status", CommonConstants.STATUS_ENABLE));
-            if (cnt < 0) {
-                return ResultEntity.error("数据不存在");
-            }
-        } else {
             return ResultEntity.error("参数错误");
         }
-        return userService.updateById(user) ? ResultEntity.success("更新用户数据成功") : ResultEntity.error("更新用户数据失败");
+        // 核查信息
+        long cnt = userService.count(new QueryWrapper<User>().eq("username", user.getUsername()).or().eq("ID_NO", user.getIdNo()));
+        if (cnt > 0) {
+            return ResultEntity.error("用户信息核对有误或重复，请核对或联系管理员");
+        }
+        user.setId(CommonUtils.randId())
+                .setPassword(StringUtils.isBlank(user.getPassword()) ? passwordEncoder.encode("123456") : passwordEncoder.encode(user.getPassword()));
+        userService.save(user);
+        if (ObjectUtil.isNotEmpty(user.getRid())) {
+            userService.changeUserRole(user.getId(), user.getRid());
+        }
+        return ResultEntity.success("插入用户数据成功");
     }
 
-    @PostMapping("/user/grant")
-    public ResultEntity changeUserRole(Long uid, Long rid) {
-        long cnt1 = userService.count(new QueryWrapper<User>().eq("id", uid).eq("status", CommonConstants.STATUS_ENABLE));
-        long cnt2 = roleService.count(new QueryWrapper<Role>().eq("id", rid).eq("status", CommonConstants.STATUS_ENABLE));
-        if (cnt1 < 0 || cnt2 < 0) {
-            return ResultEntity.error("参数错误");
+    @Transactional(rollbackFor = BaseException.class)
+    @PostMapping("/user/{uid}/update")
+    public ResultEntity updateUser(@PathVariable Long uid, @RequestBody User user) {
+        // 核验用户信息
+        long cnt = userService.count(new QueryWrapper<User>().eq("id", uid).eq("status", CommonConstants.STATUS_ENABLE));
+        if (cnt <= 0) {
+            return ResultEntity.error("用户数据不存在");
         }
-        return userService.changeUserRole(uid, rid);
+        user.setId(uid);
+        // 重设密码
+        if (ObjectUtil.isNotEmpty(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        // 更新用户权限
+        if (ObjectUtil.isNotEmpty(user.getRid())) {
+            userService.changeUserRole(user.getId(), user.getRid());
+        }
+        userService.updateById(user);
+        return ResultEntity.success("更新用户数据成功");
     }
 }

@@ -153,16 +153,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Transactional(rollbackFor = BaseException.class)
     @Override
-    public ResultEntity changeUserRole(Long uid, Long rid) {
+    public void changeUserRole(Long uid, Long rid) {
         // 删除原有角色绑定
         userMapper.deleteU_R(uid);
         // 增加新角色绑定
         userMapper.insertU_R(uid, rid, STATUS_ENABLE);
-        return ResultEntity.success("修改用户角色信息成功");
     }
 
     @Override
-    public ResultEntity updateInfo(UserReProfileDto user) {
+    public ResultEntity reProfile(UserReProfileDto user) {
         User updateUser = new User();
         updateUser.setId(UserUtils.getUserId());
         // 数据复制时忽略空值
