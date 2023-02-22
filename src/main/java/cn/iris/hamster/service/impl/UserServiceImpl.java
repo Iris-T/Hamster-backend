@@ -3,7 +3,7 @@ package cn.iris.hamster.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.dto.QueryDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
@@ -135,7 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public List<UserRoleVo> listByLimit(QueryDto query) {
+    public List<UserRoleVo> listByLimit(User query) {
         if (ObjectUtil.isEmpty(query.getCur()) || query.getCur() < 1) {
             query.setCur(1);
         }
@@ -147,7 +147,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Integer getCountByLimit(QueryDto query) {
+    public Integer getCountByLimit(User query) {
         return userMapper.getCountByLimit(query);
     }
 

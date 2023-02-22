@@ -1,8 +1,9 @@
 package cn.iris.hamster.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.dto.QueryDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserRoleVo;
 import cn.iris.hamster.common.constants.CommonConstants;
@@ -47,11 +48,13 @@ public class AdminController {
      * @return
      */
     @GetMapping("/user/list")
-    public ResultEntity userList(QueryDto query) throws BaseException {
+    public ResultEntity userList(User query) throws BaseException {
         HashMap<String, Object> data = new HashMap<>();
         List<UserRoleVo> users = userService.listByLimit(query);
+        List<Role> roles = roleService.list();
         int total = userService.getCountByLimit(query);
         data.put("users", users);
+        data.put("roles", roles);
         data.put("total", total);
         data.put("size", ObjectUtil.isEmpty(query.getSize()));
         return ResultEntity.success(data);
@@ -115,5 +118,10 @@ public class AdminController {
         }
         userService.updateById(user);
         return ResultEntity.success("更新用户数据成功");
+    }
+
+    @GetMapping("/role/list")
+    public ResultEntity roleList() throws BaseException {
+        return ResultEntity.success(roleService.list());
     }
 }

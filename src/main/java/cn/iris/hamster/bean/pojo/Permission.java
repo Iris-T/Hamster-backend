@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -12,12 +13,13 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 权限功能表
+ * @author Iris
  * @TableName permission
  */
 @TableName(value ="permission")
 @Data
-@EqualsAndHashCode
-public class Permission implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Permission extends BaseEntity implements Serializable {
 
     @Serial
     @TableField(exist = false)

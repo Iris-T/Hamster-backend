@@ -1,6 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
-import cn.iris.hamster.bean.dto.UserReProfileDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -21,10 +21,10 @@ import lombok.experimental.Accessors;
 @TableName(value ="user")
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 5295888814991568084L;

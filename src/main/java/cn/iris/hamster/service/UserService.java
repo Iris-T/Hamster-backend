@@ -1,6 +1,6 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.dto.QueryDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
@@ -62,14 +62,14 @@ public interface UserService extends IService<User> {
      * @param query 查询条件
      * @return
      */
-    List<UserRoleVo> listByLimit(QueryDto query);
+    List<UserRoleVo> listByLimit(User query);
 
     /**
      * 获取当前条件的用户总数
      * @param query 查询条件
      * @return
      */
-    Integer getCountByLimit(QueryDto query);
+    Integer getCountByLimit(User query);
 
     /**
      * 修改用户角色

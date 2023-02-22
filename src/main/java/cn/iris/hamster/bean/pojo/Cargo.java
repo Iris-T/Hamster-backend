@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -15,8 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @TableName(value ="cargo")
 @Data
-@EqualsAndHashCode
-public class Cargo implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Cargo extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = -8385602481561018152L;

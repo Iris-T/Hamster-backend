@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -10,12 +11,13 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 车辆表
+ * @author Iris
  * @TableName vehicle
  */
 @TableName(value ="vehicle")
 @Data
-@EqualsAndHashCode
-public class Vehicle implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Vehicle extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = -5507061839136410475L;

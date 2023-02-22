@@ -90,10 +90,10 @@
 
     <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.UserRoleVo">
         SELECT u.id as id,
-        u.username as username,
+        username as username,
         u.name as `name`,
         u.gender as gender,
-        ID_NO,
+        ID_NO as idNo,
         phone,
         address,
         u.status as `status`,
@@ -105,33 +105,43 @@
         FROM `user` u
         LEFT JOIN user_role ur on u.id = ur.uid
         LEFT JOIN `role` r on ur.rid = r.id
-        WHERE 1 = 1
-        <if test='query.status == "0" or query.status == "1"'>
-            AND u.`status` = #{query.status}
-        </if>
-        <if test="query.keyword != null and query.keyword != ''">
-            AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
-            OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
-        </if>
-        <if test='query.gender == "0" or query.gender == "1"'>
-            AND u.gender = #{query.gender}
-        </if>
+        <where>
+            <if test='query.status == "0" or query.status == "1"'>
+                AND u.`status` = #{query.status}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
+                OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.gender == "0" or query.gender == "1"'>
+                AND u.gender = #{query.gender}
+            </if>
+            <if test="query.rid != null and query.rid != ''">
+                AND ur.rid = #{query.rid}
+            </if>
+        </where>
         ORDER BY u.id
         LIMIT #{start}, #{query.size}
     </select>
 
     <select id="getCountByLimit" resultType="java.lang.Integer">
         SELECT DISTINCT COUNT(*) FROM `user` u
-        WHERE 1 = 1
-        <if test='query.status == "0" or query.status == "1"'>
-            AND u.`status` = #{query.status}
-        </if>
-        <if test="query.keyword != null and query.keyword != ''">
-            AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
-            OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
-        </if>
-        <if test='query.gender == "0" or query.gender == "1"'>
-            AND u.gender = #{query.gender}
-        </if>
+        LEFT JOIN user_role ur on u.id = ur.uid
+        LEFT JOIN `role` r on ur.rid = r.id
+        <where>
+            <if test='query.status == "0" or query.status == "1"'>
+                AND u.`status` = #{query.status}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                AND u.`name` LIKE CONCAT('%', #{query.keyword}, '%')
+                OR u.`username` LIKE CONCAT('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.gender == "0" or query.gender == "1"'>
+                AND u.gender = #{query.gender}
+            </if>
+            <if test="query.rid != null and query.rid != ''">
+                AND ur.rid = #{query.rid}
+            </if>
+        </where>
     </select>
 </mapper>

@@ -1,6 +1,6 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.dto.QueryDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserRoleVo;
@@ -86,17 +86,16 @@ public interface UserMapper extends BaseMapper<User> {
      * 获取当前页指定大小的用户列表
      * @param query 查询条件
      * @param start 开始下标
-     * @param end 结束下标
      * @return
      */
-    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("query") QueryDto query);
+    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("query") User query);
 
     /**
      * 获取满足指定条件的用户总数
      * @param query 查询条件
      * @return
      */
-    Integer getCountByLimit(@Param("query") QueryDto query);
+    Integer getCountByLimit(@Param("query") User query);
 }
 
 

@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,12 +13,13 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 运单表
+ * @author Iris
  * @TableName waybill
  */
 @TableName(value ="waybill")
 @Data
-@EqualsAndHashCode
-public class Waybill implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Waybill extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 6379071167421687287L;

@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -14,8 +15,8 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value ="cooperative")
 @Data
-@EqualsAndHashCode
-public class Cooperative implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Cooperative extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = -5215665337831415745L;

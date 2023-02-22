@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.iris.hamster.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -16,8 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value ="system_field")
 @Data
-@EqualsAndHashCode
-public class SystemField implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class SystemField extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = -4478274797228834246L;
