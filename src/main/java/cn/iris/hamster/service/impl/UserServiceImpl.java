@@ -3,15 +3,15 @@ package cn.iris.hamster.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.bean.vo.UserRoleVo;
+import cn.iris.hamster.bean.vo.UserVo;
 import cn.iris.hamster.common.exception.BaseException;
+import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.mapper.CooperativeMapper;
@@ -135,13 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public List<UserRoleVo> listByLimit(User query) {
-        if (ObjectUtil.isEmpty(query.getCur()) || query.getCur() < 1) {
-            query.setCur(1);
-        }
-        if (ObjectUtil.isEmpty(query.getSize())) {
-            query.setSize(DEFAULT_PAGE_SIZE);
-        }
+    public List<UserVo> listByLimit(User query) {
         // 根据条件返回用户列表
         return userMapper.listByLimit(query.getStartIndex(), query);
     }
@@ -167,6 +161,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 数据复制时忽略空值
         BeanUtil.copyProperties(user, updateUser, CopyOptions.create().ignoreNullValue());
         userMapper.updateById(updateUser);
+        // 刷新ContextHolder中的数据
+        UserUtils.setUserInfo(userMapper.selectById(UserUtils.getUserId()));
         return ResultEntity.success("个人信息更新成功");
     }
 

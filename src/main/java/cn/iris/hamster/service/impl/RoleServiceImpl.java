@@ -2,6 +2,7 @@ package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.vo.RoleVo;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
@@ -38,27 +39,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     }
 
     @Override
-    public ResultEntity changeStatus(Role role, Integer type) {
-        int res;
-        // 启用
-        if (type.toString().equals(CommonConstants.STATUS_ENABLE)) {
-            if (CommonConstants.STATUS_ENABLE.equals(role.getStatus())) {
-                return ResultEntity.error("已被启用");
-            }
-            role.setStatus(CommonConstants.STATUS_ENABLE);
-            res = roleMapper.updateById(role);
-            // 禁用相关用户_角色信息
-            roleMapper.changeStatus(role.getId(), CommonConstants.STATUS_DISABLE);
-        } else { // 禁用
-            if (CommonConstants.STATUS_DISABLE.equals(role.getStatus())) {
-                return ResultEntity.error("已被禁用");
-            }
-            role.setStatus(CommonConstants.STATUS_DISABLE);
-            res = roleMapper.updateById(role);
-            // 启用相关用户_角色信息
-            roleMapper.changeStatus(role.getId(), CommonConstants.STATUS_ENABLE);
-        }
-        return res > 0 ? ResultEntity.success("修改状态成功") : ResultEntity.error();
+    public void changeStatus(Long rid, String status) {
+        roleMapper.changeStatus(rid, status);
     }
 
     @Override
@@ -95,6 +77,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         // 赋权
         Integer cnt = roleMapper.insertR_P(rid, pids, CommonConstants.STATUS_ENABLE);
         return cnt == pids.size() ? ResultEntity.success("更新角色权限成功") : ResultEntity.error("更新角色权限失败");
+    }
+
+    @Override
+    public List<RoleVo> listByLimit(Role query) {
+        return roleMapper.listByLimit(query.getStartIndex(), query);
+    }
+
+    @Override
+    public Integer getCountByLimit(Role query) {
+        return roleMapper.getCountByLimit(query);
     }
 
     private boolean isRoleValid(Role role) {

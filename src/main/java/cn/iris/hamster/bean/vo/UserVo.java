@@ -1,9 +1,5 @@
 package cn.iris.hamster.bean.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +10,14 @@ import java.util.Date;
  * 用户角色视图类
  *
  * @author Iris
- * @ClassName UserRoleVo
+ * @ClassName UserVo
  * @date 2023/2/6 14:42
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRoleVo {
+public class UserVo {
 
     private Long id;
     private String username;
@@ -32,8 +28,8 @@ public class UserRoleVo {
     private String phone;
     private String address;
     private String status;
-    private Long createBy;
+    private String createBy;
     private Date createTime;
-    private Long updateBy;
+    private String updateBy;
     private Date updateTime;
 }

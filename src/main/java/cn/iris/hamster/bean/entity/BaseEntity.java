@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.entity;
 
+import cn.iris.hamster.common.constants.CommonConstants;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -30,13 +31,13 @@ public class BaseEntity {
      */
     @JsonIgnore
     @TableField(exist = false)
-    private Integer cur;
+    private Integer cur = 1;
     /**
      * 查询列表当前页大小
      */
     @JsonIgnore
     @TableField(exist = false)
-    private Integer size;
+    private Integer size = CommonConstants.DEFAULT_PAGE_SIZE;
 
     @JsonIgnore
     public Integer getStartIndex() {

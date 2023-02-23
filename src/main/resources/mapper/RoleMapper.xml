@@ -30,11 +30,15 @@
     </insert>
 
     <update id="changeStatus">
-        update user_role set `status` = #{status} where rid = #{rid}
+        update user_role
+        set `status` = #{status}
+        where rid = #{rid}
     </update>
 
     <delete id="deleteR_P">
-        delete from role_permission where rid = #{rid}
+        delete
+        from role_permission
+        where rid = #{rid}
     </delete>
 
     <select id="getRolesByUid" resultType="cn.iris.hamster.bean.pojo.Role">
@@ -56,7 +60,47 @@
 
     <select id="isKeyExist" resultType="java.lang.Integer">
         select count(*)
-        from role
+        from `role`
         where r_key = #{key}
+    </select>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.RoleVo">
+        select distinct r.id as `id`,
+        r.name as `name`,
+        r.r_key as r_key,
+        r.status as `status`,
+        u1.name as creat_by,
+        r.create_time as create_time,
+        u2.name as update_by,
+        r.update_time as update_time,
+        r.remark as remark
+        from `role` r
+        left join `user` u1 on r.create_by = u1.id
+        left join `user` u2 on r.update_by = u2.id
+        left join role_permission rp on rp.rid = r.id
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and r.name like concat('%', #{query.keyword} ,'%')
+                or r.r_key like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and r.status = #{query.status}
+            </if>
+        </where>
+        order by r.id
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select distinct count(*) from `role`
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and `name` like concat('%', #{query.keyword} ,'%')
+                or r_key like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and `status` = #{query.status}
+            </if>
+        </where>
     </select>
 </mapper>

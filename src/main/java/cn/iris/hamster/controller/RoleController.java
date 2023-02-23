@@ -51,15 +51,6 @@ public class RoleController {
         return roleService.saveRole(role);
     }
 
-    @PostMapping("changeStatus")
-    public ResultEntity changeStatus(Long rid, Integer type) {
-        Role role = roleService.getById(rid);
-        if (ObjectUtil.isEmpty(role)) {
-            return ResultEntity.error("数据不存在");
-        }
-        return roleService.changeStatus(role, type);
-    }
-
     @PostMapping("isKeyExist")
     public ResultEntity isKeyExist(String key) {
         if (StringUtils.isBlank(key)) {

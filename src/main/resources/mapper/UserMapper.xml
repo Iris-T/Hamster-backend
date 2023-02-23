@@ -88,21 +88,23 @@
         ORDER BY p.parent_id
     </select>
 
-    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.UserRoleVo">
-        SELECT u.id as id,
-        username as username,
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.UserVo">
+        SELECT DISTINCT u.id as id,
+        u.username as username,
         u.name as `name`,
         u.gender as gender,
-        ID_NO as idNo,
-        phone,
-        address,
+        u.ID_NO as idNo,
+        u.phone as phone,
+        u.address as address,
         u.status as `status`,
-        u.create_by as create_by,
+        u2.name as create_by,
         u.create_time as create_time,
-        u.update_by as update_by,
+        u3.name as update_by,
         u.update_time as update_time,
-        r.name as `role`
+        IF(r.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}, r.name, '默认用户') as `role`
         FROM `user` u
+        LEFT JOIN `user` u2 on u.create_by = u2.id
+        LEFT JOIN `user` u3 on u.update_by = u3.id
         LEFT JOIN user_role ur on u.id = ur.uid
         LEFT JOIN `role` r on ur.rid = r.id
         <where>

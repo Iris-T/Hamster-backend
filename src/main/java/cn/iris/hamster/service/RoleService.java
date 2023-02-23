@@ -2,6 +2,7 @@ package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Role;
+import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public interface RoleService extends IService<Role> {
     List<Role> getRolesByUid(Long id);
 
     /**
-     * 更改角色状态
-     * @param role 角色对象
-     * @param type 操作行为类型
+     * 更改用户-角色状态
+     * @param rid 角色对象
+     * @param status 操作行为类型
      * @return 操作结果
      */
-    ResultEntity changeStatus(Role role, Integer type);
+    void changeStatus(Long rid, String status);
 
     /**
      * 存储角色信息
@@ -58,4 +59,19 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResultEntity grant(Long rid, List<Long> pids);
+
+    /**
+     * 获取查询条件的角色列表
+     * @param query
+     * @return
+     */
+    List<RoleVo> listByLimit(Role query);
+
+    /**
+     * 获取当前条件的角色总数
+     *
+     * @param query
+     * @return
+     */
+    Integer getCountByLimit(Role query);
 }

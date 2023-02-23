@@ -1,8 +1,9 @@
 package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Role;
+import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,6 +49,23 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param rid
      */
     void changeStatus(Long rid, String status);
+
+    /**
+     * 获取查询条件的角色列表
+     *
+     * @param startIndex
+     * @param query
+     * @return
+     */
+    List<RoleVo> listByLimit(@Param("start") Integer startIndex, @Param("query") Role query);
+
+    /**
+     * 获取当前条件的角色总数
+     *
+     * @param query
+     * @return
+     */
+    Integer getCountByLimit(@Param("query") Role query);
 }
 
 

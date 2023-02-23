@@ -1,12 +1,11 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.bean.vo.UserRoleVo;
+import cn.iris.hamster.bean.vo.UserVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -62,7 +61,7 @@ public interface UserService extends IService<User> {
      * @param query 查询条件
      * @return
      */
-    List<UserRoleVo> listByLimit(User query);
+    List<UserVo> listByLimit(User query);
 
     /**
      * 获取当前条件的用户总数

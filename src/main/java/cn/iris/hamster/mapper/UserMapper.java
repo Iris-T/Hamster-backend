@@ -1,9 +1,8 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.bean.vo.UserRoleVo;
+import cn.iris.hamster.bean.vo.UserVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -88,7 +87,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param start 开始下标
      * @return
      */
-    List<UserRoleVo> listByLimit(@Param("start") Integer start, @Param("query") User query);
+    List<UserVo> listByLimit(@Param("start") Integer start, @Param("query") User query);
 
     /**
      * 获取满足指定条件的用户总数

@@ -1,6 +1,9 @@
 package cn.iris.hamster.common.utils;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +12,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.math.BigInteger;
 import java.util.Random;
+
+import static cn.iris.hamster.common.constants.CommonConstants.DEFAULT_PAGE_SIZE;
 
 /**
  * 公共工具类
@@ -55,6 +60,22 @@ public class CommonUtils {
         return StrUtil.isNotEmpty(status) && (
                 CommonConstants.STATUS_ENABLE.equals(status)
                         || CommonConstants.STATUS_DISABLE.equals(status));
+    }
+
+    /**
+     * 设置继承于BaseEntity类的分页参数,未继承该类则抛出异常
+     * @see cn.iris.hamster.bean.entity.BaseEntity
+     * @exception cn.iris.hamster.common.exception.BaseException 提示信息
+     * @param o 类
+     */
+    public static <T extends BaseEntity> void setPageParam(T o) {
+       // instance模式匹配
+       if (ObjectUtil.isEmpty(o.getCur()) || o.getCur() < 1) {
+           o.setCur(1);
+       }
+       if (ObjectUtil.isEmpty(o.getSize())) {
+           o.setSize(DEFAULT_PAGE_SIZE);
+       }
     }
 
     public static <T> T getFieldFromObject(Object obj, String field, Class<T> target) {
