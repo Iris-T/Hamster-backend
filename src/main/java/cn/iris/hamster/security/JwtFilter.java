@@ -64,21 +64,22 @@ public class JwtFilter extends BasicAuthenticationFilter {
         if (jwtUtils.isExpire(token)) {
             throw new JwtException("Token过期");
         }
-        // token正常
+        // token正常,刷新数据
         String uid = claims.getId();
         User user = userService.getById(uid);
         user.setPassword(null);
-//        LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
-//        LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
-//        // 校验token距离过期时间间隔,未过期且小于一小时则进行刷新
-//        if (Duration.between(now, exp).toHours() < 1) {
-//            // 刷新Token并返回
-//            String newToken = jwtUtils.createToken(user.getUsername(), user.getId());
-//            response.setHeader("authorization", newToken);
-//        }
-        // 获取用户信息
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, token, userDetailService.getAuthority(uid));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        LocalDateTime exp = LocalDateTimeUtil.of(claims.getExpiration());
+        LocalDateTime now = LocalDateTimeUtil.of(System.currentTimeMillis());
+        // 校验token距离过期时间间隔,未过期且小于一小时则进行刷新
+        if (now.isBefore(exp)) {
+            // 刷新Token并返回
+            String newToken = jwtUtils.createToken(user.getUsername(), user.getId());
+            response.setHeader("authorization", newToken);
+            // 设置用户信息
+            UserUtils.setUserInfo(user);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, newToken, userDetailService.getAuthority(uid));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
         chain.doFilter(request,response);
     }
 }

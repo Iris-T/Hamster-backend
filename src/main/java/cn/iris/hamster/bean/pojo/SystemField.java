@@ -54,26 +54,6 @@ public class SystemField extends BaseEntity implements Serializable {
     private String status;
 
     /**
-     * 创建人ID
-     */
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新者ID
-     */
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    /**
      * 字段备注
      */
     private String remark;

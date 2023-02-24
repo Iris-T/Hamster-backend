@@ -1,6 +1,8 @@
 package cn.iris.hamster.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.iris.hamster.bean.dto.RoleDto;
+import cn.iris.hamster.bean.dto.UserDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
@@ -40,7 +42,7 @@ public class AdminController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/list")
-    public ResultEntity userList(User query) {
+    public ResultEntity userList(UserDto query) {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users", userService.listByLimit(query));
@@ -51,7 +53,7 @@ public class AdminController {
     }
 
     @GetMapping("/role/list")
-    public ResultEntity roleList(Role query) {
+    public ResultEntity roleList(RoleDto query) {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("roles", roleService.listByLimit(query));
@@ -91,7 +93,7 @@ public class AdminController {
 
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/user/add")
-    public ResultEntity addUser(@RequestBody User user) {
+    public ResultEntity addUser(@RequestBody UserDto user) {
         if (ObjectUtil.isNotEmpty(user.getId())) {
             throw new BaseException("参数错误");
         }
@@ -111,7 +113,7 @@ public class AdminController {
 
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/user/{uid}/update")
-    public ResultEntity updateUser(@PathVariable Long uid, @RequestBody User user) {
+    public ResultEntity updateUser(@PathVariable Long uid, @RequestBody UserDto user) {
         user.setId(uid);
         // 重设密码
         if (ObjectUtil.isNotEmpty(user.getPassword())) {

@@ -1,17 +1,18 @@
 package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.bean.entity.BaseEntity;
-import com.baomidou.mybatisplus.annotation.*;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 用户表
@@ -33,12 +34,6 @@ public class User extends BaseEntity implements Serializable {
      */
     @TableId(type = IdType.INPUT)
     private Long id;
-
-    /**
-     * 权限角色ID
-     */
-    @TableField(exist = false)
-    private Long rid;
 
     /**
      * 登录用户名
@@ -79,28 +74,4 @@ public class User extends BaseEntity implements Serializable {
      * 用户状态-0为正常,1为停用
      */
     private String status;
-
-    /**
-     * 创建人ID
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Long createBy;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /**
-     * 更新者ID
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
 }

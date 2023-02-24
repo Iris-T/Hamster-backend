@@ -1,10 +1,7 @@
 package cn.iris.hamster.common.utils;
 
-import cn.hutool.crypto.digest.MD5;
-import cn.iris.hamster.bean.entity.LoginUser;
 import cn.iris.hamster.bean.pojo.User;
 import com.alibaba.ttl.TransmittableThreadLocal;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,31 +19,17 @@ import java.util.Map;
  * @date 2022/12/30 13:07
  */
 public class UserUtils {
-    public static final String KEY_USERINFO = "userinfo";
-
-    public static ThreadLocal<Map<String, Object>> threadLocal = new TransmittableThreadLocal<>();
+    public static ThreadLocal<User> threadLocal = new TransmittableThreadLocal<>();
     private static final Logger log = LoggerFactory.getLogger(UserUtils.class);
 
-    public static User getUserInfo() {
-        User user = getByThreadLocalKey(KEY_USERINFO, User.class);
-        if (user != null) {
-            log.trace("获取到用户ID{},用户名{},姓名{}",user.getId(), user.getUsername(), user.getName());
-            return user;
-        }
-        user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.debug("获取到用户ID{},用户名{},姓名{}",user.getId(), user.getUsername(), user.getName());
-        setThreadLocalData(KEY_USERINFO, user);
-        return user;
-    }
-
     public static void setUserInfo(User user) {
-        setThreadLocalData(KEY_USERINFO, user);
+        threadLocal.set(user);
     }
 
     public static void delUserInfo() {
         SecurityContextHolder.getContext().setAuthentication(null);
         SecurityContextHolder.clearContext();
-        setThreadLocalData(KEY_USERINFO, null);
+        threadLocal.set(null);
     }
 
     /**
@@ -79,7 +61,9 @@ public class UserUtils {
      * @return 用户ID
      */
     public static Long getUserId() {
-        return getUserInfo().getId();
+        Long uid = getUserInfo().getId();
+        log.info("获取到用户ID===>{}", uid);
+        return uid;
     }
 
     /**
@@ -90,31 +74,13 @@ public class UserUtils {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 
-    public static Map<String, Object> threadLocalMap() {
-        Map<String, Object> dataMap = threadLocal.get();
-        if (dataMap == null) {
-            dataMap = new HashMap<>();
-            threadLocal.set(dataMap);
+    public static User getUserInfo() {
+        User user = threadLocal.get();
+        if (user != null) {
+            log.info("获取到用户ID{},用户名{},姓名{}", user.getId(), user.getUsername(), user.getName());
         }
-        return dataMap;
+        return user;
     }
-
-    public static <T> T getByThreadLocalKey(String key, Class<T> clazz) {
-        Object obj = threadLocalMap().get(key);
-        if (obj == null) {
-            return null;
-        }
-        if (clazz.isInstance(obj)) {
-            return (T) obj;
-        } else {
-            return null;
-        }
-    }
-
-    public static <T> void setThreadLocalData(String key, T data) {
-        threadLocalMap().put(key, data);
-    }
-
 
     public static void clean() {
         threadLocal.remove();
