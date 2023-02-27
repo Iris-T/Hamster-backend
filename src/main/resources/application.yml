@@ -6,7 +6,7 @@ spring:
     name: hamster
 
   datasource:
-    url: jdbc:mysql://localhost:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://hamster-mysql:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -46,7 +46,7 @@ spring:
             select-allow: true # 允许执行Select查询操作
             create-table-allow: false # 不允许创建表
   redis:
-    host: 127.0.0.1
+    host: hamster-redis
     port: 6379
     database: 8
     password: foxiris@qq.com
