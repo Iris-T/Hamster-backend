@@ -3,6 +3,9 @@ package cn.iris.hamster.mapper;
 import cn.iris.hamster.bean.pojo.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -31,6 +34,13 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @param pid
      */
     void changeStatus(Long pid, String status);
+
+    /**
+     * 根据rid获取对应pid列表
+     * @param rid 角色id
+     * @return pids
+     */
+    List<Permission> getPidsByRid(@Param("rid") Long rid);
 }
 
 

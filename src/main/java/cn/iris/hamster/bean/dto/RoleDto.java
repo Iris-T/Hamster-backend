@@ -17,12 +17,14 @@ import java.util.List;
  * @date 2023/2/24 9:09
  */
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDto extends Role {
-
+public class RoleDto {
+    private String name;
+    private String rKey;
+    private String remark;
     /**
      * 菜单、功能id列表
      */

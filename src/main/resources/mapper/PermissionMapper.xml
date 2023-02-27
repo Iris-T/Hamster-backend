@@ -35,4 +35,20 @@
         FROM `permission`
         WHERE `p_key` = #{key};
     </select>
+
+    <select id="getPidsByRid" resultType="cn.iris.hamster.bean.pojo.Permission">
+        select p.id as id,
+               p.name as `name`,
+               p.p_key as p_key,
+               p.is_menu as is_menu,
+               p.icon as icon,
+               p.path as `path`,
+               p.parent_id as parent_id,
+               p.status as `status`,
+               p.remark as remark
+        from permission p
+                 left join role_permission rp on rp.pid = p.id
+        where rp.rid = #{rid}
+    </select>
+
 </mapper>

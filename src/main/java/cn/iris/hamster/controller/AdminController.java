@@ -1,16 +1,22 @@
 package cn.iris.hamster.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.RoleDto;
 import cn.iris.hamster.bean.dto.UserDto;
 import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.vo.RoleVo;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
+import cn.iris.hamster.service.PermissionService;
 import cn.iris.hamster.service.RoleService;
 import cn.iris.hamster.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
+
+import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 
 /**
  * 管理员操作接口
@@ -39,6 +48,8 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private PermissionService permService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/list")
@@ -46,17 +57,18 @@ public class AdminController {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users", userService.listByLimit(query));
-        data.put("roles", roleService.list(new QueryWrapper<Role>().eq("status", CommonConstants.STATUS_ENABLE)));
+        data.put("roles", roleService.list(new QueryWrapper<Role>().eq("status", STATUS_ENABLE)));
         data.put("total", userService.getCountByLimit(query));
         data.put("size", query.getSize());
         return ResultEntity.success(data);
     }
 
     @GetMapping("/role/list")
-    public ResultEntity roleList(RoleDto query) {
+    public ResultEntity roleList(Role query) {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("roles", roleService.listByLimit(query));
+        data.put("perms", permService.list(new QueryWrapper<Permission>().eq("status", STATUS_ENABLE)));
         data.put("total", roleService.getCountByLimit(query));
         data.put("size", query.getSize());
         return ResultEntity.success(data);
@@ -129,25 +141,26 @@ public class AdminController {
 
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/role/add")
-    public ResultEntity addRole(@RequestBody Role role) {
-        if (ObjectUtil.isNotEmpty(role.getId())) {
-            throw new BaseException("参数错误");
-        }
+    public ResultEntity addRole(@RequestBody RoleDto role) {
+        Role insert = new Role();
+        BeanUtil.copyProperties(role, insert, CopyOptions.create().ignoreNullValue());
         // 核查信息
         long cnt = roleService.count(new QueryWrapper<Role>().eq("r_key", role.getRKey()));
         if (cnt > 0) {
             throw new BaseException("角色信息何查有误或重复，请核对后重试或联系管理员");
         }
-        role.setId(CommonUtils.randId());
-        roleService.save(role);
+        insert.setId(CommonUtils.randId());
+        roleService.save(insert);
         return ResultEntity.success("新增权限角色成功");
     }
 
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/role/{rid}/update")
-    public ResultEntity updateRole(@PathVariable Long rid, @RequestBody Role role) {
-        role.setId(rid);
-        roleService.updateById(role);
+    public ResultEntity updateRole(@PathVariable Long rid, @RequestBody RoleDto role) {
+        Role update = new Role();
+        BeanUtil.copyProperties(role, update, CopyOptions.create().ignoreNullValue());
+        update.setId(rid);
+        roleService.updateById(update);
         return ResultEntity.success("更新角色数据成功");
     }
 }

@@ -6,6 +6,7 @@ import cn.iris.hamster.bean.vo.RoleVo;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
+import cn.iris.hamster.mapper.PermissionMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.service.RoleService;
@@ -27,6 +28,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     implements RoleService{
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private PermissionMapper permMapper;
 
     @Override
     public List<Role> getRolesByUid(String id) {
@@ -81,7 +84,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
 
     @Override
     public List<RoleVo> listByLimit(Role query) {
-        return roleMapper.listByLimit(query.getStartIndex(), query);
+        List<RoleVo> roles = roleMapper.listByLimit(query.getStartIndex(), query);
+        roles.forEach(r -> r.setPerms(permMapper.getPidsByRid(r.getId())));
+        return roles;
     }
 
     @Override
