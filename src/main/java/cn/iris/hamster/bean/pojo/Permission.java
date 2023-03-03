@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -74,5 +73,5 @@ public class Permission extends BaseEntity implements Serializable {
      * 子菜单
      */
     @TableField(exist = false)
-    private List<Permission> child;
+    private List<Permission> children;
 }

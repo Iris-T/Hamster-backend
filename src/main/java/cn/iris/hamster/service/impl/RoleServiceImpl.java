@@ -3,7 +3,6 @@ package cn.iris.hamster.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.vo.RoleVo;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.mapper.PermissionMapper;
@@ -78,20 +77,30 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
             return ResultEntity.success("更新角色权限成功");
         }
         // 赋权
-        Integer cnt = roleMapper.insertR_P(rid, pids, CommonConstants.STATUS_ENABLE);
+        Integer cnt = roleMapper.insertR_P(rid, pids);
         return cnt == pids.size() ? ResultEntity.success("更新角色权限成功") : ResultEntity.error("更新角色权限失败");
     }
 
     @Override
     public List<RoleVo> listByLimit(Role query) {
         List<RoleVo> roles = roleMapper.listByLimit(query.getStartIndex(), query);
-        roles.forEach(r -> r.setPerms(permMapper.getPidsByRid(r.getId())));
+        roles.forEach(r -> r.setPerms(permMapper.getPermsByRid(r.getId())));
         return roles;
     }
 
     @Override
     public Integer getCountByLimit(Role query) {
         return roleMapper.getCountByLimit(query);
+    }
+
+    @Override
+    public Integer updateR_P(Long rid, List<Long> pids) {
+        return roleMapper.insertR_P(rid, pids);
+    }
+
+    @Override
+    public void deleteR_P(Long rid) {
+        roleMapper.deleteR_P(rid);
     }
 
     private boolean isRoleValid(Role role) {

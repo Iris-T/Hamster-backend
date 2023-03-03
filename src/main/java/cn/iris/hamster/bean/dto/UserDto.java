@@ -14,15 +14,23 @@ import lombok.NoArgsConstructor;
  * @ClassName UserDto
  * @date 2023/2/24 9:05
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto extends User {
+public class UserDto {
 
     /**
      * 权限角色ID
      */
     @TableField(exist = false)
     private Long rid;
+
+    private Long id;
+    private String username;
+    private String name;
+    private String gender;
+    private String idNo;
+    private String phone;
+    private String address;
 }

@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.SystemField;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author asus
@@ -9,6 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-02-02 15:21:30
 * @Entity cn.iris.hamster.bean.pojo.SystemField
 */
+
+@Repository
 public interface SystemFeildMapper extends BaseMapper<SystemField> {
 
 }

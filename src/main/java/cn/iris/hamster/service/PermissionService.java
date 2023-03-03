@@ -2,7 +2,10 @@ package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.vo.PermissionVo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -21,18 +24,11 @@ public interface PermissionService extends IService<Permission> {
 
     /**
      * 修改权限状态
-     * @param perm
-     * @param type 0 启用，1 禁用
+     * @param pid 权限id
+     * @param status 0 启用，1 禁用
      * @return
      */
-    ResultEntity changeStatus(Permission perm, Integer type);
-
-    /**
-     * 存储更新权限信息
-     * @param perm
-     * @return
-     */
-    ResultEntity savePerm(Permission perm);
+    void changeStatus(Long pid, String status);
 
     /**
      * 返回关键字查询结果
@@ -40,4 +36,18 @@ public interface PermissionService extends IService<Permission> {
      * @return
      */
     boolean isKeyExist(String key);
+
+    /**
+     * 分页查询权限对象信息
+     * @param query
+     * @return
+     */
+    List<PermissionVo> listByLimit(Permission query);
+
+    /**
+     * 根据查询条件获取总数
+     * @param query
+     * @return
+     */
+    Integer getCountByLimit(Permission query);
 }

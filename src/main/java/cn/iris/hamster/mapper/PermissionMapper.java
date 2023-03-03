@@ -1,9 +1,10 @@
 package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.vo.PermissionVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 * @Entity cn.iris.hamster.bean.pojo.Permission
 */
 
+@Repository
 public interface PermissionMapper extends BaseMapper<Permission> {
 
     /**
@@ -40,7 +42,23 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @param rid 角色id
      * @return pids
      */
-    List<Permission> getPidsByRid(@Param("rid") Long rid);
+    List<Permission> getPermsByRid(@Param("rid") Long rid);
+
+    /**
+     * 分页查询权限对象信息
+     *
+     * @param start
+     * @param query
+     * @return
+     */
+    List<PermissionVo> listByLimit(@Param("start") Integer start, @Param("query") Permission query);
+
+    /**
+     * 根据查询条件获取总数
+     * @param query
+     * @return
+     */
+    Integer getCountByLimit(@Param("query") Permission query);
 }
 
 

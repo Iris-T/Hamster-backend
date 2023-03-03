@@ -7,7 +7,11 @@
     <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Permission">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="key" column="key" jdbcType="VARCHAR"/>
+        <result property="pKey" column="p_key" jdbcType="VARCHAR"/>
+        <result property="isMenu" column="is_menu" jdbcType="CHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
         <result property="status" column="status" jdbcType="CHAR"/>
         <result property="createBy" column="create_by" jdbcType="BIGINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -17,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,p_key,status,create_by,create_time,update_by,update_time,remark
+        id,`name`,p_key,is_menu,icon,`path`,`status`,create_by,create_time,update_by,update_time,remark
     </sql>
 
     <insert id="updateAdminR_P">
@@ -36,19 +40,72 @@
         WHERE `p_key` = #{key};
     </select>
 
-    <select id="getPidsByRid" resultType="cn.iris.hamster.bean.pojo.Permission">
+    <select id="getPermsByRid" resultType="cn.iris.hamster.bean.pojo.Permission">
         select p.id as id,
-               p.name as `name`,
-               p.p_key as p_key,
-               p.is_menu as is_menu,
+               p.`name` as `name`,
+               p.p_key as pKey,
+               p.is_menu as isMenu,
+               p.parent_id as parentId,
                p.icon as icon,
                p.path as `path`,
-               p.parent_id as parent_id,
-               p.status as `status`,
+               p.`status` as `status`,
+               p.create_by as createBy,
+               p.create_time as createTime,
+               p.update_by as updateBy,
+               p.update_time as updateTime,
                p.remark as remark
         from permission p
-                 left join role_permission rp on rp.pid = p.id
+        left join role_permission rp on rp.pid = p.id
         where rp.rid = #{rid}
+    </select>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.PermissionVo">
+        select p.id as id,
+        p.name as `name`,
+        p.p_key as pKey,
+        p.is_menu as isMenu,
+        p.parent_id as parentId,
+        p.icon as icon,
+        p.path as `path`,
+        p.status as `status`,
+        p.remark as remark,
+        u1.name as createBy,
+        p.create_time as createTime,
+        u2.name as updateBy,
+        p.update_time as updateTime
+        from permission p
+        left join `user` u1 on p.create_by = u1.id
+        left join `user` u2 on p.update_by = u2.id
+        <where>
+            <if test="query.keyword != null and keyword != ''">
+                and p.name like concat('%', #{query.keyword}, '%')
+                or p.p_key like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and p.status = #{query.status}
+            </if>
+            <if test='query.isMenu == "0" or query.isMenu == "1"'>
+                and p.is_menu = #{query.isMenu}
+            </if>
+        </where>
+        order by p.id
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*) from `permission`
+        <where>
+            <if test="query.keyword != null and keyword != ''">
+                and `name` like concat('%', #{query.keyword}, '%')
+                or p_key like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and `status` = #{query.status}
+            </if>
+            <if test='query.isMenu == "0" or query.isMenu == "1"'>
+                and is_menu = #{query.isMenu}
+            </if>
+        </where>
     </select>
 
 </mapper>

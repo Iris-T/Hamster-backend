@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -46,4 +48,7 @@ public class Role extends BaseEntity implements Serializable {
      * 备注
      */
     private String remark;
+
+    @TableField(exist = false)
+    private List<Permission> perms;
 }

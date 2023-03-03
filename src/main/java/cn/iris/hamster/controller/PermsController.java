@@ -26,11 +26,6 @@ public class PermsController {
     @Autowired
     private PermissionService permissionService;
 
-    @PostMapping("/save")
-    public ResultEntity save(Permission perm) {
-        return permissionService.savePerm(perm);
-    }
-
     @GetMapping("/list")
     public ResultEntity list() {
         return ResultEntity.success(permissionService.list());
@@ -46,15 +41,6 @@ public class PermsController {
             return ResultEntity.error("当前权限已被停用");
         }
         return ResultEntity.success(perm);
-    }
-
-    @PostMapping("/changeStatus")
-    public ResultEntity changeStatus(Long pid, Integer type) {
-        Permission perm = permissionService.getById(pid);
-        if (ObjectUtil.isEmpty(perm)) {
-            return ResultEntity.error("数据不存在");
-        }
-        return permissionService.changeStatus(perm, type);
     }
 
     @PostMapping("/isKeyExist")

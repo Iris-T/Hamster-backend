@@ -49,14 +49,11 @@
     </insert>
 
     <select id="getPermsByUid" resultType="java.lang.String">
-        SELECT DISTINCT p.p_key
-        FROM user_role ur
-                 LEFT JOIN role_permission rp on ur.rid = rp.rid
-                 LEFT JOIN permission p on rp.pid = p.id
-        WHERE p.p_key is not null
-          AND p.status = '0'
-          AND rp.status = '0'
-          AND ur.uid = #{uid}
+        SELECT p.p_key
+        FROM permission p
+        LEFT JOIN role_permission rp on p.id = rp.pid
+        LEFT JOIN user_role ur ON ur.rid = rp.rid AND ur.uid = #{uid}
+        WHERE p.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
     </select>
 
     <select id="isbind" resultType="java.lang.Integer">
@@ -83,8 +80,8 @@
                  LEFT JOIN role_permission rp on rp.rid = ur.rid
                  LEFT JOIN permission p on p.id = rp.pid
         WHERE ur.uid = #{uid}
-          AND p.is_menu = '0'
-          AND p.status = '0'
+          AND p.is_menu = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
+          AND p.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
         ORDER BY p.parent_id
     </select>
 
@@ -127,7 +124,7 @@
     </select>
 
     <select id="getCountByLimit" resultType="java.lang.Integer">
-        SELECT DISTINCT COUNT(*) FROM `user` u
+        SELECT COUNT(*) FROM `user` u
         LEFT JOIN user_role ur on u.id = ur.uid
         LEFT JOIN `role` r on ur.rid = r.id
         <where>

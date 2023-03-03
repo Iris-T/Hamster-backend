@@ -5,20 +5,22 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.RoleDto;
 import cn.iris.hamster.bean.dto.UserDto;
+import cn.iris.hamster.bean.entity.BaseEntity;
 import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.bean.vo.RoleVo;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
+import cn.iris.hamster.common.utils.ListUtils;
 import cn.iris.hamster.service.PermissionService;
 import cn.iris.hamster.service.RoleService;
 import cn.iris.hamster.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 
@@ -43,6 +46,8 @@ import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -52,8 +57,18 @@ public class AdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @PostMapping("/user/{id}/pwd/reset")
+    public ResultEntity userPwdReset(@PathVariable Long id) {
+        User user = userService.getById(id);
+        int len = user.getIdNo().length();
+        // 截取末尾6位
+        user.setPassword(passwordEncoder.encode(user.getIdNo().substring(len - 6)));
+        userService.updateById(user);
+        return ResultEntity.success("用户密码重置成功");
+    }
+
     @GetMapping("/user/list")
-    public ResultEntity userList(UserDto query) {
+    public ResultEntity userList(User query) {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users", userService.listByLimit(query));
@@ -74,30 +89,45 @@ public class AdminController {
         return ResultEntity.success(data);
     }
 
+    @GetMapping("/perm/list")
+    public ResultEntity permList(Permission query) {
+        CommonUtils.setPageParam(query);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("perms", permService.listByLimit(query));
+        data.put("total", permService.getCountByLimit(query));
+        data.put("size", query.getSize());
+        return ResultEntity.success(data);
+    }
+
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/{module}/{id}/changeStatus")
     public ResultEntity changeUserStatus(@PathVariable String module, @PathVariable Long id, @RequestBody String status) {
         if (StringUtils.isBlank(module) || !CommonUtils.isRightStatus(status)) {
             throw new BaseException("参数错误");
         }
+
         switch (module) {
             case "user": {
                 User user = userService.getById(id);
-                if (user.getStatus().equals(status)) {
-                    throw new BaseException("错误操作");
-                }
+                checkStatus(user, status);
                 user.setStatus(status);
                 userService.updateById(user);
             }
             case "role": {
                 Role role = roleService.getById(id);
-                if (role.getStatus().equals(status)) {
-                    throw new BaseException("错误操作");
-                }
+                checkStatus(role, status);
                 role.setStatus(status);
                 roleService.updateById(role);
                 // 更新用户角色表内容
                 roleService.changeStatus(id, status);
+            }
+            case "perm": {
+                Permission perm = permService.getById(id);
+                checkStatus(perm, status);
+                perm.setStatus(status);
+                permService.updateById(perm);
+                // 刷新角色权限表内容
+                permService.changeStatus(id, status);
             }
             default: return ResultEntity.success("更新状态成功");
         }
@@ -114,9 +144,10 @@ public class AdminController {
         if (cnt > 0) {
             throw new BaseException("用户信息核对有误或重复，请核对后重试或联系管理员");
         }
-        user.setId(CommonUtils.randId())
-                .setPassword(StringUtils.isBlank(user.getPassword()) ? passwordEncoder.encode("123456") : passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
+        User add = new User();
+        BeanUtil.copyProperties(user, add, CopyOptions.create().ignoreNullValue());
+        add.setId(CommonUtils.randId()).setPassword(StringUtils.isBlank(add.getPassword()) ? passwordEncoder.encode(add.getIdNo().substring(add.getIdNo().length() - 6)) : passwordEncoder.encode(add.getPassword()));
+        userService.save(add);
         if (ObjectUtil.isNotEmpty(user.getRid())) {
             userService.changeUserRole(user.getId(), user.getRid());
         }
@@ -127,15 +158,13 @@ public class AdminController {
     @PostMapping("/user/{uid}/update")
     public ResultEntity updateUser(@PathVariable Long uid, @RequestBody UserDto user) {
         user.setId(uid);
-        // 重设密码
-        if (ObjectUtil.isNotEmpty(user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
         // 更新用户权限
         if (ObjectUtil.isNotEmpty(user.getRid())) {
             userService.changeUserRole(user.getId(), user.getRid());
         }
-        userService.updateById(user);
+        User update = new User();
+        BeanUtil.copyProperties(user, update, CopyOptions.create().ignoreNullValue());
+        userService.updateById(update);
         return ResultEntity.success("更新用户数据成功");
     }
 
@@ -160,7 +189,28 @@ public class AdminController {
         Role update = new Role();
         BeanUtil.copyProperties(role, update, CopyOptions.create().ignoreNullValue());
         update.setId(rid);
+        List<Long> pids = ListUtils.listToKeys(update.getPerms(), Permission::getId);
+        roleService.deleteR_P(rid);
+        if (pids.size() > 0) {
+            roleService.updateR_P(rid, pids);
+        }
         roleService.updateById(update);
         return ResultEntity.success("更新角色数据成功");
+    }
+
+    private <T> void checkStatus(T t, String status) {
+        if (ObjectUtil.isEmpty(t)) {
+            logger.error("参数错误");
+            throw new BaseException("参数错误");
+        }
+        if (t instanceof User u && u.getStatus().equals(status)) {
+            throw new BaseException("错误操作");
+        }
+        if (t instanceof Role r && r.getStatus().equals(status)) {
+            throw new BaseException("错误操作");
+        }
+        if (t instanceof Permission p && p.getStatus().equals(status)) {
+            throw new BaseException("错误操作");
+        }
     }
 }

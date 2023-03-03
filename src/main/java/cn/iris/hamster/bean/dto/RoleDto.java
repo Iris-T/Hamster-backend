@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2023/2/24 9:09
  */
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,5 +28,5 @@ public class RoleDto {
     /**
      * 菜单、功能id列表
      */
-    private List<Long> pids;
+    private List<Permission> perms;
 }

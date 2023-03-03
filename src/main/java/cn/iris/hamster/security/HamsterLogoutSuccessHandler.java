@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static cn.iris.hamster.common.constants.CommonConstants.REDIS_AUTHORITY_KEY_PREFIX;
+import static cn.iris.hamster.common.constants.CommonConstants.REDIS_CACHE_TOKEN_PREFIX;
+
 /**
  * 退出登录成功处理器
  *
@@ -40,8 +43,8 @@ public class HamsterLogoutSuccessHandler implements LogoutSuccessHandler {
         if (authentication != null){
             Long userId = UserUtils.getUserId();
             // 删除Redis数据
-            redisUtils.del(CommonConstants.REDIS_AUTHORITY_KEY_PREFIX + userId);
-            redisUtils.del(CommonConstants.REDIS_CACHE_TOKEN_PREFIX + userId);
+            redisUtils.del(REDIS_AUTHORITY_KEY_PREFIX + userId);
+            redisUtils.del(REDIS_CACHE_TOKEN_PREFIX + userId);
             // 删除LocalThread存储数据
             UserUtils.delUserInfo();
             // 手动退出

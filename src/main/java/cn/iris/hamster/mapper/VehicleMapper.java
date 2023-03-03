@@ -3,6 +3,7 @@ package cn.iris.hamster.mapper;
 import cn.iris.hamster.bean.pojo.Vehicle;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author asus
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity cn.iris.hamster.bean.pojo.Vehicle
 */
 
+@Repository
 public interface VehicleMapper extends BaseMapper<Vehicle> {
 
 }

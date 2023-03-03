@@ -36,7 +36,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param rid
      * @param pids
      */
-    Integer insertR_P(Long rid, List<Long> pids, String status);
+    Integer insertR_P(@Param("rid") Long rid, @Param("pids") List<Long> pids);
 
     /**
      * 对指定角色ID权限进行删除

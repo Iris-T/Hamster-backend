@@ -74,4 +74,17 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     Integer getCountByLimit(Role query);
+
+    /**
+     * 更新角色拥有的权限
+     * @param rid
+     * @param pids
+     */
+    Integer updateR_P(Long rid, List<Long> pids);
+
+    /**
+     * 删除角色拥有的权限
+     * @param rid
+     */
+    void deleteR_P(Long rid);
 }

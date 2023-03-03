@@ -74,4 +74,7 @@ public class User extends BaseEntity implements Serializable {
      * 用户状态-0为正常,1为停用
      */
     private String status;
+
+    @TableField(exist = false)
+    private Long rid;
 }

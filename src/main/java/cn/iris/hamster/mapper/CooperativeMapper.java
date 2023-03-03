@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Cooperative;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author asus
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.iris.hamster.bean.pojo.Cooperative
 */
 
+@Repository
 public interface CooperativeMapper extends BaseMapper<Cooperative> {
 
     /**

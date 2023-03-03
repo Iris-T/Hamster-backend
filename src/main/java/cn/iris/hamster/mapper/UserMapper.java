@@ -5,6 +5,7 @@ import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 * @createDate 2022-12-27 14:40:20
 * @Entity bean.pojo.cn.iris.hamster.User
 */
+
+@Repository
 public interface UserMapper extends BaseMapper<User> {
 
     /**

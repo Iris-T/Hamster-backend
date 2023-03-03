@@ -2,6 +2,7 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.Waybill;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author asus
@@ -9,6 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-01-05 16:15:17
 * @Entity cn.iris.hamster.bean.pojo.Waybill
 */
+
+@Repository
 public interface WaybillMapper extends BaseMapper<Waybill> {
 
 }

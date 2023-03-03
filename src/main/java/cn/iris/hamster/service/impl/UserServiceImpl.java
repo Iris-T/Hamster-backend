@@ -11,7 +11,6 @@ import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.bean.vo.UserVo;
 import cn.iris.hamster.common.exception.BaseException;
-import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.mapper.CooperativeMapper;
@@ -24,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static cn.iris.hamster.common.constants.CommonConstants.*;
@@ -56,21 +57,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String authority = "";
         // 获取角色信息
         String redisKey = REDIS_AUTHORITY_KEY_PREFIX + uid;
-        if (redisUtils.hasKey(redisKey)) {
-            authority = String.valueOf(redisUtils.get(redisKey));
-        } else {
-            List<Role> roles = roleMapper.getRolesByUid(uid);
-            if (roles.size() > 0) {
-                authority = roles.stream().map(r -> ROLE_PREFIX + r.getRKey()).collect(Collectors.joining(",")).concat(",");
-            }
-            // 获取权限信息
-            List<String> perms = userMapper.getPermsByUid(uid);
-            if (perms.size() > 0) {
-                String permCodes = String.join(",", perms);
-                authority = authority.concat(permCodes);
-            }
-            redisUtils.set(redisKey, authority, TOKEN_TTL_SECONDS);
+        List<Role> roles = roleMapper.getRolesByUid(uid);
+        if (roles.size() > 0) {
+            authority = roles.stream().map(r -> ROLE_PREFIX + r.getRKey()).collect(Collectors.joining(",")).concat(",");
         }
+        // 获取权限信息
+        List<String> perms = userMapper.getPermsByUid(uid);
+        if (perms.size() > 0) {
+            String permCodes = String.join(",", perms);
+            authority = authority.concat(permCodes);
+        }
+        redisUtils.set(redisKey, authority, TOKEN_TTL_SECONDS);
         return authority;
     }
 
@@ -106,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         int update = userMapper.updateById(user);
 
         if (update > 0) {
-        // 删除当前登录凭证
+            // 删除当前登录凭证
             redisUtils.del(REDIS_CACHE_TOKEN_PREFIX + userId);
             redisUtils.del(REDIS_AUTHORITY_KEY_PREFIX + userId);
             // 删除服务器内用户信息
@@ -126,7 +123,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         ArrayList<Permission> menu = new ArrayList<>();
         for (Permission perm : perms) {
             if (perm.getParentId().equals(0L)) {
-                perm.setChild(getChildren(perm.getId(), perms));
+                perm.setChildren(getChildren(perm.getId(), perms));
                 menu.add(perm);
             }
         }
@@ -168,6 +165,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     /**
      * 查找指定id菜单的子菜单
+     *
      * @param id
      * @param perms
      * @return
@@ -176,7 +174,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         ArrayList<Permission> children = new ArrayList<>();
         for (Permission perm : perms) {
             if (id.equals(perm.getParentId())) {
-                perm.setChild(getChildren(perm.getId(), perms));
+                perm.setChildren(getChildren(perm.getId(), perms));
                 children.add(perm);
             }
         }
