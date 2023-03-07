@@ -13,7 +13,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 2 # 初始化时建立物理连接的个数。默认0
-      max-active: 10 # 最大连接池数量，默认8
+      max-active: 8 # 最大连接池数量，默认8
       min-idle: 1 # 最小连接池数量
       max-wait: 2000 # 获取连接时最大等待时间，单位毫秒。
       pool-prepared-statements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
@@ -37,7 +37,6 @@ spring:
         url-pattern: /* # 映射地址，即统计指定地址的web请求
         exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*' # 不统计的web请求，如下是不统计静态资源及druid监控页面本身的请求
         session-stat-enable: true # 是否启用session统计
-        session-stat-max-count: 1 # session统计的最大个数，默认是1000。当统计超过这个数，只统计最新的
 
       filter:
         wall:
@@ -50,6 +49,9 @@ spring:
     port: 6379
     database: 8
     password: foxiris@qq.com
+
+  jackson:
+    time-zone: GMT+8
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml

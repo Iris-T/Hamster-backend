@@ -63,6 +63,8 @@ public class UserController {
         return ResultEntity.success(userService.getMenu());
     }
 
+
+
     @PreAuthorize("hasAuthority('co:user:bind')")
     @PostMapping("/bind")
     public ResultEntity bind(Long uid, Long cid) {

@@ -9,6 +9,7 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 权限功能表
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value ="permission")
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public class Permission extends BaseEntity implements Serializable {
 

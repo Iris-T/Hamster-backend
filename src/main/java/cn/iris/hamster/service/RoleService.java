@@ -15,14 +15,6 @@ import java.util.List;
 public interface RoleService extends IService<Role> {
 
     /**
-     * 通过Uid获取角色列表
-     *
-     * @param id uid
-     * @return 字符串拼接列表
-     */
-    List<Role> getRolesByUid(String id);
-
-    /**
      * getRolesByUid(String id)方法重写
      *
      * @param id uid
@@ -87,4 +79,11 @@ public interface RoleService extends IService<Role> {
      * @param rid
      */
     void deleteR_P(Long rid);
+
+    /**
+     * 更新系统管理员角色权限
+     * @param pid
+     * @param status
+     */
+    void updateAdminPerms(Long pid, String status);
 }

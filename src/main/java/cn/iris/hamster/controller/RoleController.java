@@ -34,23 +34,6 @@ public class RoleController {
         return ResultEntity.success(roleService.list());
     }
 
-    @GetMapping("query")
-    public ResultEntity query(Long rid) {
-        Role role = roleService.getById(rid);
-        if (ObjectUtil.isEmpty(role)) {
-            return ResultEntity.error("数据不存在");
-        }
-        if (CommonConstants.STATUS_DISABLE.equals(role.getStatus())) {
-            return ResultEntity.error("当前角色被停用");
-        }
-        return ResultEntity.success(role);
-    }
-
-    @PostMapping("save")
-    public ResultEntity save(Role role) {
-        return roleService.saveRole(role);
-    }
-
     @PostMapping("isKeyExist")
     public ResultEntity isKeyExist(String key) {
         if (StringUtils.isBlank(key)) {
@@ -58,10 +41,5 @@ public class RoleController {
         }
 
         return roleService.isKeyExist(key) ? ResultEntity.error("关键字重复") : ResultEntity.success("关键字可使用");
-    }
-
-    @PostMapping("grant")
-    public ResultEntity grant(Long rid, @RequestBody List<Long> pids) {
-        return roleService.grant(rid, pids);
     }
 }

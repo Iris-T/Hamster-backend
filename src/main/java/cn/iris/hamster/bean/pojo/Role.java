@@ -10,6 +10,7 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 角色表
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value ="role")
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public class Role extends BaseEntity implements Serializable {
     @Serial

@@ -39,12 +39,17 @@ public class SystemField extends BaseEntity implements Serializable {
     private String key;
 
     /**
-     * 字段类型,0为字符串,1为整数,2为浮点数,3为货币,4为布尔值
+     * 字段类型,0为字符串,1为数值
      */
     private String type;
 
     /**
-     * 字段值字符串
+     * 字符串值
+     */
+    private String str;
+
+    /**
+     * 数值
      */
     private String value;
 

@@ -4,6 +4,7 @@ import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 * @Entity cn.iris.hamster.bean.pojo.Role
 */
 
+@Repository
 public interface RoleMapper extends BaseMapper<Role> {
 
     /**
@@ -22,7 +24,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param uid 用户ID
      * @return 角色列表
      */
-    List<Role> getRolesByUid(String uid);
+    List<Role> getRolesByUid(Long uid);
 
     /**
      * key是否存在
@@ -66,6 +68,13 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return
      */
     Integer getCountByLimit(@Param("query") Role query);
+
+    /**
+     * 系统管理员权限更新
+     * @param pid
+     * @param status
+     */
+    void updateAdminPerms(@Param("pid") Long pid, @Param("status") String status);
 }
 
 

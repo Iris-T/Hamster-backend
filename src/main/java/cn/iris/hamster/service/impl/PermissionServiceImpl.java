@@ -1,23 +1,25 @@
 package cn.iris.hamster.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.vo.PermissionVo;
-import cn.iris.hamster.common.utils.CommonUtils;
-import cn.iris.hamster.mapper.PermissionMapper;
 import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.vo.PermissionVo;
+import cn.iris.hamster.common.utils.ListUtils;
+import cn.iris.hamster.mapper.PermissionMapper;
 import cn.iris.hamster.service.PermissionService;
-import cn.iris.hamster.common.constants.CommonConstants;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+
+import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 
 /**
- * @author asus
+ * @author Iris
  * @description 针对表【permission(权限功能表)】的数据库操作Service实现
  * @createDate 2023-01-03 09:19:53
  */
@@ -51,10 +53,16 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Override
     public List<PermissionVo> listByLimit(Permission query) {
         List<PermissionVo> perms = permissionMapper.listByLimit(query.getStartIndex(), query);
-        perms.forEach(p -> p.setChildren(permissionMapper.selectList(
-                new QueryWrapper<Permission>().eq("parent_id", p.getId())
-                        .eq("status", CommonConstants.STATUS_ENABLE)
-        )));
+        List<PermissionVo> enableMenuList = perms.stream().filter(p -> "0".equals(p.getIsMenu()) && STATUS_ENABLE.equals(p.getStatus())).toList();
+        List<Permission> children;
+        for (PermissionVo p : perms) {
+            children = enableMenuList.stream().filter(m -> p.getId().equals(m.getParentId())).map(m -> {
+                Permission permission = new Permission();
+                BeanUtil.copyProperties(m, permission);
+                return permission;
+            }).toList();
+            p.setChildren(children.size() > 0 ? children : null);
+        }
         return perms;
     }
 

@@ -88,7 +88,7 @@
                 and p.is_menu = #{query.isMenu}
             </if>
         </where>
-        order by p.id
+        order by p.is_menu and p.id and p.path desc
         limit #{start}, #{query.size}
     </select>
 

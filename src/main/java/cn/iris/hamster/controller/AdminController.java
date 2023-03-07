@@ -3,6 +3,7 @@ package cn.iris.hamster.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
+import cn.iris.hamster.bean.dto.PermissionDto;
 import cn.iris.hamster.bean.dto.RoleDto;
 import cn.iris.hamster.bean.dto.UserDto;
 import cn.iris.hamster.bean.entity.BaseEntity;
@@ -10,13 +11,16 @@ import cn.iris.hamster.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.vo.PermissionVo;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.ListUtils;
 import cn.iris.hamster.service.PermissionService;
 import cn.iris.hamster.service.RoleService;
 import cn.iris.hamster.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -145,7 +149,7 @@ public class AdminController {
             throw new BaseException("用户信息核对有误或重复，请核对后重试或联系管理员");
         }
         User add = new User();
-        BeanUtil.copyProperties(user, add, CopyOptions.create().ignoreNullValue());
+        BeanUtil.copyProperties(user, add);
         add.setId(CommonUtils.randId()).setPassword(StringUtils.isBlank(add.getPassword()) ? passwordEncoder.encode(add.getIdNo().substring(add.getIdNo().length() - 6)) : passwordEncoder.encode(add.getPassword()));
         userService.save(add);
         if (ObjectUtil.isNotEmpty(user.getRid())) {
@@ -163,7 +167,7 @@ public class AdminController {
             userService.changeUserRole(user.getId(), user.getRid());
         }
         User update = new User();
-        BeanUtil.copyProperties(user, update, CopyOptions.create().ignoreNullValue());
+        BeanUtil.copyProperties(user, update);
         userService.updateById(update);
         return ResultEntity.success("更新用户数据成功");
     }
@@ -171,14 +175,13 @@ public class AdminController {
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/role/add")
     public ResultEntity addRole(@RequestBody RoleDto role) {
-        Role insert = new Role();
-        BeanUtil.copyProperties(role, insert, CopyOptions.create().ignoreNullValue());
         // 核查信息
         long cnt = roleService.count(new QueryWrapper<Role>().eq("r_key", role.getRKey()));
         if (cnt > 0) {
-            throw new BaseException("角色信息何查有误或重复，请核对后重试或联系管理员");
+            throw new BaseException("信息重复或有误，请核对后重试或联系管理员");
         }
-        insert.setId(CommonUtils.randId());
+        Role insert = new Role();
+        BeanUtil.copyProperties(role, insert);
         roleService.save(insert);
         return ResultEntity.success("新增权限角色成功");
     }
@@ -186,9 +189,8 @@ public class AdminController {
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/role/{rid}/update")
     public ResultEntity updateRole(@PathVariable Long rid, @RequestBody RoleDto role) {
-        Role update = new Role();
-        BeanUtil.copyProperties(role, update, CopyOptions.create().ignoreNullValue());
-        update.setId(rid);
+        Role update = new Role().setId(rid);
+        BeanUtil.copyProperties(role, update);
         List<Long> pids = ListUtils.listToKeys(update.getPerms(), Permission::getId);
         roleService.deleteR_P(rid);
         if (pids.size() > 0) {
@@ -196,6 +198,32 @@ public class AdminController {
         }
         roleService.updateById(update);
         return ResultEntity.success("更新角色数据成功");
+    }
+
+    @Transactional(rollbackFor = BaseException.class)
+    @PostMapping("/perm/add")
+    public ResultEntity addPermission(@RequestBody PermissionDto perm) {
+        // 核查信息
+        long cnt = permService.count(new QueryWrapper<Permission>().eq("p_key", perm.getPKey()));
+        if (cnt > 0) {
+            throw new BaseException("信息重复或有误，请核对重试或联系管理员");
+        }
+        Permission add = new Permission();
+        BeanUtil.copyProperties(perm, add);
+        permService.save(add);
+        // 为系统管理员添加权限
+        roleService.updateAdminPerms(add.getId(), add.getStatus());
+        return ResultEntity.success("新增权限成功");
+    }
+
+    @Transactional(rollbackFor = BaseException.class)
+    @PostMapping("/perm/{pid}/update")
+    public ResultEntity updatePermission(@PathVariable Long pid, @RequestBody PermissionDto perm) {
+        Permission update = new Permission().setId(pid);
+        BeanUtil.copyProperties(perm, update);
+        permService.update(new UpdateWrapper<Permission>().set(update.getParentId() == null, "parent_id", update.getParentId()).eq("id", pid));
+        permService.updateById(update);
+        return ResultEntity.success("更新权限成功");
     }
 
     private <T> void checkStatus(T t, String status) {

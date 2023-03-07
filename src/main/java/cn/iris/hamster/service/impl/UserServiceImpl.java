@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String authority = "";
         // 获取角色信息
         String redisKey = REDIS_AUTHORITY_KEY_PREFIX + uid;
-        List<Role> roles = roleMapper.getRolesByUid(uid);
+        List<Role> roles = roleMapper.getRolesByUid(Long.valueOf(uid));
         if (roles.size() > 0) {
             authority = roles.stream().map(r -> ROLE_PREFIX + r.getRKey()).collect(Collectors.joining(",")).concat(",");
         }
@@ -122,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 将扁平结构转换为嵌套结构
         ArrayList<Permission> menu = new ArrayList<>();
         for (Permission perm : perms) {
-            if (perm.getParentId().equals(0L)) {
+            if (perm.getParentId() == null) {
                 perm.setChildren(getChildren(perm.getId(), perms));
                 menu.add(perm);
             }
@@ -156,7 +156,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User updateUser = new User();
         updateUser.setId(UserUtils.getUserId());
         // 数据复制时忽略空值
-        BeanUtil.copyProperties(user, updateUser, CopyOptions.create().ignoreNullValue());
+        BeanUtil.copyProperties(user, updateUser);
         userMapper.updateById(updateUser);
         // 刷新ContextHolder中的数据
         UserUtils.setUserInfo(userMapper.selectById(UserUtils.getUserId()));

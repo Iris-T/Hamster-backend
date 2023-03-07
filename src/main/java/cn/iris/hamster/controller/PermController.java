@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
  * 权限操作接口类
  *
  * @author Iris
- * @ClassName PermsController
+ * @ClassName PermController
  * @date 2023/1/3 9:18
  */
 
 @PreAuthorize("hasRole('admin')")
 @RestController
 @RequestMapping("/perm")
-public class PermsController {
+public class PermController {
 
     @Autowired
     private PermissionService permissionService;
@@ -31,18 +31,6 @@ public class PermsController {
         return ResultEntity.success(permissionService.list());
     }
 
-    @GetMapping("/query")
-    public ResultEntity query(Long pid) {
-        Permission perm = permissionService.getById(pid);
-        if (ObjectUtil.isEmpty(perm)) {
-            return ResultEntity.error("数据不存在");
-        }
-        if (CommonConstants.STATUS_DISABLE.equals(perm.getStatus())) {
-            return ResultEntity.error("当前权限已被停用");
-        }
-        return ResultEntity.success(perm);
-    }
-
     @PostMapping("/isKeyExist")
     public ResultEntity isKeyExist(String key) {
         if (StringUtils.isBlank(key)) {
@@ -50,5 +38,4 @@ public class PermsController {
         }
         return permissionService.isKeyExist(key) ? ResultEntity.error("关键字重复") : ResultEntity.success("关键字可使用");
     }
-
 }

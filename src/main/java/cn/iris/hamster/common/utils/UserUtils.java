@@ -77,7 +77,7 @@ public class UserUtils {
     public static User getUserInfo() {
         User user = threadLocal.get();
         if (user != null) {
-            log.info("获取到用户ID{},用户名{},姓名{}", user.getId(), user.getUsername(), user.getName());
+            log.info("获取到用户ID===>{},用户名===>{},姓名===>{}", user.getId(), user.getUsername(), user.getName());
         }
         return user;
     }

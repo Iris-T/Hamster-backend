@@ -4,6 +4,7 @@ import cn.iris.hamster.bean.pojo.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  * @date 2023/3/1 16:38
  */
 
+@Accessors(chain = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

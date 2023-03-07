@@ -31,13 +31,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     private PermissionMapper permMapper;
 
     @Override
-    public List<Role> getRolesByUid(String id) {
-        return roleMapper.getRolesByUid(id);
-    }
-
-    @Override
     public List<Role> getRolesByUid(Long id) {
-        return getRolesByUid(String.valueOf(id));
+        return roleMapper.getRolesByUid(id);
     }
 
     @Override
@@ -101,6 +96,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     @Override
     public void deleteR_P(Long rid) {
         roleMapper.deleteR_P(rid);
+    }
+
+    @Override
+    public void updateAdminPerms(Long pid, String status) {
+        roleMapper.updateAdminPerms(pid, status);
     }
 
     private boolean isRoleValid(Role role) {

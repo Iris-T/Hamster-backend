@@ -35,8 +35,8 @@
         where rid = #{rid}
     </update>
 
-    <update id="insertR_P">
-
+    <update id="updateAdminPerms">
+        insert into role_permission(rid, pid, `status`) value (1, #{pid}, #{status})
     </update>
 
     <delete id="deleteR_P">
