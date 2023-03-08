@@ -1,11 +1,9 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.entity.Permission;
 import cn.iris.hamster.bean.vo.PermissionVo;
-import cn.iris.hamster.common.utils.ListUtils;
 import cn.iris.hamster.mapper.PermissionMapper;
 import cn.iris.hamster.service.PermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 
@@ -26,33 +23,31 @@ import static cn.iris.hamster.common.constants.CommonConstants.STATUS_ENABLE;
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>
         implements PermissionService {
-    @Autowired
-    private PermissionMapper permissionMapper;
 
     @Override
     public Long add(Permission perm) {
         // 避免重复权限关键字
-        Integer exist = permissionMapper.isKeyExist(perm.getPKey());
+        Integer exist = baseMapper.isKeyExist(perm.getKey());
         if (!isPermValid(perm) || exist > 0) {
             return -1L;
         }
-        int insert = permissionMapper.insert(perm);
+        int insert = baseMapper.insert(perm);
         return insert > 0 ? perm.getId() : -1L;
     }
 
     @Override
     public void changeStatus(Long pid, String status) {
-        permissionMapper.changeStatus(pid, status);
+        baseMapper.changeStatus(pid, status);
     }
 
     @Override
     public boolean isKeyExist(String key) {
-        return permissionMapper.isKeyExist(key) > 0;
+        return baseMapper.isKeyExist(key) > 0;
     }
 
     @Override
     public List<PermissionVo> listByLimit(Permission query) {
-        List<PermissionVo> perms = permissionMapper.listByLimit(query.getStartIndex(), query);
+        List<PermissionVo> perms = baseMapper.listByLimit(query.getStartIndex(), query);
         List<PermissionVo> enableMenuList = perms.stream().filter(p -> "0".equals(p.getIsMenu()) && STATUS_ENABLE.equals(p.getStatus())).toList();
         List<Permission> children;
         for (PermissionVo p : perms) {
@@ -68,7 +63,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Override
     public Integer getCountByLimit(Permission query) {
-        return permissionMapper.getCountByLimit(query);
+        return baseMapper.getCountByLimit(query);
     }
 
     private boolean isPermValid(Permission perm) {
@@ -78,7 +73,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         }
         return temp
                 && StringUtils.isNotEmpty(perm.getName())
-                && StringUtils.isNotEmpty(perm.getPKey())
+                && StringUtils.isNotEmpty(perm.getKey())
                 && StringUtils.isNotEmpty(perm.getStatus());
     }
 }

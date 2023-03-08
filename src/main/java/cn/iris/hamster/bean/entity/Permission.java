@@ -1,6 +1,6 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -34,12 +34,14 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * 权限功能名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
      * 权限功能标识
      */
-    private String pKey;
+    @TableField(value = "`key`")
+    private String key;
 
     /**
      * 是否展示为菜单组件,0为是,1为否
@@ -49,6 +51,7 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * icon图标值
      */
+    @TableField(value = "icon", updateStrategy = FieldStrategy.IGNORED)
     private String icon;
 
     /**
@@ -59,16 +62,19 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * 父ID，第一级为0
      */
+    @TableField(value = "parent_id", updateStrategy = FieldStrategy.IGNORED)
     private Long parentId;
 
     /**
      * 权限状态-0为正常,1为停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 
     /**

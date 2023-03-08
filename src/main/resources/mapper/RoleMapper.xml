@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.RoleMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Role">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Role">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="key" column="key" jdbcType="VARCHAR"/>
@@ -17,8 +17,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,key,
-        status,create_by,create_time,
+        id,`name`,`key`,
+        `status`,create_by,create_time,
         update_by,update_time,remark
     </sql>
 
@@ -45,10 +45,10 @@
         where rid = #{rid}
     </delete>
 
-    <select id="getRolesByUid" resultType="cn.iris.hamster.bean.pojo.Role">
+    <select id="getRolesByUid" resultType="cn.iris.hamster.bean.entity.Role">
         select distinct r.id,
                         r.`name`,
-                        r.r_key,
+                        r.`key`,
                         r.`status`,
                         r.create_by,
                         r.create_time,
@@ -65,13 +65,13 @@
     <select id="isKeyExist" resultType="java.lang.Integer">
         select count(*)
         from `role`
-        where r_key = #{key}
+        where `key` = #{key}
     </select>
 
     <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.RoleVo">
         select distinct r.id as `id`,
         r.name as `name`,
-        r.r_key as r_key,
+        r.`key` as `key`,
         r.status as `status`,
         u1.name as creat_by,
         r.create_time as create_time,
@@ -85,7 +85,7 @@
         <where>
             <if test="query.keyword != null and query.keyword != ''">
                 and r.name like concat('%', #{query.keyword} ,'%')
-                or r.r_key like concat('%', #{query.keyword}, '%')
+                or r.key like concat('%', #{query.keyword}, '%')
             </if>
             <if test='query.status == "0" or query.status == "1"'>
                 and r.status = #{query.status}
@@ -100,7 +100,7 @@
         <where>
             <if test="query.keyword != null and query.keyword != ''">
                 and `name` like concat('%', #{query.keyword} ,'%')
-                or r_key like concat('%', #{query.keyword}, '%')
+                or key like concat('%', #{query.keyword}, '%')
             </if>
             <if test='query.status == "0" or query.status == "1"'>
                 and `status` = #{query.status}

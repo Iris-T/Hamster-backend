@@ -1,6 +1,6 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -48,6 +48,7 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 用户姓名
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
@@ -73,6 +74,7 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 用户状态-0为正常,1为停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     @TableField(exist = false)

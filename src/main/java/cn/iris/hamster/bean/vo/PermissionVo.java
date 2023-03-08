@@ -1,8 +1,10 @@
 package cn.iris.hamster.bean.vo;
 
-import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.common.bean.vo.BaseVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -17,24 +19,18 @@ import java.util.List;
  * @date 2023/3/1 16:38
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionVo {
+public class PermissionVo extends BaseVo {
 
-    private Long id;
     private String name;
-    private String pKey;
+    private String key;
     private String isMenu;
     private String icon;
     private String path;
     private Long parentId;
-    private String status;
-    private String createBy;
-    private Date createTime;
-    private String updateBy;
-    private Date updateTime;
-    private String remark;
     private List<Permission> children;
 }

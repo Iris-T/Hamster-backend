@@ -2,9 +2,9 @@ package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Permission;
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.bean.vo.UserVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 

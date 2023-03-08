@@ -1,7 +1,9 @@
 package cn.iris.hamster.bean.vo;
 
+import cn.iris.hamster.common.bean.vo.BaseVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -14,12 +16,12 @@ import java.util.Date;
  * @date 2023/2/6 14:42
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVo {
+public class UserVo extends BaseVo {
 
-    private Long id;
     private String username;
     private String role;
     private String name;
@@ -27,9 +29,4 @@ public class UserVo {
     private String idNo;
     private String phone;
     private String address;
-    private String status;
-    private String createBy;
-    private Date createTime;
-    private String updateBy;
-    private Date updateTime;
 }

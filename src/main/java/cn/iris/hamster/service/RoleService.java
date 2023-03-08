@@ -1,14 +1,14 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Role;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Role;
 import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
 /**
-* @author asus
+* @author Iris
 * @description 针对表【role(角色表)】的数据库操作Service
 * @createDate 2022-12-29 11:33:39
 */

@@ -1,6 +1,6 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

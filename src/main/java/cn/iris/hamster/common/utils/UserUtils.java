@@ -1,6 +1,6 @@
 package cn.iris.hamster.common.utils;
 
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.entity.User;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户工具类

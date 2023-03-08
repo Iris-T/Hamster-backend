@@ -1,8 +1,7 @@
 package cn.iris.hamster.security;
 
 import cn.hutool.json.JSONUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;

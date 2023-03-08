@@ -1,6 +1,5 @@
 package cn.iris.hamster.bean.dto;
 
-import cn.iris.hamster.bean.pojo.User;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package cn.iris.hamster.controller;
 
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Warehouse;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Warehouse;
 import cn.iris.hamster.service.WarehouseService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;

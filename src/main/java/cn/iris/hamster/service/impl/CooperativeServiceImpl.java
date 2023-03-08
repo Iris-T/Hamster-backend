@@ -1,10 +1,10 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.common.utils.CommonUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.iris.hamster.bean.pojo.Cooperative;
+import cn.iris.hamster.bean.entity.Cooperative;
 import cn.iris.hamster.service.CooperativeService;
 import cn.iris.hamster.mapper.CooperativeMapper;
 import org.apache.commons.lang3.StringUtils;

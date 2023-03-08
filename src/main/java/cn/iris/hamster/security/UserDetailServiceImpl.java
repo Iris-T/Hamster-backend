@@ -1,11 +1,9 @@
 package cn.iris.hamster.security;
 
 import cn.iris.hamster.bean.entity.LoginUser;
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.common.exception.BaseException;
-import cn.iris.hamster.mapper.UserMapper;
 import cn.iris.hamster.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

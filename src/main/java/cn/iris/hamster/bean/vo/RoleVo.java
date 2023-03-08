@@ -1,10 +1,10 @@
 package cn.iris.hamster.bean.vo;
 
-import cn.iris.hamster.bean.pojo.Permission;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
+import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.common.bean.vo.BaseVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -17,19 +17,13 @@ import java.util.List;
  * @ClassName RoleVo
  * @date 2023/2/23 9:28
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleVo {
+public class RoleVo extends BaseVo {
 
-    private Long id;
     private String name;
-    private String rKey;
-    private String status;
-    private String createBy;
-    private Date createTime;
-    private String updateBy;
-    private Date updateTime;
-    private String remark;
+    private String key;
     private List<Permission> perms;
 }

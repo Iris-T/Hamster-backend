@@ -1,12 +1,16 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.common.bean.entity;
 
 import cn.iris.hamster.common.constants.CommonConstants;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Date;
 
@@ -22,7 +26,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseEntity {
-
     /**
      * 搜索关键词
      */
@@ -52,6 +55,7 @@ public class BaseEntity {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -64,6 +68,7 @@ public class BaseEntity {
      * 更新时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     @JsonIgnore

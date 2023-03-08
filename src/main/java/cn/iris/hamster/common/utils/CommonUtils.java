@@ -1,9 +1,8 @@
 package cn.iris.hamster.common.utils;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
@@ -57,14 +56,12 @@ public class CommonUtils {
    }
 
     public static boolean isRightStatus(String status) {
-        return StrUtil.isNotEmpty(status) && (
-                CommonConstants.STATUS_ENABLE.equals(status)
-                        || CommonConstants.STATUS_DISABLE.equals(status));
+        return StrUtil.isNotEmpty(status) && (CommonConstants.STATUS_ENABLE.equals(status) || CommonConstants.STATUS_DISABLE.equals(status));
     }
 
     /**
      * 设置继承于BaseEntity类的分页参数,未继承该类则抛出异常
-     * @see cn.iris.hamster.bean.entity.BaseEntity
+     * @see BaseEntity
      * @exception cn.iris.hamster.common.exception.BaseException 提示信息
      * @param o 类
      */

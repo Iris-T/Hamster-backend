@@ -1,14 +1,13 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.RePwdDto;
 import cn.iris.hamster.bean.dto.UserReProfileDto;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Permission;
-import cn.iris.hamster.bean.pojo.Role;
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.entity.Role;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.bean.vo.UserVo;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.RedisUtils;
@@ -40,9 +39,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
     @Autowired
     private RedisUtils redisUtils;
-
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
@@ -59,10 +55,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String redisKey = REDIS_AUTHORITY_KEY_PREFIX + uid;
         List<Role> roles = roleMapper.getRolesByUid(Long.valueOf(uid));
         if (roles.size() > 0) {
-            authority = roles.stream().map(r -> ROLE_PREFIX + r.getRKey()).collect(Collectors.joining(",")).concat(",");
+            authority = roles.stream().map(r -> ROLE_PREFIX + r.getKey()).collect(Collectors.joining(",")).concat(",");
         }
         // 获取权限信息
-        List<String> perms = userMapper.getPermsByUid(uid);
+        List<String> perms = baseMapper.getPermsByUid(uid);
         if (perms.size() > 0) {
             String permCodes = String.join(",", perms);
             authority = authority.concat(permCodes);
@@ -74,24 +70,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public ResultEntity userBind(Long uid, Long cid) {
         // 查询用户绑定企业状态
-        int cnt = userMapper.isbind(uid);
+        int cnt = baseMapper.isbind(uid);
         if (cnt > 0) {
             return ResultEntity.error("用户已绑定企业");
         }
         // 添加绑定数据
-        cnt = userMapper.bind(uid, cid);
+        cnt = baseMapper.bind(uid, cid);
         return cnt > 0 ? ResultEntity.success("绑定成功") : ResultEntity.error("绑定失败");
     }
 
     @Override
     public ResultEntity userDisbind(Long uid) {
-        return userMapper.disbind(uid) > 0 ? ResultEntity.success("取消绑定成功") : ResultEntity.error("取消绑定失败");
+        return baseMapper.disbind(uid) > 0 ? ResultEntity.success("取消绑定成功") : ResultEntity.error("取消绑定失败");
     }
 
     @Override
     public ResultEntity rePwd(RePwdDto rePwdDto) {
         Long userId = UserUtils.getUserId();
-        User user = userMapper.selectById(userId);
+        User user = baseMapper.selectById(userId);
         if (ObjectUtil.isEmpty(user)) {
             return ResultEntity.error("用户数据不存在");
         }
@@ -100,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         user.setPassword(passwordEncoder.encode(rePwdDto.getNewPassword()));
-        int update = userMapper.updateById(user);
+        int update = baseMapper.updateById(user);
 
         if (update > 0) {
             // 删除当前登录凭证
@@ -117,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public List<Permission> getMenu() {
         Long userId = UserUtils.getUserId();
-        List<Permission> perms = userMapper.getMenuByUid(userId);
+        List<Permission> perms = baseMapper.getMenuByUid(userId);
 
         // 将扁平结构转换为嵌套结构
         ArrayList<Permission> menu = new ArrayList<>();
@@ -134,21 +130,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public List<UserVo> listByLimit(User query) {
         // 根据条件返回用户列表
-        return userMapper.listByLimit(query.getStartIndex(), query);
+        return baseMapper.listByLimit(query.getStartIndex(), query);
     }
 
     @Override
     public Integer getCountByLimit(User query) {
-        return userMapper.getCountByLimit(query);
+        return baseMapper.getCountByLimit(query);
     }
 
     @Transactional(rollbackFor = BaseException.class)
     @Override
     public void changeUserRole(Long uid, Long rid) {
         // 删除原有角色绑定
-        userMapper.deleteU_R(uid);
+        baseMapper.deleteU_R(uid);
         // 增加新角色绑定
-        userMapper.insertU_R(uid, rid, STATUS_ENABLE);
+        baseMapper.insertU_R(uid, rid, STATUS_ENABLE);
     }
 
     @Override
@@ -157,9 +153,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         updateUser.setId(UserUtils.getUserId());
         // 数据复制时忽略空值
         BeanUtil.copyProperties(user, updateUser);
-        userMapper.updateById(updateUser);
+        baseMapper.updateById(updateUser);
         // 刷新ContextHolder中的数据
-        UserUtils.setUserInfo(userMapper.selectById(UserUtils.getUserId()));
+        UserUtils.setUserInfo(baseMapper.selectById(UserUtils.getUserId()));
         return ResultEntity.success("个人信息更新成功");
     }
 

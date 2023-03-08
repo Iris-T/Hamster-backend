@@ -1,9 +1,7 @@
 package cn.iris.hamster.controller;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Cooperative;
-import cn.iris.hamster.common.utils.UserUtils;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Cooperative;
 import cn.iris.hamster.service.CooperativeService;
 import cn.iris.hamster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

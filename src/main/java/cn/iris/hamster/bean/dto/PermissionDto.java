@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class PermissionDto {
 
     private String name;
-    private String pKey;
+    private String key;
     private String isMenu;
     private String icon;
     private String path;

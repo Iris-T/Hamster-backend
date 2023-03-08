@@ -1,7 +1,6 @@
 package cn.iris.hamster.bean.dto;
 
-import cn.iris.hamster.bean.pojo.Permission;
-import cn.iris.hamster.bean.pojo.Role;
+import cn.iris.hamster.bean.entity.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleDto {
     private String name;
-    private String rKey;
+    private String key;
     private String remark;
     /**
      * 菜单、功能id列表

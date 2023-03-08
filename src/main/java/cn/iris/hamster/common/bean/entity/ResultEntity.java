@@ -1,8 +1,7 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.common.bean.entity;
 
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**

@@ -2,10 +2,8 @@ package cn.iris.hamster.security;
 
 import cn.hutool.json.JSONUtil;
 import cn.iris.hamster.bean.entity.LoginUser;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Role;
-import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static cn.iris.hamster.common.constants.CommonConstants.*;
 

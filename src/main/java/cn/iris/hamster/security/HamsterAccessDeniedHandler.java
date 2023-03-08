@@ -2,9 +2,7 @@ package cn.iris.hamster.security;
 
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.common.utils.UserUtils;
-import lombok.extern.slf4j.Slf4j;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;

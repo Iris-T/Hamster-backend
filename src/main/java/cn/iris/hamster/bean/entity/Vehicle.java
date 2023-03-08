@@ -1,11 +1,11 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,6 +40,7 @@ public class Vehicle extends BaseEntity implements Serializable {
     /**
      * 车辆状态,参考枚举VehicleStatusEnum,0-闲置,1-作业,2-检修,3-停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
@@ -50,5 +51,6 @@ public class Vehicle extends BaseEntity implements Serializable {
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 }

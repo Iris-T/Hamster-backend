@@ -1,7 +1,7 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.pojo.Permission;
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.bean.vo.UserVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;

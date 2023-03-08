@@ -1,8 +1,7 @@
 package cn.iris.hamster.security;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.RedisUtils;
 import cn.iris.hamster.common.utils.UserUtils;
@@ -23,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**

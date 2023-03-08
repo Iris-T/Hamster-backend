@@ -1,11 +1,8 @@
 package cn.iris.hamster.controller;
 
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Vehicle;
-import cn.iris.hamster.bean.pojo.Warehouse;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Vehicle;
 import cn.iris.hamster.service.VehicleService;
-import cn.iris.hamster.service.WarehouseService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

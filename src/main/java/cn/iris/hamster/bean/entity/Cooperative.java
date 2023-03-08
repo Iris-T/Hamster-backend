@@ -1,11 +1,11 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,6 +29,7 @@ public class Cooperative extends BaseEntity implements Serializable {
     /**
      * 合作伙伴名
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
@@ -49,5 +50,6 @@ public class Cooperative extends BaseEntity implements Serializable {
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 }

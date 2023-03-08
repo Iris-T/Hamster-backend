@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.PermissionMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Permission">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Permission">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="pKey" column="p_key" jdbcType="VARCHAR"/>
+        <result property="key" column="key" jdbcType="VARCHAR"/>
         <result property="isMenu" column="is_menu" jdbcType="CHAR"/>
         <result property="icon" column="icon" jdbcType="VARCHAR"/>
         <result property="path" column="path" jdbcType="VARCHAR"/>
@@ -21,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`name`,p_key,is_menu,icon,`path`,`status`,create_by,create_time,update_by,update_time,remark
+        id,`name`,`key`,is_menu,icon,`path`,`status`,create_by,create_time,update_by,update_time,remark
     </sql>
 
     <insert id="updateAdminR_P">
@@ -37,13 +37,13 @@
     <select id="isKeyExist" resultType="java.lang.Integer">
         SELECT count(`id`)
         FROM `permission`
-        WHERE `p_key` = #{key};
+        WHERE `key` = #{key};
     </select>
 
-    <select id="getPermsByRid" resultType="cn.iris.hamster.bean.pojo.Permission">
+    <select id="getPermsByRid" resultType="cn.iris.hamster.bean.entity.Permission">
         select p.id as id,
                p.`name` as `name`,
-               p.p_key as pKey,
+               p.`key` as `key`,
                p.is_menu as isMenu,
                p.parent_id as parentId,
                p.icon as icon,
@@ -62,7 +62,7 @@
     <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.PermissionVo">
         select p.id as id,
         p.name as `name`,
-        p.p_key as pKey,
+        p.`key` as `key`,
         p.is_menu as isMenu,
         p.parent_id as parentId,
         p.icon as icon,
@@ -79,7 +79,7 @@
         <where>
             <if test="query.keyword != null and keyword != ''">
                 and p.name like concat('%', #{query.keyword}, '%')
-                or p.p_key like concat('%', #{query.keyword}, '%')
+                or p.`key` like concat('%', #{query.keyword}, '%')
             </if>
             <if test='query.status == "0" or query.status == "1"'>
                 and p.status = #{query.status}
@@ -97,7 +97,7 @@
         <where>
             <if test="query.keyword != null and keyword != ''">
                 and `name` like concat('%', #{query.keyword}, '%')
-                or p_key like concat('%', #{query.keyword}, '%')
+                or `key` like concat('%', #{query.keyword}, '%')
             </if>
             <if test='query.status == "0" or query.status == "1"'>
                 and `status` = #{query.status}

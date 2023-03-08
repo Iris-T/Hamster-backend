@@ -1,11 +1,10 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -34,21 +33,25 @@ public class Role extends BaseEntity implements Serializable {
     /**
      * 角色名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
      * 角色权限字符
      */
-    private String rKey;
+    @TableField(value = "`key`")
+    private String key;
 
     /**
      * 权限状态-0为正常,1为停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 
     @TableField(exist = false)

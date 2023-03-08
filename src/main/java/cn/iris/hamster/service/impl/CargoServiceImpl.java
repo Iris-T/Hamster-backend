@@ -1,13 +1,12 @@
 package cn.iris.hamster.service.impl;
 
-import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.enums.CargoStatusEnum;
-import cn.iris.hamster.bean.enums.CargoTypeEnum;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.UserUtils;
 import cn.iris.hamster.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.iris.hamster.bean.pojo.Cargo;
+import cn.iris.hamster.bean.entity.Cargo;
 import cn.iris.hamster.service.CargoService;
 import cn.iris.hamster.mapper.CargoMapper;
 import org.apache.commons.lang3.ObjectUtils;

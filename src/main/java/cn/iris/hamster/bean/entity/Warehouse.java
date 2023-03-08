@@ -1,11 +1,11 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +30,7 @@ public class Warehouse extends BaseEntity implements Serializable {
     /**
      * 仓库名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
@@ -40,10 +41,12 @@ public class Warehouse extends BaseEntity implements Serializable {
     /**
      * 仓库使用状态-0为正常,1为停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 }

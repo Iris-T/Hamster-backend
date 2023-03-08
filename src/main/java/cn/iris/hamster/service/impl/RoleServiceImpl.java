@@ -1,13 +1,13 @@
 package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.vo.RoleVo;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.mapper.PermissionMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.iris.hamster.bean.pojo.Role;
+import cn.iris.hamster.bean.entity.Role;
 import cn.iris.hamster.service.RoleService;
 import cn.iris.hamster.mapper.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -26,18 +26,16 @@ import java.util.List;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     implements RoleService{
     @Autowired
-    private RoleMapper roleMapper;
-    @Autowired
     private PermissionMapper permMapper;
 
     @Override
     public List<Role> getRolesByUid(Long id) {
-        return roleMapper.getRolesByUid(id);
+        return baseMapper.getRolesByUid(id);
     }
 
     @Override
     public void changeStatus(Long rid, String status) {
-        roleMapper.changeStatus(rid, status);
+        baseMapper.changeStatus(rid, status);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         }
 
         // 检查关键字重复
-        if (isKeyExist(role.getRKey())) {
+        if (isKeyExist(role.getKey())) {
             return ResultEntity.error("权限关键字重复");
         }
 
@@ -59,48 +57,48 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
 
     @Override
     public boolean isKeyExist(String key) {
-        return roleMapper.isKeyExist(key) > 0;
+        return baseMapper.isKeyExist(key) > 0;
     }
 
     @Transactional(rollbackFor = BaseException.class)
     @Override
     public ResultEntity grant(Long rid, List<Long> pids) {
         // 删除
-        roleMapper.deleteR_P(rid);
+        baseMapper.deleteR_P(rid);
 
         if (pids.size() == 0) {
             return ResultEntity.success("更新角色权限成功");
         }
         // 赋权
-        Integer cnt = roleMapper.insertR_P(rid, pids);
+        Integer cnt = baseMapper.insertR_P(rid, pids);
         return cnt == pids.size() ? ResultEntity.success("更新角色权限成功") : ResultEntity.error("更新角色权限失败");
     }
 
     @Override
     public List<RoleVo> listByLimit(Role query) {
-        List<RoleVo> roles = roleMapper.listByLimit(query.getStartIndex(), query);
+        List<RoleVo> roles = baseMapper.listByLimit(query.getStartIndex(), query);
         roles.forEach(r -> r.setPerms(permMapper.getPermsByRid(r.getId())));
         return roles;
     }
 
     @Override
     public Integer getCountByLimit(Role query) {
-        return roleMapper.getCountByLimit(query);
+        return baseMapper.getCountByLimit(query);
     }
 
     @Override
     public Integer updateR_P(Long rid, List<Long> pids) {
-        return roleMapper.insertR_P(rid, pids);
+        return baseMapper.insertR_P(rid, pids);
     }
 
     @Override
     public void deleteR_P(Long rid) {
-        roleMapper.deleteR_P(rid);
+        baseMapper.deleteR_P(rid);
     }
 
     @Override
     public void updateAdminPerms(Long pid, String status) {
-        roleMapper.updateAdminPerms(pid, status);
+        baseMapper.updateAdminPerms(pid, status);
     }
 
     private boolean isRoleValid(Role role) {
@@ -112,7 +110,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         // 排除空数据
         return temp
                 && StringUtils.isNotEmpty(role.getName())
-                && StringUtils.isNotEmpty(role.getRKey())
+                && StringUtils.isNotEmpty(role.getKey())
                 && StringUtils.isNotEmpty(role.getStatus());
     }
 }

@@ -1,7 +1,7 @@
 package cn.iris.hamster.common.exception;
 
 
-import cn.iris.hamster.bean.entity.ResultEntity;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.common.utils.UserUtils;
 import io.jsonwebtoken.JwtException;
 import org.apache.commons.lang3.StringUtils;

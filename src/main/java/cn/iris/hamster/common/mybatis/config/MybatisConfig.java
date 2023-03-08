@@ -1,4 +1,4 @@
-package cn.iris.hamster.config;
+package cn.iris.hamster.common.mybatis.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

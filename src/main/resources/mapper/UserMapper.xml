@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.User">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.User">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
@@ -49,7 +49,7 @@
     </insert>
 
     <select id="getPermsByUid" resultType="java.lang.String">
-        SELECT p.p_key
+        SELECT p.`key`
         FROM permission p
         LEFT JOIN role_permission rp on p.id = rp.pid
         LEFT JOIN user_role ur ON ur.rid = rp.rid AND ur.uid = #{uid}
@@ -74,7 +74,7 @@
         WHERE uid = #{uid}
     </select>
 
-    <select id="getMenuByUid" resultType="cn.iris.hamster.bean.pojo.Permission">
+    <select id="getMenuByUid" resultType="cn.iris.hamster.bean.entity.Permission">
         SELECT p.id, p.name, p.icon, p.path, p.parent_id
         FROM user_role ur
                  LEFT JOIN role_permission rp on rp.rid = ur.rid

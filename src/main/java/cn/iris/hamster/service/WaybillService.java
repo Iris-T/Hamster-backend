@@ -1,6 +1,6 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.pojo.Waybill;
+import cn.iris.hamster.bean.entity.Waybill;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

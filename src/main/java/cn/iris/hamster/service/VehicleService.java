@@ -1,7 +1,7 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.pojo.Vehicle;
+import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.bean.entity.Vehicle;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

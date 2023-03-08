@@ -1,14 +1,13 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 货物表
@@ -31,6 +30,7 @@ public class Cargo extends BaseEntity implements Serializable {
     /**
      * 货物名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
@@ -61,10 +61,12 @@ public class Cargo extends BaseEntity implements Serializable {
     /**
      * 运输状态，参考枚举CargoStatusEnum
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
      * 备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 }

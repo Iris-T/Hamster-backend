@@ -3,7 +3,7 @@ package cn.iris.hamster.common.utils;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
