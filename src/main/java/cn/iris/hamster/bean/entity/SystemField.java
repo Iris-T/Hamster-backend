@@ -1,14 +1,14 @@
-package cn.iris.hamster.bean.pojo;
+package cn.iris.hamster.bean.entity;
 
-import cn.iris.hamster.bean.entity.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 系统字段表
@@ -17,7 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value ="system_field")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class SystemField extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
@@ -26,16 +27,19 @@ public class SystemField extends BaseEntity implements Serializable {
     /**
      * 主键
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
      * 字段名称
      */
+    @TableField(value = "`name`")
     private String name;
 
     /**
      * 字段关键字
      */
+    @TableField(value = "`key`")
     private String key;
 
     /**
@@ -56,10 +60,12 @@ public class SystemField extends BaseEntity implements Serializable {
     /**
      * 字段启用状态,0为启用,1为停用
      */
+    @TableField(value = "`status`")
     private String status;
 
     /**
      * 字段备注
      */
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 }
