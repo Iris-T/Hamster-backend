@@ -8,13 +8,16 @@ import java.io.Serializable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 合作企业
+ * @author Iris
  * @TableName cooperative
  */
 @TableName(value ="cooperative")
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public class Cooperative extends BaseEntity implements Serializable {
     @Serial
@@ -27,7 +30,7 @@ public class Cooperative extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 合作伙伴名
+     * 月结客户（企业）名称
      */
     @TableField(value = "`name`")
     private String name;
@@ -46,10 +49,4 @@ public class Cooperative extends BaseEntity implements Serializable {
      * 统一信用代码
      */
     private String usci;
-
-    /**
-     * 备注
-     */
-    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
-    private String remark;
 }

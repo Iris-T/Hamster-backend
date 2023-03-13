@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iris.hamster.bean.dto.SysFieldDto;
 import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.entity.Vehicle;
+import cn.iris.hamster.bean.enums.VehicleStatusEnum;
 import cn.iris.hamster.bean.vo.SystemFieldVo;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.entity.SystemField;
@@ -13,10 +15,7 @@ import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.MockUtils;
-import cn.iris.hamster.service.CargoService;
-import cn.iris.hamster.service.CooperativeService;
-import cn.iris.hamster.service.SystemFieldService;
-import cn.iris.hamster.service.UserService;
+import cn.iris.hamster.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import static cn.iris.hamster.common.constants.CommonConstants.*;
 
 /**
  * 系统服务接口
@@ -50,6 +51,8 @@ public class SystemController {
     @Autowired
     private CooperativeService coService;
     @Autowired
+    private VehicleService vehicleService;
+    @Autowired
     private CargoService cargoService;
     @Autowired
     private SystemFieldService systemFieldService;
@@ -63,13 +66,9 @@ public class SystemController {
     public ResultEntity getInfo() throws BaseException {
         ArrayList<StaticInfoVo> data = new ArrayList<>();
         // 用户数统计
-        data.add(new StaticInfoVo("总用户数", userService.count(),
-                "活跃用户", userService.count(new QueryWrapper<User>().eq("status", "0")),
-                CommonConstants.UNIT_NONE));
+        data.add(new StaticInfoVo("总用户数", userService.count(), "活跃用户", userService.count(new QueryWrapper<User>().eq("status", STATUS_ENABLE)), UNIT_NONE));
         // 企业每月新增数统计
-        data.add(new StaticInfoVo("合作伙伴", coService.count(),
-                "新增合作", coService.monthlyNewCoCount(),
-                CommonConstants.UNIT_MONTH));
+        data.add(new StaticInfoVo("月结客户", coService.count(), "新增合作", coService.monthlyNewCoCount(), UNIT_MONTH));
         // TODO 货物统计
         // TODO 运输统计
         // TODO 仓库统计
@@ -109,12 +108,11 @@ public class SystemController {
     @GetMapping("/facility")
     public ResultEntity facility() throws BaseException {
         HashMap<String, Object> data = new HashMap<>();
-        // TODO 获取车辆各类状态统计数据 总数 闲置 作业中 检修 报废
         ArrayList<StaticInfoVo> carInfo = new ArrayList<>();
-        Collections.addAll(carInfo, new StaticInfoVo("登记车辆总数", 100),
-                new StaticInfoVo("闲置车辆数量", 30),
-                new StaticInfoVo("作业车辆数量", 60),
-                new StaticInfoVo("检修车辆数量", 5));
+        Collections.addAll(carInfo, new StaticInfoVo("登记车辆总数", vehicleService.count()),
+                new StaticInfoVo("闲置车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.UNUSED.getKey()))),
+                new StaticInfoVo("作业车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.WORK.getKey()))),
+                new StaticInfoVo("检修车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.CHECK.getKey()))));
         // TODO 获取仓库各类统计数据 总数 正常仓数 爆仓警示（>90%） 闲仓警示(<10%) 停用
         ArrayList<StaticInfoVo> whInfo = new ArrayList<>();
         Collections.addAll(whInfo, new StaticInfoVo("正常使用仓数", 50),
@@ -124,28 +122,6 @@ public class SystemController {
         data.put("car", carInfo);
         data.put("wh", whInfo);
         return ResultEntity.success(data);
-    }
-
-    @PostMapping("/batchMockUsers")
-    public ResultEntity batchMockUsers(Integer size) throws BaseException {
-        if (ObjectUtil.isEmpty(size)) {
-            return ResultEntity.error("参数错误");
-        }
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            count += userService.save(mockUtils.getFakeUser()) ? 1 : 0;
-            // 休眠半秒
-            try {
-                Thread.sleep(1000);
-                System.out.println("休眠1秒");
-            } catch (InterruptedException e) {
-                log.error("批量添加失败,已添加${}条用户数据", size);
-                throw new BaseException("批量添加失败,已添加"+size+"条用户数据");
-            }
-        }
-        return count == size
-                ? ResultEntity.success("批量添加"+size+"条用户数据成功")
-                : ResultEntity.error("批量添加失败,已添加"+size+"条用户数据");
     }
 
     @GetMapping("/field/list")
@@ -190,5 +166,39 @@ public class SystemController {
         field.setStatus(status);
         systemFieldService.updateById(field);
         return ResultEntity.success("更新状态成功");
+    }
+
+    @PostMapping("/batch/mock/users")
+    public ResultEntity batchMockUsers(Integer size) throws BaseException, InterruptedException {
+        if (ObjectUtil.isEmpty(size)) {
+            throw new BaseException("参数错误");
+        }
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            User user = mockUtils.getFakeUser();
+            log.info(user.toString());
+            users.add(user);
+            Thread.sleep(10);
+        }
+        userService.saveBatch(users);
+        return ResultEntity.success("批量插入用户数据成功");
+    }
+
+    @PostMapping("/batch/mock/vehicles")
+    public ResultEntity batchMockVehicles(Integer size) throws BaseException, InterruptedException {
+        if (ObjectUtil.isEmpty(size)) {
+            throw new BaseException("参数错误");
+        }
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Vehicle vehicle = mockUtils.getFakeVehicle();
+            if (vehicle.getPlateNo().contains("挂") && vehicle.getLoad() < 25000) {
+                continue;
+            }
+            vehicles.add(vehicle);
+            Thread.sleep(10);
+        }
+        vehicleService.saveBatch(vehicles);
+        return ResultEntity.success("批量插入车辆数据成功");
     }
 }

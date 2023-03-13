@@ -4,11 +4,16 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.iris.hamster.bean.entity.User;
+import cn.iris.hamster.bean.entity.Vehicle;
+import cn.iris.hamster.bean.enums.VehicleStatusEnum;
+import cn.iris.hamster.common.constants.CommonConstants;
+import com.mifmif.common.regex.Generex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * 数据模拟工具类
@@ -20,7 +25,12 @@ import java.util.HashMap;
 
 @Component
 public class MockUtils {
-    private static final String DEFAULT_PWD = "123456";
+    private static final Generex PLATE_NO_GENERATOR = new Generex("[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-Z]·[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂]");
+    /**
+     * 载重-KG | 装载空间-M^3
+     */
+    private static final double[][] VEHICLE_DATA = {{3000, 12}, {5000, 30}, {10000, 40}, {12000, 45}, {25000, 60}, {28000, 80}, {30000, 75}, {30000, 120}, {35000, 80}, {35000, 110}, {80000, 96}};
+    private static final Random RAND = new Random();
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -43,12 +53,23 @@ public class MockUtils {
         String gender = "Male".equals(info.get("Gender")) ? "1" : "0";
         String idNo = (String) info.get("Chain_ID_Card");
         return new User().setId(CommonUtils.randId())
+                .setStatus(CommonConstants.STATUS_ENABLE)
                 .setUsername(username)
-                .setPassword(passwordEncoder.encode(DEFAULT_PWD))
+                .setPassword(passwordEncoder.encode(idNo.substring(idNo.length() - 6)))
                 .setName(name)
                 .setGender(gender)
                 .setIdNo(idNo)
                 .setPhone(phone)
                 .setAddress(address);
+    }
+
+    public Vehicle getFakeVehicle() {
+        int i = RAND.nextInt(VEHICLE_DATA.length);
+        return new Vehicle()
+                .setId(CommonUtils.randId())
+                .setPlateNo(PLATE_NO_GENERATOR.random())
+                .setLoad(VEHICLE_DATA[i][0])
+                .setSpace(VEHICLE_DATA[i][1])
+                .setStatus(VehicleStatusEnum.UNUSED.getKey());
     }
 }

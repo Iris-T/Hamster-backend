@@ -8,8 +8,8 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="plateNo" column="plate_no" jdbcType="CHAR"/>
             <result property="load" column="load" jdbcType="FLOAT"/>
+            <result property="space" column="space" jdbcType="FLOAT"/>
             <result property="status" column="status" jdbcType="CHAR"/>
-            <result property="cooperative" column="cooperative" jdbcType="BIGINT"/>
             <result property="localWh" column="local_wh" jdbcType="BIGINT"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -19,8 +19,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,plate_no,`load`,
-        status,cooperative,local_wh,
+        id,plate_no,`load`, space
+        `status`,cooperative,local_wh,
         create_by,create_time,update_by,
         update_time,remark
     </sql>

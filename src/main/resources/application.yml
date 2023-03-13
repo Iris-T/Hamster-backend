@@ -22,14 +22,12 @@ spring:
       # 启用Druid内置的Filter，会使用默认的配置。可自定义配置，见下方的各个filter节点。
       filters: stat,wall
 
-
       # StatViewServlet监控器。开启后，访问http://域名/druid/index.html
       stat-view-servlet:
         enabled: true # 开启 StatViewServlet，即开启监控功能
         login-username: foxiris # 访问监控页面时登录的账号
         login-password: foxiris # 密码
         reset-enable: false # 是否允许重置数据（在页面的重置按钮）。（停用后，依然会有重置按钮，但重置后不会真的重置数据）
-
 
       # 配置 WebStatFilter（StatFilter监控器中的Web模板）
       web-stat-filter:

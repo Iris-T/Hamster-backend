@@ -14,19 +14,49 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="remark" column="remark" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,`name`,phone,
         address,USCI,create_by,
-        create_time,update_by,update_time,
-        remark
+        create_time,update_by,update_time
     </sql>
 
     <select id="monthlyNewCoCount" resultType="java.lang.Integer">
         select count(*)
         from cooperative
         where create_time between DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW();
+    </select>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.CooperativeVo">
+        select co.id as id,
+        co.`name` as `name`,
+        co.phone as phone,
+        co.address as address,
+        co.USCI as usci,
+        u1.name as createBy,
+        co.create_time as createTime,
+        u2.name as updateBy,
+        co.update_time as updateTime,
+        u.name as contractName
+        from cooperative co
+        left join `user` u1 on co.create_by = u1.id
+        left join `user` u2 on co.update_by = u2.id
+        left join co_user cu on co.id = cu.cid
+        left join `user` u on cu.uid = u.id
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and co.name like concat('%', #{query.keyword}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*) from cooperative co
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and co.name like concat('%', #{query.keyword}, '%')
+            </if>
+        </where>
     </select>
 </mapper>

@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 车辆表
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
  * @TableName vehicle
  */
 @TableName(value ="vehicle")
+@Accessors(chain = true)
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Vehicle extends BaseEntity implements Serializable {
@@ -35,7 +37,13 @@ public class Vehicle extends BaseEntity implements Serializable {
     /**
      * 汽车载重，单位KG
      */
+    @TableField(value = "`load`")
     private Double load;
+
+    /**
+     * 汽车运载空间大小，单位m³
+     */
+    private Double space;
 
     /**
      * 车辆状态,参考枚举VehicleStatusEnum,0-闲置,1-作业,2-检修,3-停用
