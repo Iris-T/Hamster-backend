@@ -17,14 +17,14 @@ import java.util.HashMap;
  * 合作企业接口类
  *
  * @author Iris
- * @ClassName CoController
+ * @ClassName CooperativeController
  * @date 2023/1/6 9:56
  */
 
 @PreAuthorize("hasAuthority('co:manage')")
 @RequestMapping("/co")
 @RestController
-public class CoController {
+public class CooperativeController {
     @Autowired
     private CooperativeService cooperativeService;
     @Autowired

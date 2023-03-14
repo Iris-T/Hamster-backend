@@ -1,8 +1,11 @@
 package cn.iris.hamster.service;
 
+import cn.iris.hamster.bean.vo.VehicleVo;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.entity.Vehicle;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -12,25 +15,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface VehicleService extends IService<Vehicle> {
 
     /**
-     * 添加新的车辆信息
-     * @param vehicle
+     * 根据限制条件查询车辆信息列表
+     * @param query
      * @return
      */
-    ResultEntity add(Vehicle vehicle);
+    List<VehicleVo> listByLimit(Vehicle query);
 
     /**
-     * 修改车辆使用状态
-     * @param vehicle
-     * @param type
+     * 根据限制条件获取记录总条数
+     * @param query
      * @return
      */
-    ResultEntity changeStatus(Vehicle vehicle, String type);
-
-    /**
-     * 修改车辆所在仓库
-     * @param vid
-     * @param wid
-     * @return
-     */
-    ResultEntity changeWh(Long vid, Long wid);
+    Integer getCountByLimit(Vehicle query);
 }

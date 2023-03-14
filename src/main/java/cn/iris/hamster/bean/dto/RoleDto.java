@@ -23,6 +23,7 @@ import java.util.List;
 public class RoleDto {
     private String name;
     private String key;
+    private String status;
     private String remark;
     /**
      * 菜单、功能id列表

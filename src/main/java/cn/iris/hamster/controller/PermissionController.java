@@ -21,14 +21,14 @@ import java.util.HashMap;
  * 权限操作接口类
  *
  * @author Iris
- * @ClassName PermController
+ * @ClassName PermissionController
  * @date 2023/1/3 9:18
  */
 
 @PreAuthorize("hasRole('admin')")
 @RestController
 @RequestMapping("/perm")
-public class PermController {
+public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
@@ -69,15 +69,15 @@ public class PermController {
     @PostMapping("/add")
     public ResultEntity addPermission(@RequestBody PermissionDto perm) {
         // 核查信息
-        long cnt = permissionService.count(new QueryWrapper<Permission>().eq("key", perm.getKey()));
+        long cnt = permissionService.count(new QueryWrapper<Permission>().eq("`key`", perm.getKey()));
         if (cnt > 0) {
             throw new BaseException("信息重复或有误，请核对重试或联系管理员");
         }
-        Permission add = new Permission();
+        Permission add = new Permission().setStatus(CommonUtils.checkStatus(perm.getStatus()));
         BeanUtil.copyProperties(perm, add);
         permissionService.save(add);
         // 为系统管理员添加权限
-        roleService.updateAdminPerms(add.getId(), add.getStatus());
+        roleService.updateAdminPerms(add.getId(), perm.getStatus());
         return ResultEntity.success("新增权限成功");
     }
 

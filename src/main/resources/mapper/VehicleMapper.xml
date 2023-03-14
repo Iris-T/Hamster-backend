@@ -5,17 +5,17 @@
 <mapper namespace="cn.iris.hamster.mapper.VehicleMapper">
 
     <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Vehicle">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="plateNo" column="plate_no" jdbcType="CHAR"/>
-            <result property="load" column="load" jdbcType="FLOAT"/>
-            <result property="space" column="space" jdbcType="FLOAT"/>
-            <result property="status" column="status" jdbcType="CHAR"/>
-            <result property="localWh" column="local_wh" jdbcType="BIGINT"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="remark" column="remark" jdbcType="CHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="plateNo" column="plate_no" jdbcType="CHAR"/>
+        <result property="load" column="load" jdbcType="FLOAT"/>
+        <result property="space" column="space" jdbcType="FLOAT"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="localWh" column="local_wh" jdbcType="BIGINT"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -24,4 +24,43 @@
         create_by,create_time,update_by,
         update_time,remark
     </sql>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.VehicleVo">
+        select v.id as id,
+        v.plate_no as plateNo,
+        v.`load` as `load`,
+        v.space as space,
+        w.name as localWh,
+        v.status as `status`,
+        u1.name as createBy,
+        v.create_time as createTime,
+        u2.name as updateBy,
+        v.update_time as updateTime,
+        v.remark as remark
+        from vehicle v
+        left join `user` u1 on v.create_by = u1.id
+        left join `user` u2 on v.update_by = u2.id
+        left join warehouse w on v.local_wh = w.id
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and v.plate_no like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test="query.status != null and query.status != ''">
+                and v.status = #{query.status}
+            </if>
+        </where>
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*) from vehicle
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and plate_no like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test="query.status != null and query.status != ''">
+                and `status` = #{query.status}
+            </if>
+        </where>
+    </select>
 </mapper>

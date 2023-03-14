@@ -21,6 +21,7 @@ public class CooperativeDto {
     private String phone;
     private String address;
     private String usci;
+    private String status;
     /**
      * 联系人id
      */

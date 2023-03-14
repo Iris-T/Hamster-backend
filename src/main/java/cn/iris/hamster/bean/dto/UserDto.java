@@ -32,4 +32,5 @@ public class UserDto {
     private String idNo;
     private String phone;
     private String address;
+    private String status;
 }

@@ -24,6 +24,7 @@ public class PermissionDto {
     private String isMenu;
     private String icon;
     private String path;
+    private String status;
     private String remark;
     private Long parentId;
 }

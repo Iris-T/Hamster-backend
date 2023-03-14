@@ -109,10 +109,10 @@ public class SystemController {
     public ResultEntity facility() throws BaseException {
         HashMap<String, Object> data = new HashMap<>();
         ArrayList<StaticInfoVo> carInfo = new ArrayList<>();
-        Collections.addAll(carInfo, new StaticInfoVo("登记车辆总数", vehicleService.count()),
-                new StaticInfoVo("闲置车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.UNUSED.getKey()))),
+        Collections.addAll(carInfo, new StaticInfoVo("闲置车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.UNUSED.getKey()))),
                 new StaticInfoVo("作业车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.WORK.getKey()))),
-                new StaticInfoVo("检修车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.CHECK.getKey()))));
+                new StaticInfoVo("检修车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.CHECK.getKey()))),
+                new StaticInfoVo("停用车辆数量", vehicleService.count(new QueryWrapper<Vehicle>().eq("status", VehicleStatusEnum.DISUSE.getKey()))));
         // TODO 获取仓库各类统计数据 总数 正常仓数 爆仓警示（>90%） 闲仓警示(<10%) 停用
         ArrayList<StaticInfoVo> whInfo = new ArrayList<>();
         Collections.addAll(whInfo, new StaticInfoVo("正常使用仓数", 50),
