@@ -1,11 +1,13 @@
 package cn.iris.hamster.bean.enums;
 
 import cn.iris.hamster.common.utils.ListUtils;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 车辆状态枚举
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
  */
 
 @Getter
+@AllArgsConstructor
 public enum VehicleStatusEnum {
     /**
      * 车辆状态枚举
@@ -28,16 +31,11 @@ public enum VehicleStatusEnum {
     private final String key;
     private final String value;
 
-    VehicleStatusEnum(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
-
     public static List<String> getKeys() {
-        return Arrays.stream(VehicleStatusEnum.values()).map(VehicleStatusEnum::getKey).collect(Collectors.toList());
+        return Stream.of(values()).map(VehicleStatusEnum::getKey).collect(Collectors.toList());
     }
 
     public static List<String> getValues() {
-        return Arrays.stream(VehicleStatusEnum.values()).map(VehicleStatusEnum::getValue).collect(Collectors.toList());
+        return Stream.of(values()).map(VehicleStatusEnum::getValue).collect(Collectors.toList());
     }
 }

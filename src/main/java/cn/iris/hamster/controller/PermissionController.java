@@ -35,7 +35,6 @@ public class PermissionController {
     @Autowired
     private RoleService roleService;
 
-    @PreAuthorize("hasRole('admin')")
     @GetMapping("/list")
     public ResultEntity permList(Permission query) {
         CommonUtils.setPageParam(query);
@@ -46,7 +45,6 @@ public class PermissionController {
         return ResultEntity.success(data);
     }
 
-    @PreAuthorize("hasRole('admin')")
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/{id}/changeStatus")
     public ResultEntity changeStatus(@PathVariable Long id, @RequestBody String status) {
@@ -64,7 +62,7 @@ public class PermissionController {
         return ResultEntity.success("更新状态成功");
     }
 
-    @PreAuthorize("hasRole('admin')")
+
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/add")
     public ResultEntity addPermission(@RequestBody PermissionDto perm) {
@@ -81,7 +79,6 @@ public class PermissionController {
         return ResultEntity.success("新增权限成功");
     }
 
-    @PreAuthorize("hasRole('admin')")
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/{pid}/update")
     public ResultEntity updatePermission(@PathVariable Long pid, @RequestBody PermissionDto perm) {

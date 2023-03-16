@@ -1,7 +1,9 @@
 package cn.iris.hamster.service.impl;
 
+import cn.iris.hamster.bean.vo.WareHouseVo;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.common.constants.CommonConstants;
+import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,8 +12,12 @@ import cn.iris.hamster.service.WarehouseService;
 import cn.iris.hamster.mapper.WarehouseMapper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -21,65 +27,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse>
     implements WarehouseService{
-    @Autowired
-    private WarehouseMapper warehouseMapper;
-    @Autowired
-    private UserMapper userMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WarehouseServiceImpl.class);
 
     @Override
-    public ResultEntity saveWh(Warehouse wh) {
-        if (!isWhValid(wh)) {
-            return ResultEntity.error("数据格式错误");
-        }
-
-        int cnt = 0;
-
-        if (ObjectUtils.isEmpty(wh.getId())) {
-            // 检查仓库数据关键字段，若不存在则进行填充
-            wh.setId(CommonUtils.randId());
-            cnt = warehouseMapper.insert(wh);
-        } else {
-            cnt = warehouseMapper.updateById(wh);
-        }
-
-        return cnt > 0 ? ResultEntity.success("更新仓库信息成功") : ResultEntity.success("更新仓库信息失败");
+    public List<WareHouseVo> listByLimit(Warehouse query) {
+        return baseMapper.listByLimit(query.getStartIndex(), query);
     }
 
     @Override
-    public ResultEntity changeStatus(Warehouse wh, String type) {
-        int res = 0;
-        switch (type) {
-            case CommonConstants.STATUS_ENABLE -> {
-                if (CommonConstants.STATUS_ENABLE.equals(wh.getStatus())) {
-                    return ResultEntity.error("仓库已启用");
-                }
-                wh.setStatus(CommonConstants.STATUS_ENABLE);
-                res = warehouseMapper.updateById(wh);
-            }
-            case CommonConstants.STATUS_DISABLE -> {
-                if (CommonConstants.STATUS_DISABLE.equals(wh.getStatus())) {
-                    return ResultEntity.error("仓库已停用");
-                }
-                wh.setStatus(CommonConstants.STATUS_DISABLE);
-                res = warehouseMapper.updateById(wh);
-            }
-            default -> {
-                return ResultEntity.error("参数错误");
-            }
-        }
-        return res > 0 ? ResultEntity.success("修改仓库状态成功") : ResultEntity.error("修改仓库状态失败");
+    public Integer getCountByLimit(Warehouse query) {
+        return baseMapper.getCountByLimit(query);
     }
 
-    private boolean isWhValid(Warehouse wh) {
-        boolean temp = true;
-        if (ObjectUtils.isNotEmpty(wh.getId())) {
-            temp = ObjectUtils.isNotEmpty(getById(wh.getId()));
+    @Override
+    public Warehouse getWhByName(String name) {
+        if (StringUtils.isBlank(name)) {
+            LOGGER.error("参数有误");
+            throw new BaseException("参数有误");
         }
-
-        return temp
-                && StringUtils.isNotEmpty(wh.getName())
-                && StringUtils.isNotEmpty(wh.getAddress());
+        return baseMapper.getWhByName(name);
     }
+
+
 }
 
 

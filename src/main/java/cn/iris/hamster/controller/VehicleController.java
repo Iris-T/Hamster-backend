@@ -33,6 +33,7 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/list")
     public ResultEntity listByLimit(Vehicle query) {
         CommonUtils.setPageParam(query);
@@ -43,6 +44,7 @@ public class VehicleController {
         return ResultEntity.success(data);
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/{vid}/changeStatus")
     public ResultEntity changeStatus(@PathVariable Long vid, @RequestBody String status) {
         if (StringUtils.isBlank(status) || !VehicleStatusEnum.getKeys().contains(status)) {
@@ -57,6 +59,7 @@ public class VehicleController {
         return ResultEntity.success("更新车辆状态成功");
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/add")
     public ResultEntity addVehicle(@RequestBody VehicleDto vehicle) {
         if (ObjectUtils.isEmpty(vehicle)) {
@@ -74,6 +77,7 @@ public class VehicleController {
         return ResultEntity.success("添加车辆信息成功");
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/{vid}/update")
     public ResultEntity updateVehicle(@PathVariable Long vid, @RequestBody VehicleDto vehicle) {
         Vehicle update = new Vehicle().setId(vid);

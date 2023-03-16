@@ -1,5 +1,8 @@
 package cn.iris.hamster.common.utils;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.iris.hamster.common.bean.entity.BaseEntity;
+import cn.iris.hamster.common.exception.BaseException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
@@ -161,5 +164,19 @@ public class ListUtils {
             }
         }
         return result;
+    }
+
+    public static <K, T extends BaseEntity> List<T> listToAnotherList(Collection<K> source, Class<T> target) {
+        List<T> res = Lists.newArrayList();
+        source.forEach(s -> {
+            try {
+                T t = target.newInstance();
+                BeanUtil.copyProperties(s, t);
+                res.add(t);
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new BaseException("数据转换失败", e);
+            }
+        });
+        return res;
     }
 }

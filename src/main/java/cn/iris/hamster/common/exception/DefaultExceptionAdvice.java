@@ -156,7 +156,7 @@ public class DefaultExceptionAdvice {
     @ExceptionHandler({BindException.class})
     public ResponseEntity<?> handleBindException(BindException e) {
         String message = e.getBindingResult().getAllErrors().iterator().next().getDefaultMessage();
-        if (message.contains("Failed to convert")) {
+        if (message.contains("Failed to convertFromStatus")) {
             message = "参数类型错误";
         }
         logger.error("异常", e);

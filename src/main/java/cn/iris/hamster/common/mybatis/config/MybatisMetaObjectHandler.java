@@ -19,17 +19,19 @@ import java.util.Date;
 public class MybatisMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
+        Long uid = UserUtils.getUserId();
         long now = System.currentTimeMillis();
         metaObject.setValue("createTime", new Date(now));
         metaObject.setValue("updateTime", new Date(now));
-        metaObject.setValue("createBy", UserUtils.getUserId());
-        metaObject.setValue("updateBy", UserUtils.getUserId());
+        metaObject.setValue("createBy", uid);
+        metaObject.setValue("updateBy", uid);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        Long uid = UserUtils.getUserId();
         long now = System.currentTimeMillis();
         metaObject.setValue("updateTime", new Date(now));
-        metaObject.setValue("updateBy", UserUtils.getUserId());
+        metaObject.setValue("updateBy", uid);
     }
 }

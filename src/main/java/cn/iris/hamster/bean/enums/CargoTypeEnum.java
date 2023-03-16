@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Getter;
  */
 
 @Getter
+@AllArgsConstructor
 public enum CargoTypeEnum {
     /**
      * 适用于货物类型的枚举
@@ -27,9 +29,4 @@ public enum CargoTypeEnum {
     private final String key;
 
     private final String value;
-
-    CargoTypeEnum(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
 }

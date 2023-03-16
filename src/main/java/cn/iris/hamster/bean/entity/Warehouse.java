@@ -1,6 +1,7 @@
 package cn.iris.hamster.bean.entity;
 
 import cn.iris.hamster.common.bean.entity.BaseEntity;
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -8,12 +9,14 @@ import java.io.Serializable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 仓库表
  * @author Iris
  * @TableName warehouse
  */
+@Accessors(chain = true)
 @TableName(value ="warehouse")
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -21,9 +24,11 @@ public class Warehouse extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1934119690183387206L;
+
     /**
      * 主键
      */
+    @ExcelIgnore
     @TableId
     private Long id;
 
@@ -34,9 +39,19 @@ public class Warehouse extends BaseEntity implements Serializable {
     private String name;
 
     /**
+     * 仓库空间
+     */
+    private Double space;
+
+    /**
      * 仓库地址
      */
     private String address;
+
+    /**
+     * 城市代码
+     */
+    private String cityCode;
 
     /**
      * 仓库使用状态-0为正常,1为停用

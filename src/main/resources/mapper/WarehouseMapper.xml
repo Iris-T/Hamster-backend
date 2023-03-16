@@ -5,23 +5,70 @@
 <mapper namespace="cn.iris.hamster.mapper.WarehouseMapper">
 
     <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Warehouse">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="CHAR"/>
-            <result property="address" column="address" jdbcType="CHAR"/>
-            <result property="cooperative" column="cooperative" jdbcType="BIGINT"/>
-            <result property="type" column="type" jdbcType="CHAR"/>
-            <result property="status" column="status" jdbcType="CHAR"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="remark" column="remark" jdbcType="CHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="CHAR"/>
+        <result property="address" column="address" jdbcType="CHAR"/>
+        <result property="cityCode" column="city_code" jdbcType="CHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`name`,address,
-        cooperative,type,`status`,
-        create_by,create_time,update_by,
-        update_time,remark
+        id, `name`, space, address, city_code, `status`,
+        create_by, create_time, update_by, update_time, remark
     </sql>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.WareHouseVo">
+        select w.id as id,
+        w.name as `name`,
+        w.space as space,
+        w.address as `address`,
+        w.city_code as cityCode,
+        w.status as `status`,
+        w.remark as remark,
+        u1.name as createby,
+        w.create_time as createTime,
+        u2.name as updateby,
+        w.update_time as updateTime,
+        sum(c.weight) as `load`,
+        sum(c.sapce) as usedSpace
+        from warehouse w
+        left join `user` u1 on w.create_by = u1.id
+        left join `user` u2 on w.update_by = u2.id
+        left join cargo c on c.local_wh = w.id
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and w.name like concat('%', #{query.keyword}, '%')
+                or w.address like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and w.status = #{query.status}
+            </if>
+        </where>
+        group by w.id
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*) from warehouse
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and `name` like concat('%', #{query.keyword}, '%')
+                or address like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and `status` = #{query.status}
+            </if>
+        </where>
+    </select>
+
+    <select id="getWhByName" resultType="cn.iris.hamster.bean.entity.Warehouse">
+        select <include refid="Base_Column_List" />
+        from warehouse
+        where `name` = #{name}
+    </select>
 </mapper>

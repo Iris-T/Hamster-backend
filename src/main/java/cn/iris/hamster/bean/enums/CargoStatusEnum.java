@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Getter;
  */
 
 @Getter
+@AllArgsConstructor
 public enum CargoStatusEnum {
     /**
      * 货物运输状态枚举
@@ -23,11 +25,6 @@ public enum CargoStatusEnum {
     ;
 
 
-    private String key;
-    private String value;
-
-    CargoStatusEnum(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
+    private final String key;
+    private final String value;
 }

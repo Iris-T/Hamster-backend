@@ -39,6 +39,11 @@ public class Cargo extends BaseEntity implements Serializable {
     private String type;
 
     /**
+     * 货物空间大小,单位-立方米
+     */
+    private Double space;
+
+    /**
      * 货物重量，单位KG
      */
     private Double weight;
@@ -57,6 +62,11 @@ public class Cargo extends BaseEntity implements Serializable {
      * 收货仓
      */
     private Long endWh;
+
+    /**
+     * 当前所在仓
+     */
+    private Long localWh;
 
     /**
      * 运输状态，参考枚举CargoStatusEnum
