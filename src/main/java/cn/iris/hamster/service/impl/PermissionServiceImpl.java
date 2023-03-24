@@ -2,13 +2,12 @@ package cn.iris.hamster.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.vo.PermissionVo;
 import cn.iris.hamster.mapper.PermissionMapper;
 import cn.iris.hamster.service.PermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

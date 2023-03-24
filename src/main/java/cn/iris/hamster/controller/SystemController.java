@@ -2,28 +2,32 @@ package cn.iris.hamster.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.iris.hamster.bean.dto.SysFieldDto;
-import cn.iris.hamster.bean.entity.Permission;
-import cn.iris.hamster.bean.entity.Vehicle;
 import cn.iris.hamster.bean.enums.VehicleStatusEnum;
-import cn.iris.hamster.bean.vo.SystemFieldVo;
+import cn.iris.hamster.bean.pojo.SystemField;
+import cn.iris.hamster.bean.pojo.User;
+import cn.iris.hamster.bean.pojo.Vehicle;
+import cn.iris.hamster.bean.pojo.Warehouse;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.SystemField;
-import cn.iris.hamster.bean.entity.User;
 import cn.iris.hamster.bean.vo.StaticInfoVo;
-import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.common.utils.MockUtils;
 import cn.iris.hamster.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,6 +62,11 @@ public class SystemController {
     private SystemFieldService systemFieldService;
     @Autowired
     private MockUtils mockUtils;
+    @Autowired
+    private WarehouseService warehouseService;
+
+    @Value("${common.lbs_key}")
+    private String lbsKey;
 
     /**
      * 获取系统静态数值信息
@@ -142,6 +151,12 @@ public class SystemController {
         }
         SystemField add = new SystemField();
         BeanUtil.copyProperties(sysField, add);
+        if ("0".equals(add.getType())) {
+            add.setValue(null);
+        }
+        if ("1".equals(add.getType())) {
+            add.setStr(null);
+        }
         boolean save = systemFieldService.save(add);
         return ResultEntity.success("添加成功");
     }
@@ -200,5 +215,30 @@ public class SystemController {
         }
         vehicleService.saveBatch(vehicles);
         return ResultEntity.success("批量插入车辆数据成功");
+    }
+
+    @PostMapping("/batch/update/wh/info")
+    public ResultEntity batchUpdateWhInfo() throws BaseException, InterruptedException {
+        ArrayList<String> errMsg = Lists.newArrayList();
+        List<Warehouse> list = warehouseService.list();
+        for (Warehouse wh : list) {
+            String body = HttpRequest.get("https://apis.map.qq.com/ws/geocoder/v1?address=" + wh.getAddress() + "&key=" + lbsKey)
+                    .header("Content-Type", "application/json")
+                    .execute().body();
+            JSONObject result = (JSONObject) JSONUtil.parseObj(body).get("result");
+            if (result == null) {
+                errMsg.add(wh.getName()+"更新失败");
+            } else {
+                wh.setCityCode((String) ((JSONObject) result.get("ad_info")).get("adcode"))
+                        .setLon((BigDecimal) ((JSONObject) result.get("location")).get("lng"))
+                        .setLat((BigDecimal) ((JSONObject) result.get("location")).get("lat"));
+            }
+            Thread.sleep(100);
+        }
+        warehouseService.updateBatchById(list);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("info", "更新仓库数据成功，请前往仓库数据页面查看");
+        data.put("errMsg", errMsg);
+        return ResultEntity.success(data);
     }
 }

@@ -1,4 +1,4 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.common.constants.CommonConstants;
 import lombok.Data;

@@ -4,18 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.CargoMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Cargo">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="CHAR"/>
-            <result property="type" column="type" jdbcType="CHAR"/>
-            <result property="weight" column="weight" jdbcType="FLOAT"/>
-            <result property="cooperativeId" column="cooperative_id" jdbcType="BIGINT"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="status" column="status" jdbcType="CHAR"/>
-            <result property="remark" column="remark" jdbcType="CHAR"/>
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Cargo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="CHAR"/>
+        <result property="type" column="type" jdbcType="CHAR"/>
+        <result property="weight" column="weight" jdbcType="FLOAT"/>
+        <result property="cooperativeId" column="cooperative_id" jdbcType="BIGINT"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="remark" column="remark" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -24,4 +24,57 @@
         create_time,update_by,update_time,
         `status`,remark
     </sql>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.vo.CargoVo">
+        select c.id as id,
+        c.name as `name`,
+        c.type as type,
+        ct.name as typeName,
+        c.space as space,
+        c.weight as weight,
+        co.name as cooperativeName,
+        c.dest as dest,
+        c.sup as sup,
+        concat(a.full_name, c.sup) as destAddr,
+        w1.name as startWh,
+        w3.name as localWh,
+        c.status as `status`,
+        u1.name as createBy,
+        c.create_time as createTime,
+        u2.name as updateBy,
+        c.update_time as updateTime,
+        c.remark as remark
+        from cargo c
+        left join cooperative co on c.cooperative_id = co.id
+        left join `user` u1 on c.create_by = u1.id
+        left join `user` u2 on c.update_by = u2.id
+        left join area_info a on c.dest = a.code
+        left join warehouse w1 on c.start_wh = w1.id
+        left join warehouse w3 on c.local_wh = w3.id
+        left join cargo_type ct on c.type = ct.id
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and c.name like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test="query.type != null and type != ''">
+                and c.type = #{query.type}
+            </if>
+            <if test="query.status != null">
+                and c.status = #{query.status}
+            </if>
+        </where>
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*) from cargo
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and `name` like concat('%', #{query.keyword}, '%')
+            </if>
+            <if test="query.type != null and type != ''">
+                and type = #{query.type}
+            </if>
+        </where>
+    </select>
 </mapper>

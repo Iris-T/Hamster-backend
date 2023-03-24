@@ -1,9 +1,9 @@
 package cn.iris.hamster.security;
 
 import cn.hutool.json.JSONUtil;
-import cn.iris.hamster.bean.entity.LoginUser;
+import cn.iris.hamster.bean.pojo.LoginUser;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.User;
+import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.JwtUtils;
 import cn.iris.hamster.common.utils.RedisUtils;

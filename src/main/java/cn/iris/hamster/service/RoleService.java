@@ -1,7 +1,7 @@
 package cn.iris.hamster.service;
 
 import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.Role;
+import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 

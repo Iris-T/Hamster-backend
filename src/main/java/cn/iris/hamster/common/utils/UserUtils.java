@@ -1,6 +1,6 @@
 package cn.iris.hamster.common.utils;
 
-import cn.iris.hamster.bean.entity.User;
+import cn.iris.hamster.bean.pojo.User;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

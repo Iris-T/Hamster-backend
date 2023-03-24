@@ -1,6 +1,6 @@
 package cn.iris.hamster.common.utils;
 
-import cn.iris.hamster.bean.entity.LoginUser;
+import cn.iris.hamster.bean.pojo.LoginUser;
 import io.jsonwebtoken.*;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

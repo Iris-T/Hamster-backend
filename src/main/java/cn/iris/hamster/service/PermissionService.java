@@ -1,6 +1,6 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.vo.PermissionVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 

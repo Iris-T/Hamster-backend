@@ -1,6 +1,6 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.entity.Role;
+import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.bean.vo.RoleVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import java.util.List;
 * @author asus
 * @description 针对表【role(角色表)】的数据库操作Mapper
 * @createDate 2022-12-29 11:33:39
-* @Entity cn.iris.hamster.bean.entity.Role
+* @Entity cn.iris.hamster.bean.pojo.Role
 */
 
 @Repository

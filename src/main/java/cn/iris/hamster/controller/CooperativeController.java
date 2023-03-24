@@ -3,10 +3,12 @@ package cn.iris.hamster.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.iris.hamster.bean.dto.CooperativeDto;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.Cooperative;
+import cn.iris.hamster.bean.pojo.Cooperative;
+import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.service.CooperativeService;
 import cn.iris.hamster.service.UserService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +51,10 @@ public class CooperativeController {
     }
 
     @PostMapping("/add")
-    public ResultEntity updateCo(@RequestBody CooperativeDto co) {
+    public ResultEntity addCo(@RequestBody CooperativeDto co) {
+        if (ObjectUtils.isEmpty(co)) {
+            throw new BaseException("参数错误");
+        }
         Cooperative update = new Cooperative().setId(CommonUtils.randId());
         BeanUtil.copyProperties(co, update);
         cooperativeService.updateById(update);

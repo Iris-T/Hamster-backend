@@ -1,6 +1,6 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.bean.vo.PermissionVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import java.util.List;
 * @author asus
 * @description 针对表【permission(权限功能表)】的数据库操作Mapper
 * @createDate 2023-01-03 09:19:53
-* @Entity cn.iris.hamster.bean.entity.Permission
+* @Entity cn.iris.hamster.bean.pojo.Permission
 */
 
 @Repository

@@ -1,75 +1,71 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.common.bean.entity.BaseEntity;
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
- * 货物表
- * @TableName cargo
+ * 仓库表
+ * @author Iris
+ * @TableName warehouse
  */
-@TableName(value ="cargo")
+@Accessors(chain = true)
+@TableName(value ="warehouse")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Cargo extends BaseEntity implements Serializable {
+public class Warehouse extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
-    private static final long serialVersionUID = -8385602481561018152L;
+    private static final long serialVersionUID = 1934119690183387206L;
 
     /**
      * 主键
      */
+    @ExcelIgnore
     @TableId
     private Long id;
 
     /**
-     * 货物名称
+     * 仓库名称
      */
     @TableField(value = "`name`")
     private String name;
 
     /**
-     * 货物类型，参考枚举CargoTypeEnum
-     */
-    private String type;
-
-    /**
-     * 货物空间大小,单位-立方米
+     * 仓库空间
      */
     private Double space;
 
     /**
-     * 货物重量，单位KG
+     * 仓库地址
      */
-    private Double weight;
+    private String address;
 
     /**
-     * 委托企业ID
+     * 城市代码
      */
-    private Long cooperativeId;
+    private String cityCode;
 
     /**
-     * 验存点/发货仓
+     * 经度
      */
-    private Long startWh;
+    private BigDecimal lon;
 
     /**
-     * 收货仓
+     * 纬度
      */
-    private Long endWh;
+    private BigDecimal lat;
 
     /**
-     * 当前所在仓
-     */
-    private Long localWh;
-
-    /**
-     * 运输状态，参考枚举CargoStatusEnum
+     * 仓库使用状态-0为正常,1为停用
      */
     @TableField(value = "`status`")
     private String status;

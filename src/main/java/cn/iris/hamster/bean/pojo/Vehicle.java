@@ -1,7 +1,6 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.common.bean.entity.BaseEntity;
-import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
@@ -12,52 +11,50 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 仓库表
+ * 车辆表
  * @author Iris
- * @TableName warehouse
+ * @TableName vehicle
  */
+@TableName(value ="vehicle")
 @Accessors(chain = true)
-@TableName(value ="warehouse")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Warehouse extends BaseEntity implements Serializable {
+public class Vehicle extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
-    private static final long serialVersionUID = 1934119690183387206L;
-
+    private static final long serialVersionUID = -5507061839136410475L;
     /**
      * 主键
      */
-    @ExcelIgnore
     @TableId
     private Long id;
 
     /**
-     * 仓库名称
+     * 车牌号
      */
-    @TableField(value = "`name`")
-    private String name;
+    private String plateNo;
 
     /**
-     * 仓库空间
+     * 汽车载重，单位KG
+     */
+    @TableField(value = "`load`")
+    private Double load;
+
+    /**
+     * 汽车运载空间大小，单位m³
      */
     private Double space;
 
     /**
-     * 仓库地址
-     */
-    private String address;
-
-    /**
-     * 城市代码
-     */
-    private String cityCode;
-
-    /**
-     * 仓库使用状态-0为正常,1为停用
+     * 车辆状态,参考枚举VehicleStatusEnum,0-闲置,1-作业,2-检修,3-停用
      */
     @TableField(value = "`status`")
     private String status;
+
+    /**
+     * 当前所在仓库
+     */
+    private Long localWh;
 
     /**
      * 备注

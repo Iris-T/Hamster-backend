@@ -1,6 +1,6 @@
 package cn.iris.hamster.service.impl;
 
-import cn.iris.hamster.bean.entity.SystemField;
+import cn.iris.hamster.bean.pojo.SystemField;
 import cn.iris.hamster.bean.vo.SystemFieldVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.iris.hamster.service.SystemFieldService;

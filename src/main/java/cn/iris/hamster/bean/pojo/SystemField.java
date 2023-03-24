@@ -1,10 +1,11 @@
-package cn.iris.hamster.bean.entity;
+package cn.iris.hamster.bean.pojo;
 
 import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,12 +51,14 @@ public class SystemField extends BaseEntity implements Serializable {
     /**
      * 字符串值
      */
+    @TableField(value = "str", updateStrategy = FieldStrategy.IGNORED)
     private String str;
 
     /**
      * 数值
      */
-    private String value;
+    @TableField(value = "value", updateStrategy = FieldStrategy.IGNORED)
+    private BigDecimal value;
 
     /**
      * 字段启用状态,0为启用,1为停用

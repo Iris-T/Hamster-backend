@@ -1,13 +1,12 @@
 package cn.iris.hamster.bean.vo;
 
-import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.common.bean.vo.BaseVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 /**

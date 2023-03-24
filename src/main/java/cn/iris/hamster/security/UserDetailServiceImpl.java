@@ -1,7 +1,7 @@
 package cn.iris.hamster.security;
 
-import cn.iris.hamster.bean.entity.LoginUser;
-import cn.iris.hamster.bean.entity.User;
+import cn.iris.hamster.bean.pojo.LoginUser;
+import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

@@ -1,7 +1,15 @@
 package cn.iris.hamster.bean.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 货物运输状态枚举类
@@ -13,6 +21,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum CargoStatusEnum {
     /**
      * 货物运输状态枚举
@@ -21,10 +30,23 @@ public enum CargoStatusEnum {
     WAREHOUSED("1", "已入库"),
     IN_TRANSIT("2", "运输中"),
     END_TRANSIT("3", "运输结束"),
-    OUT_WAREHOUSE("4", "已出库")
+    OUT_WAREHOUSE("4", "已出库"),
+    UNKNOWN("-1", "未知")
     ;
 
 
     private final String key;
     private final String value;
+
+    /**
+     * 根据状态判断货物是否未入库
+     * @return
+     */
+    public static Boolean isNoWarehouse(String status) {
+        return status.equals(NO_WAREHOUSE.getKey());
+    }
+
+    public static String getValueByKey(String key) {
+        return Stream.of(values()).filter(bean -> bean.getKey().equals(key)).findFirst().orElse(UNKNOWN).getValue();
+    }
 }

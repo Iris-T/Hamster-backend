@@ -1,6 +1,6 @@
 package cn.iris.hamster.mapper;
 
-import cn.iris.hamster.bean.entity.SystemField;
+import cn.iris.hamster.bean.pojo.SystemField;
 import cn.iris.hamster.bean.vo.SystemFieldVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import java.util.List;
 * @author asus
 * @description 针对表【system_field(系统字段表)】的数据库操作Mapper
 * @createDate 2023-02-02 15:21:30
-* @Entity cn.iris.hamster.bean.entity.SystemField
+* @Entity cn.iris.hamster.bean.pojo.SystemField
 */
 
 @Repository

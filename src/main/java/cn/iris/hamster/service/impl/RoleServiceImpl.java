@@ -7,7 +7,7 @@ import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.mapper.PermissionMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.iris.hamster.bean.entity.Role;
+import cn.iris.hamster.bean.pojo.Role;
 import cn.iris.hamster.service.RoleService;
 import cn.iris.hamster.mapper.RoleMapper;
 import org.apache.commons.lang3.StringUtils;

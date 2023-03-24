@@ -1,6 +1,6 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.bean.entity.Warehouse;
+import cn.iris.hamster.bean.pojo.Warehouse;
 import cn.iris.hamster.bean.vo.WareHouseVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 

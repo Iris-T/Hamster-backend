@@ -1,7 +1,7 @@
 package cn.iris.hamster.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.iris.hamster.bean.entity.Waybill;
+import cn.iris.hamster.bean.pojo.Waybill;
 import cn.iris.hamster.service.WaybillService;
 import cn.iris.hamster.mapper.WaybillMapper;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.PermissionMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Permission">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Permission">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="`name`" jdbcType="VARCHAR"/>
         <result property="key" column="`key`" jdbcType="VARCHAR"/>
@@ -40,7 +40,7 @@
         WHERE `key` = #{key};
     </select>
 
-    <select id="getPermsByRid" resultType="cn.iris.hamster.bean.entity.Permission">
+    <select id="getPermsByRid" resultType="cn.iris.hamster.bean.pojo.Permission">
         select p.id as id,
                p.`name` as `name`,
                p.`key` as `key`,

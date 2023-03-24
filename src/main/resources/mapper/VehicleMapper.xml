@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iris.hamster.mapper.VehicleMapper">
 
-    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.entity.Vehicle">
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Vehicle">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="plateNo" column="plate_no" jdbcType="CHAR"/>
         <result property="load" column="load" jdbcType="FLOAT"/>

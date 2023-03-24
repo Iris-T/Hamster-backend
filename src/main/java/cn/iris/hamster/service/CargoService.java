@@ -1,8 +1,10 @@
 package cn.iris.hamster.service;
 
-import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.Cargo;
+import cn.iris.hamster.bean.vo.CargoVo;
+import cn.iris.hamster.bean.pojo.Cargo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -12,16 +14,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CargoService extends IService<Cargo> {
 
     /**
-     * 新增货物
-     * @param cargo
+     * 根据限制条件返回货物视图类列表
+     * @param query
      * @return
+     * @see cn.iris.hamster.bean.vo.CargoVo
      */
-    ResultEntity newCargo(Cargo cargo);
+    List<CargoVo> listByLimit(Cargo query);
 
     /**
-     * 仅限在货物未入仓的情况下修改货物信息
-     * @param cargo
+     * 根据限制条件返回记录总数
+     * @param query
      * @return
      */
-    ResultEntity modify(Cargo cargo);
+    Integer getCountByLimit(Cargo query);
 }

@@ -1,8 +1,7 @@
 package cn.iris.hamster.service;
 
 import cn.iris.hamster.bean.vo.CooperativeVo;
-import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.Cooperative;
+import cn.iris.hamster.bean.pojo.Cooperative;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

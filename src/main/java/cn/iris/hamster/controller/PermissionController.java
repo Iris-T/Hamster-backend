@@ -2,7 +2,7 @@ package cn.iris.hamster.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.iris.hamster.bean.dto.PermissionDto;
-import cn.iris.hamster.bean.entity.Permission;
+import cn.iris.hamster.bean.pojo.Permission;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;

@@ -1,7 +1,7 @@
 package cn.iris.hamster.controller;
 
 import cn.iris.hamster.common.bean.entity.ResultEntity;
-import cn.iris.hamster.bean.entity.User;
+import cn.iris.hamster.bean.pojo.User;
 import cn.iris.hamster.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

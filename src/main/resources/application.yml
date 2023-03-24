@@ -6,9 +6,14 @@ spring:
     name: hamster
 
   datasource:
-    url: jdbc:mysql://hamster-mysql:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    # 腾讯云MySQL
+    url: jdbc:mysql://bj-cynosdbmysql-grp-ldth0fss.sql.tencentcdb.com:28265/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
-    password: 123456
+    password: foxiris@2002!
+    # local
+#    url: jdbc:mysql://hamster-mysql:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+#    username: root
+#    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -43,10 +48,16 @@ spring:
             select-allow: true # 允许执行Select查询操作
             create-table-allow: false # 不允许创建表
   redis:
-    host: hamster-redis
-    port: 6379
-    database: 8
-    password: foxiris@qq.com
+    # cloud redis
+    host: redis-18349.c54.ap-northeast-1-2.ec2.cloud.redislabs.com
+    port: 18349
+    username: default
+    password: hAo0u52Djc3xWq5vrCCTfrXsbSfaJbWH
+    # local
+#    host: hamster-redis
+#    port: 6379
+#    database: 8
+#    password: foxiris@qq.com
 
   jackson:
     time-zone: GMT+8
@@ -68,3 +79,5 @@ jwt:
     header: Authorization
 common:
   id_length: 16
+  # 腾讯位置信息服务API-Key
+  lbs_key: 6XFBZ-T5R6X-52Z4F-ZJR7P-H3NVH-MOF4Z
