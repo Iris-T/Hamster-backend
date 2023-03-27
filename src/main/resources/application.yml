@@ -4,16 +4,14 @@ server:
 spring:
   application:
     name: hamster
+  profiles:
+    active: prod
 
   datasource:
     # 腾讯云MySQL
-    url: jdbc:mysql://bj-cynosdbmysql-grp-ldth0fss.sql.tencentcdb.com:28265/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: root
-    password: foxiris@2002!
-    # local
-#    url: jdbc:mysql://hamster-mysql:3306/hamster?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-#    username: root
-#    password: 123456
+    url: ENC(QPYJNlT3EoNRnj8vBfiGqiueoE/QVaHfTxCB86sMWPehi7T9ZSOs2lZe+L8Nh93LTpDdkm6DpWLQd02I/Dlaqrtq2Aggq8ONEJfGXjM1LWmkqOnT2NRsHm72LJHDDkSRcYEQmg9DpfRBBJb9JD4MJ4iMn9+gyuPkVow67SS7owWC8QpZSVCc7S3ga1TDvUxi2yOD++AUHsYbHcp17sjFxmmbhRQcNjt4XRqP7VGgOWAl9li+8YqnIIjTyycYokMW)
+    username: ENC(wpgoC+P5pRyG6BMvS7Lhaw==)
+    password: ENC(vWoILrzq6CFUjmvdl/BflzxEfzIdZ9BG)
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -49,15 +47,10 @@ spring:
             create-table-allow: false # 不允许创建表
   redis:
     # cloud redis
-    host: redis-18349.c54.ap-northeast-1-2.ec2.cloud.redislabs.com
+    host: ENC(sW9xSOBmefHQKN2NjvR4gRYOCJv12t5Foa+HgmUMoVLCoGKwAkr8hk2VmtV1EzcAl7OWNaZ4AHcBGDs6XKMrVZltAyh7vMBn)
     port: 18349
-    username: default
-    password: hAo0u52Djc3xWq5vrCCTfrXsbSfaJbWH
-    # local
-#    host: hamster-redis
-#    port: 6379
-#    database: 8
-#    password: foxiris@qq.com
+    username: ENC(1tnuZZWLPk1MQkyg5bAA+A==)
+    password: ENC(KMu79UP6XBoPfU8KADlp/BUjkGr9j1D1pNe5PFwK46vsXaRpY2sTT3dBKYpxiso1)
 
   jackson:
     time-zone: GMT+8
@@ -75,9 +68,14 @@ mybatis-plus:
 
 jwt:
   data:
-    secret: A/foxiris?P/hamster?D/20221228
-    header: Authorization
+    secret: ENC(SyNvRbIJGPENR8PvrBsTMqmac6xvZzV8Xgm0QLtu4UCPeh2HnBMxNQ==)
+    header: ENC(ESSPxDEuRzJL00c/dX4I38YjK+x+YwTN)
 common:
   id_length: 16
   # 腾讯位置信息服务API-Key
-  lbs_key: 6XFBZ-T5R6X-52Z4F-ZJR7P-H3NVH-MOF4Z
+  lbs_key: ENC(DbKib84Z9fVaf7Zhpzhux/avDVTWA5l4+fnwXTY/aVE39nwY1O08P5xYH0PYHmj4)
+jasypt:
+  encryptor:
+    # 指定加密方式
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
