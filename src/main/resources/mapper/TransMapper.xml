@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iris.hamster.mapper.TransMapper">
+
+    <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.Trans">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="driverId" column="driver_id" jdbcType="BIGINT"/>
+        <result property="vehicleId" column="vehicle_id" jdbcType="BIGINT"/>
+        <result property="startWhId" column="start_wh_id" jdbcType="BIGINT"/>
+        <result property="endWhId" column="end_wh_id" jdbcType="BIGINT"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,driver_id,vehicle_id,
+        start_wh_id,end_wh_id,create_by,
+        update_by,create_time,update_time,`status`,remark
+    </sql>
+
+    <select id="getTranListByLimit" resultType="cn.iris.hamster.bean.vo.TransVo">
+        select w.id as id,
+               driver.name as driver,
+               v.plate_no as vehicle,
+               stwh.name as startWh,
+               edwh.name as endWh,
+               stk.name as startKeeper,
+               edk.name as endKeeper,
+               w.create_time as startTime,
+               w.update_time as endTime,
+               w.status as `status`,
+               w.remark as remark
+        from trans w
+                 left join `user` driver on driver.id = w.driver_id
+                 left join vehicle v on v.id = w.vehicle_id
+                 left join `user` stk on stk.id = w.create_by
+                 left join `user` edk on edk.id = w.update_by
+                 left join warehouse stwh on stwh.id = w.start_wh_id
+                 left join warehouse edwh on edwh.id = w.end_wh_id
+        <where>
+            <if test='query.status == "0" or query.status == "1"'>
+                and w.status = #{query.status}
+            </if>
+        </where>
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getTransCountByLimit" resultType="java.lang.Integer">
+        select count(*) from trans
+        <where>
+            <if test='query.status == "0" or query.status == "1"'>
+                and `status` = #{query.status}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -47,14 +47,12 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Override
     public List<PermissionVo> listByLimit(Permission query) {
         List<PermissionVo> perms = baseMapper.listByLimit(query.getStartIndex(), query);
-        List<PermissionVo> enableMenuList = perms.stream().filter(p -> "0".equals(p.getIsMenu()) && STATUS_ENABLE.equals(p.getStatus())).toList();
-        List<Permission> children;
+        List<PermissionVo> enableMenuList = perms.stream()
+                .filter(p -> "0".equals(p.getIsMenu()) && STATUS_ENABLE.equals(p.getStatus()))
+                .toList();
+        List<PermissionVo> children;
         for (PermissionVo p : perms) {
-            children = enableMenuList.stream().filter(m -> p.getId().equals(m.getParentId())).map(m -> {
-                Permission permission = new Permission();
-                BeanUtil.copyProperties(m, permission);
-                return permission;
-            }).toList();
+            children = enableMenuList.stream().filter(m -> p.getId().equals(m.getParentId())).toList();
             p.setChildren(children.size() > 0 ? children : null);
         }
         return perms;

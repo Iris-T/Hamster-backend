@@ -1,5 +1,6 @@
 package cn.iris.hamster.bean.pojo;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.iris.hamster.common.bean.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,16 +11,18 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * 运单表
  * @author Iris
- * @TableName waybill
+ * @TableName trans
  */
-@TableName(value ="waybill")
+@TableName(value ="trans")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Waybill extends BaseEntity implements Serializable {
+@Accessors(chain = true)
+public class Trans extends BaseEntity implements Serializable {
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 6379071167421687287L;
@@ -50,22 +53,12 @@ public class Waybill extends BaseEntity implements Serializable {
     private Long endWhId;
 
     /**
-     * 发货核对人ID
+     * 运单状态
      */
-    private Long startKeeperId;
+    private String status;
 
     /**
-     * 收货核对人ID
+     * 备注
      */
-    private Long endKeeperId;
-
-    /**
-     * 发货时间
-     */
-    private Date startTime;
-
-    /**
-     * 收货时间
-     */
-    private Date endTime;
+    private String remark;
 }

@@ -77,7 +77,7 @@
         left join `user` u1 on p.create_by = u1.id
         left join `user` u2 on p.update_by = u2.id
         <where>
-            <if test="query.keyword != null and keyword != ''">
+            <if test="query.keyword != null and query.keyword != ''">
                 and p.name like concat('%', #{query.keyword}, '%')
                 or p.`key` like concat('%', #{query.keyword}, '%')
             </if>
@@ -88,14 +88,14 @@
                 and p.is_menu = #{query.isMenu}
             </if>
         </where>
-        order by p.is_menu and p.id and p.path desc
+        order by p.is_menu, p.id
         limit #{start}, #{query.size}
     </select>
 
     <select id="getCountByLimit" resultType="java.lang.Integer">
         select count(*) from `permission`
         <where>
-            <if test="query.keyword != null and keyword != ''">
+            <if test="query.keyword != null and query.keyword != ''">
                 and `name` like concat('%', #{query.keyword}, '%')
                 or `key` like concat('%', #{query.keyword}, '%')
             </if>

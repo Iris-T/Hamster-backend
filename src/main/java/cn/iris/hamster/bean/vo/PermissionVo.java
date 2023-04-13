@@ -31,5 +31,5 @@ public class PermissionVo extends BaseVo {
     private String icon;
     private String path;
     private Long parentId;
-    private List<Permission> children;
+    private List<PermissionVo> children;
 }

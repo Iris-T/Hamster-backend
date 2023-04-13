@@ -47,17 +47,15 @@ spring:
             create-table-allow: false # 不允许创建表
   redis:
     # cloud redis
-    host: ENC(sW9xSOBmefHQKN2NjvR4gRYOCJv12t5Foa+HgmUMoVLCoGKwAkr8hk2VmtV1EzcAl7OWNaZ4AHcBGDs6XKMrVZltAyh7vMBn)
-    port: 18349
-    username: ENC(1tnuZZWLPk1MQkyg5bAA+A==)
-    password: ENC(KMu79UP6XBoPfU8KADlp/BUjkGr9j1D1pNe5PFwK46vsXaRpY2sTT3dBKYpxiso1)
+    host: ENC(fVApZHs44Ux3BCnTtwCEBOJFtaaEVLhFU+JB7lpo328ZD8bF69QmDc2W3RO5Q9J0S/8ihpG1N+M=)
+    port: 6379
+    username: ENC(cxgyfjoyXRwnBaRa/2vO7U6z8YcGFsnc)
+    password: ENC(Dbm7PwdnVUEB4arcFgJsmYFHeLYycdbg)
 
   jackson:
     time-zone: GMT+8
 
 mybatis-plus:
-  global-config:
-    field-strategy: 0
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: cn.iris.hamster.bean.pojo
   configuration:
