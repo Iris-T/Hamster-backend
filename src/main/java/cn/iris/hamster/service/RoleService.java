@@ -79,11 +79,4 @@ public interface RoleService extends IService<Role> {
      * @param rid
      */
     void deleteR_P(Long rid);
-
-    /**
-     * 更新系统管理员角色权限
-     * @param pid
-     * @param status
-     */
-    void updateAdminPerms(Long pid, String status);
 }

@@ -1,6 +1,7 @@
 package cn.iris.hamster.bean.dto;
 
 import cn.iris.hamster.bean.pojo.Permission;
+import cn.iris.hamster.bean.vo.PermissionVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

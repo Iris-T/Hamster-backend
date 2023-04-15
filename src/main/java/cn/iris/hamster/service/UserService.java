@@ -84,4 +84,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultEntity reProfile(UserReProfileDto user);
+
+    /**
+     * 获取司机用户列表
+     * @return
+     */
+    List<User> getDriverSelectList();
 }

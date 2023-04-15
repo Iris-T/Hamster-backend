@@ -98,6 +98,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     Integer getCountByLimit(@Param("query") User query);
+
+    /**
+     * 获取司机用户选择列表
+     * @return
+     */
+    List<User> getDriverSelectList();
 }
 
 

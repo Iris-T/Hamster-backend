@@ -51,8 +51,8 @@
     <select id="getPermsByUid" resultType="java.lang.String">
         SELECT p.`key`
         FROM permission p
-        LEFT JOIN role_permission rp on p.id = rp.pid
-        LEFT JOIN user_role ur ON ur.rid = rp.rid AND ur.uid = #{uid}
+                 LEFT JOIN role_permission rp on p.id = rp.pid
+                 LEFT JOIN user_role ur ON ur.rid = rp.rid AND ur.uid = #{uid}
         WHERE p.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
     </select>
 
@@ -142,5 +142,14 @@
                 AND ur.rid = #{query.rid}
             </if>
         </where>
+    </select>
+
+    <select id="getDriverSelectList" resultType="cn.iris.hamster.bean.pojo.User">
+        SELECT u.id   as id,
+               u.name as `name`
+        FROM `user` u
+        LEFT JOIN driver_user du on du.uid = u.id
+                  and du.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
+        WHERE u.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
     </select>
 </mapper>

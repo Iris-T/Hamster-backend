@@ -32,6 +32,12 @@ public interface CargoMapper extends BaseMapper<Cargo> {
      * @return
      */
     Integer getCountByLimit(@Param("query") Cargo query);
+
+    /**
+     * 获取选择列表
+     * @return
+     */
+    List<Cargo> getSelectList();
 }
 
 

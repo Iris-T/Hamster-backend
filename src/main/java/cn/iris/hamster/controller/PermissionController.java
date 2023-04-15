@@ -74,8 +74,6 @@ public class PermissionController {
         Permission add = new Permission().setStatus(CommonUtils.checkStatus(perm.getStatus()));
         BeanUtil.copyProperties(perm, add);
         permissionService.save(add);
-        // 为系统管理员添加权限
-        roleService.updateAdminPerms(add.getId(), perm.getStatus());
         return ResultEntity.success("新增权限成功");
     }
 

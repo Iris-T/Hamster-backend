@@ -26,6 +26,11 @@ public class CargoServiceImpl extends ServiceImpl<CargoMapper, Cargo>
     public Integer getCountByLimit(Cargo query) {
         return baseMapper.getCountByLimit(query);
     }
+
+    @Override
+    public List<Cargo> getSelectList() {
+        return baseMapper.getSelectList();
+    }
 }
 
 

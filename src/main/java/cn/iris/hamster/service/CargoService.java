@@ -27,4 +27,10 @@ public interface CargoService extends IService<Cargo> {
      * @return
      */
     Integer getCountByLimit(Cargo query);
+
+    /**
+     * 获取选择列表
+     * @return
+     */
+    List<Cargo> getSelectList();
 }

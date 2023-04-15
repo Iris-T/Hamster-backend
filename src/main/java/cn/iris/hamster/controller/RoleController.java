@@ -72,7 +72,7 @@ public class RoleController {
 
     @PreAuthorize("hasRole('admin')")
     @Transactional(rollbackFor = BaseException.class)
-    @PostMapping("/role/add")
+    @PostMapping("/add")
     public ResultEntity addRole(@RequestBody RoleDto role) {
         // 核查信息
         long cnt = roleService.count(new QueryWrapper<Role>().eq("key", role.getKey()));
@@ -82,16 +82,19 @@ public class RoleController {
         Role insert = new Role();
         BeanUtil.copyProperties(role, insert);
         roleService.save(insert);
+        List<Long> pids = ListUtils.listToKeys(role.getPerms(), Permission::getId);
+        roleService.updateR_P(insert.getId(), pids);
         return ResultEntity.success("新增权限角色成功");
     }
 
     @PreAuthorize("hasRole('admin')")
     @Transactional(rollbackFor = BaseException.class)
-    @PostMapping("/role/{rid}/update")
+    @PostMapping("/{rid}/update")
     public ResultEntity updateRole(@PathVariable Long rid, @RequestBody RoleDto role) {
         Role update = new Role().setId(rid);
         BeanUtil.copyProperties(role, update);
-        List<Long> pids = ListUtils.listToKeys(update.getPerms(), Permission::getId);
+        List<Long> pids = ListUtils.listToKeys(role.getPerms(), Permission::getId);
+        // 先更新权限
         roleService.deleteR_P(rid);
         if (pids.size() > 0) {
             roleService.updateR_P(rid, pids);
@@ -100,7 +103,7 @@ public class RoleController {
         return ResultEntity.success("更新角色数据成功");
     }
 
-    @PostMapping("isKeyExist")
+    @PostMapping("/isKeyExist")
     public ResultEntity isKeyExist(String key) {
         if (StringUtils.isBlank(key)) {
             return ResultEntity.error("数据为空");

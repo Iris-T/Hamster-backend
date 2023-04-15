@@ -77,4 +77,10 @@
             </if>
         </where>
     </select>
+
+    <select id="getSelectList" resultType="cn.iris.hamster.bean.pojo.Cargo">
+        select id, `name`
+        from cargo
+        where `status` = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@WAREHOUSED.getKey()}
+    </select>
 </mapper>

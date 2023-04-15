@@ -159,6 +159,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return ResultEntity.success("个人信息更新成功");
     }
 
+    @Override
+    public List<User> getDriverSelectList() {
+        return baseMapper.getDriverSelectList();
+    }
+
     /**
      * 查找指定id菜单的子菜单
      *

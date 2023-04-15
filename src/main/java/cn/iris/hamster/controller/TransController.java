@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 运输作业接口类
@@ -78,6 +79,15 @@ public class TransController {
     public ResultEntity updateTrans(@PathVariable Long tid, @RequestBody Trans trans) {
         Trans update = new Trans().setId(tid);
         BeanUtil.copyProperties(trans, update);
+        transService.updateById(update);
         return ResultEntity.success("修改成功");
+    }
+
+    @PreAuthorize("hasAuthority('trans:delete')")
+    @Transactional(rollbackFor = BaseException.class)
+    @PostMapping("/delete")
+    public ResultEntity deleteTrans(@RequestBody List<Long> tids) {
+        transService.removeBatchByIds(tids);
+        return ResultEntity.success("删除成功");
     }
 }

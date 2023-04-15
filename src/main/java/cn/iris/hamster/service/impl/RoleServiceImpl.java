@@ -96,11 +96,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         baseMapper.deleteR_P(rid);
     }
 
-    @Override
-    public void updateAdminPerms(Long pid, String status) {
-        baseMapper.updateAdminPerms(pid, status);
-    }
-
     private boolean isRoleValid(Role role) {
         boolean temp = true;
         // 排除无数据ID插入
