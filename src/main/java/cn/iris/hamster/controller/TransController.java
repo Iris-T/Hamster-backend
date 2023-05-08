@@ -3,11 +3,19 @@ package cn.iris.hamster.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.iris.hamster.bean.dto.TransDto;
 import cn.iris.hamster.bean.enums.TransStatusEnum;
+import cn.iris.hamster.bean.enums.VehicleStatusEnum;
 import cn.iris.hamster.bean.pojo.Trans;
+import cn.iris.hamster.bean.pojo.Vehicle;
+import cn.iris.hamster.bean.pojo.Warehouse;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
+import cn.iris.hamster.common.constants.CommonConstants;
 import cn.iris.hamster.common.exception.BaseException;
 import cn.iris.hamster.common.utils.CommonUtils;
 import cn.iris.hamster.service.TransService;
+import cn.iris.hamster.service.UserService;
+import cn.iris.hamster.service.VehicleService;
+import cn.iris.hamster.service.WarehouseService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +38,12 @@ public class TransController {
 
     @Autowired
     private TransService transService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private WarehouseService warehouseService;
+    @Autowired
+    private VehicleService vehicleService;
 
     @PreAuthorize("hasAuthority('trans:manage')")
     @GetMapping("/list")
@@ -37,6 +51,9 @@ public class TransController {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         data.put("trans", transService.getTransListByLimit(query));
+        data.put("whs", warehouseService.list(new QueryWrapper<Warehouse>().select("id", "`name`").eq("`status`", CommonConstants.STATUS_ENABLE)));
+        data.put("drivers", userService.getDriverSelectList());
+        data.put("vehicles", vehicleService.list(new QueryWrapper<Vehicle>().select("id", "plate_no").eq("`status`", VehicleStatusEnum.UNUSED.getKey())));
         data.put("total", transService.getTransCountByLimit(query));
         data.put("size", query.getSize());
         return ResultEntity.success(data);
@@ -60,7 +77,7 @@ public class TransController {
 
     @PreAuthorize("hasRole('admin')")
     @Transactional(rollbackFor = BaseException.class)
-    @PostMapping("/role/add")
+    @PostMapping("/add")
     public ResultEntity addTrans(@RequestBody TransDto trans) {
         if (trans.isValid()) {
             Trans add = new Trans()
@@ -86,8 +103,8 @@ public class TransController {
     @PreAuthorize("hasAuthority('trans:delete')")
     @Transactional(rollbackFor = BaseException.class)
     @PostMapping("/delete")
-    public ResultEntity deleteTrans(@RequestBody List<Long> tids) {
-        transService.removeBatchByIds(tids);
+    public ResultEntity deleteTrans(@RequestBody List<Long> ids) {
+        transService.removeBatchByIds(ids);
         return ResultEntity.success("删除成功");
     }
 }

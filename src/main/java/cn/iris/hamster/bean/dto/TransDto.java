@@ -13,8 +13,9 @@ public class TransDto {
     private Long driverId;
     private Long vehicleId;
     private Long startWhId;
+    private Long endWhId;
 
     public Boolean isValid() {
-        return ObjUtil.isAllNotEmpty(driverId, vehicleId, startWhId) ;
+        return ObjUtil.isAllNotEmpty(driverId, vehicleId, startWhId, endWhId) ;
     }
 }

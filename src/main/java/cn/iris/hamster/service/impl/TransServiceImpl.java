@@ -7,6 +7,8 @@ import cn.iris.hamster.service.TransService;
 import cn.iris.hamster.mapper.TransMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author asus
 * @description 针对表【trans(运单表)】的数据库操作Service实现
@@ -17,7 +19,7 @@ public class TransServiceImpl extends ServiceImpl<TransMapper, Trans>
     implements TransService {
 
     @Override
-    public TransVo getTransListByLimit(Trans query) {
+    public List<TransVo> getTransListByLimit(Trans query) {
         return baseMapper.getTranListByLimit(query.getStartIndex(), query);
     }
 

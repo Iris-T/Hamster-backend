@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
 * @author asus
 * @description 针对表【trans(运单表)】的数据库操作Mapper
@@ -23,7 +25,7 @@ public interface TransMapper extends BaseMapper<Trans> {
      * @param query
      * @return
      */
-    TransVo getTranListByLimit(@Param("start") Integer startIndex, @Param("query") Trans query);
+    List<TransVo> getTranListByLimit(@Param("start") Integer startIndex, @Param("query") Trans query);
 
     /**
      * 根据限制条件获取满足条件的总记录数

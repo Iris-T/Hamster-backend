@@ -148,8 +148,9 @@
         SELECT u.id   as id,
                u.name as `name`
         FROM `user` u
-        LEFT JOIN driver_user du on du.uid = u.id
-                  and du.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
+        LEFT JOIN user_role ur on ur.uid = u.id
+                  and ur.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
         WHERE u.status = ${@cn.iris.hamster.common.constants.CommonConstants@STATUS_ENABLE}
+          AND ur.rid = '3'
     </select>
 </mapper>
