@@ -1,14 +1,9 @@
 package cn.iris.hamster.bean.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -28,8 +23,8 @@ public enum CargoStatusEnum {
      */
     NO_WAREHOUSE("0", "未入库"),
     WAREHOUSED("1", "已入库"),
-    IN_TRANSIT("2", "运输中"),
-    END_TRANSIT("3", "运输结束"),
+    IN_TRANS("2", "运输中"),
+    END_TRANS("3", "运输结束"),
     OUT_WAREHOUSE("4", "已出库"),
     UNKNOWN("-1", "未知")
     ;

@@ -64,6 +64,8 @@ public class SystemController {
     private MockUtils mockUtils;
     @Autowired
     private WarehouseService warehouseService;
+    @Autowired
+    private FinanceService financeService;
 
     @Value("${common.lbs_key}")
     private String lbsKey;
@@ -81,7 +83,8 @@ public class SystemController {
         // TODO 货物统计
         // TODO 运输统计
         // TODO 仓库统计
-        // TODO 财务统计
+        // 当月财务统计
+        data.add(new StaticInfoVo("当月预估营收", financeService.getCurMonFinance().setScale(2, BigDecimal.ROUND_FLOOR), "", UNIT_RMB, UNIT_MONTH));
         return ResultEntity.success(data);
     }
 

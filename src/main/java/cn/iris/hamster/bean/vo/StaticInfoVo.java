@@ -4,6 +4,7 @@ import cn.iris.hamster.common.constants.CommonConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -25,7 +26,7 @@ public class StaticInfoVo {
     /**
      * 展示数值
      */
-    private Long value;
+    private String value;
     /**
      * 子数据块标题
      */
@@ -33,7 +34,7 @@ public class StaticInfoVo {
     /**
      * 子数据值
      */
-    private Long subValue;
+    private String subValue;
     /**
      * 数值块元素type类型
      */
@@ -43,27 +44,11 @@ public class StaticInfoVo {
      */
     private String unit;
 
-    public StaticInfoVo(String title, long value) {
-        this(title, value, null, null, null, null);
+    public StaticInfoVo(String title, Object value) {
+        this(title, String.valueOf(value), null, null, null);
     }
 
-    public StaticInfoVo(String title, int value) {
-        this(title, Long.valueOf(value));
-    }
-
-    public StaticInfoVo(String title, long value, String subTitle, long subValue, String unit) {
-        this(title, value, subTitle, subValue, CommonConstants.TYPE_SUCCESS, unit);
-    }
-
-    public StaticInfoVo(String title, int value, String subTitle, int subValue, String unit) {
-        this(title, (long) value, subTitle, (long) subValue, CommonConstants.TYPE_SUCCESS, unit);
-    }
-
-    public StaticInfoVo(String title, long value, String subTitle, int subValue, String unit) {
-        this(title, value, subTitle, (long) subValue, CommonConstants.TYPE_SUCCESS, unit);
-    }
-
-    public StaticInfoVo(String title, int value, String subTitle, long subValue, String unit) {
-        this(title, (long) value, subTitle, subValue, CommonConstants.TYPE_SUCCESS, unit);
+    public StaticInfoVo(String title, Object value, String subTitle, Object subValue, String unit) {
+        this(title, String.valueOf(value), subTitle, String.valueOf(subValue), CommonConstants.TYPE_SUCCESS, unit);
     }
 }

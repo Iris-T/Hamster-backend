@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +41,11 @@ public class Cargo extends BaseEntity implements Serializable {
      * 货物类型，参考枚举CargoTypeEnum
      */
     private String type;
+
+    /**
+     * 运输基础参数，输入或采用系统参数
+     */
+    private BigDecimal baseFee;
 
     /**
      * 货物空间大小,单位-立方米

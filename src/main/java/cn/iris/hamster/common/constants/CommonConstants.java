@@ -77,4 +77,5 @@ public interface CommonConstants {
     String UNIT_DAY = "天";
     String UNIT_KG = "千克";
     String UNIT_T = "吨";
+    String UNIT_RMB = "￥";
 }

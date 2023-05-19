@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iris.hamster.mapper.FinanceMapper">
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.pojo.Finance">
+        SELECT c.id                                                AS cid,
+               t.id                                                AS tid,
+               c.name                                              AS cargoName,
+               c.weight                                            AS weight,
+               c.space                                             AS space,
+               c.base_fee                                          AS baseFee,
+               (ST_Distance_Sphere(stwh.point, edwh.point) / 1000) AS distance,
+               co.`name`                                           AS cooperative,
+               ct.`name`                                           AS cargoType,
+               d.`name`                                            AS driver,
+               v.plate_no                                          AS vehicle,
+               stwh.`name`                                         AS startWh,
+               CONCAT(ai.full_name, c.sup)                         AS target
+        FROM trans_cargo_record tcr
+                 LEFT JOIN trans t ON tcr.tid = t.id
+                 LEFT JOIN cargo c ON tcr.cid = c.id
+                 LEFT JOIN cargo_type ct ON c.type = ct.id
+                 LEFT JOIN `user` d ON t.driver_id = d.id
+                 LEFT JOIN vehicle v ON t.vehicle_id = v.id
+                 LEFT JOIN warehouse stwh ON t.start_wh_id = stwh.id
+                 LEFT JOIN warehouse edwh ON c.local_wh = edwh.id
+                 LEFT JOIN area_info ai ON c.dest = ai.`code`
+                 LEFT JOIN cooperative co ON c.cooperative_id = co.id
+        WHERE c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@END_TRANS.key}
+           OR c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@OUT_WAREHOUSE.key}
+        ORDER BY c.create_time, t.create_time
+        LIMIT #{start}, #{finance.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM trans_cargo_record tcr
+                 LEFT JOIN trans t ON tcr.tid = t.id
+                 LEFT JOIN cargo c ON tcr.cid = c.id
+                 LEFT JOIN cargo_type ct ON c.type = ct.id
+                 LEFT JOIN `user` d ON t.driver_id = d.id
+                 LEFT JOIN vehicle v ON t.vehicle_id = v.id
+                 LEFT JOIN warehouse stwh ON t.start_wh_id = stwh.id
+                 LEFT JOIN warehouse edwh ON c.local_wh = edwh.id
+                 LEFT JOIN area_info ai ON c.dest = ai.`code`
+                 LEFT JOIN cooperative co ON c.cooperative_id = co.id
+        WHERE c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@END_TRANS.key}
+           OR c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@OUT_WAREHOUSE.key}
+    </select>
+
+    <select id="getCurMonFinance" resultType="java.math.BigDecimal">
+        SELECT SUM(c.weight * c.space * c.base_fee * (ST_Distance_Sphere(stwh.point, edwh.point) / 1000)) AS fee
+        FROM trans_cargo_record tcr
+                 LEFT JOIN trans t ON tcr.tid = t.id
+                 LEFT JOIN cargo c ON tcr.cid = c.id
+                 LEFT JOIN warehouse stwh ON t.start_wh_id = stwh.id
+                 LEFT JOIN warehouse edwh ON c.local_wh = edwh.id
+        WHERE c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@END_TRANS.key}
+           OR c.status = ${@cn.iris.hamster.bean.enums.CargoStatusEnum@OUT_WAREHOUSE.key}
+        AND t.update_time between DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+    </select>
+</mapper>
