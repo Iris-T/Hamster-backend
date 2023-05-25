@@ -26,25 +26,25 @@
 
     <select id="getTranListByLimit" resultType="cn.iris.hamster.bean.vo.TransVo">
         select w.id as id,
-               driver.name as driver,
-               v.plate_no as vehicle,
-               stwh.name as startWh,
-               edwh.name as endWh,
-               stk.name as startKeeper,
-               edk.name as endKeeper,
-               w.create_time as startTime,
-               w.update_time as endTime,
-               w.status as `status`,
-               w.remark as remark
+        w.driver_id as driverId,
+        w.vehicle_id as vehicleId,
+        w.start_wh_id as startWhId,
+        w.end_wh_id as endWhId,
+        d.name as driver,
+        v.plate_no as vehicle,
+        stwh.name as startWh,
+        edwh.name as endWh,
+        w.create_time as startTime,
+        w.update_time as endTime,
+        w.status as `status`,
+        w.remark as remark
         from trans w
-                 left join `user` driver on driver.id = w.driver_id
-                 left join vehicle v on v.id = w.vehicle_id
-                 left join `user` stk on stk.id = w.create_by
-                 left join `user` edk on edk.id = w.update_by
-                 left join warehouse stwh on stwh.id = w.start_wh_id
-                 left join warehouse edwh on edwh.id = w.end_wh_id
+        left join `user` d on d.id = w.driver_id
+        left join vehicle v on v.id = w.vehicle_id
+        left join warehouse stwh on stwh.id = w.start_wh_id
+        left join warehouse edwh on edwh.id = w.end_wh_id
         <where>
-            <if test='query.status == "0" or query.status == "1"'>
+            <if test="query.status != null">
                 and w.status = #{query.status}
             </if>
         </where>
@@ -58,6 +58,12 @@
                 and `status` = #{query.status}
             </if>
         </where>
+    </select>
+
+    <select id="getCargoListByTid" resultType="java.lang.Long">
+        select cid
+        from trans_cargo_record tcr
+        where tcr.tid = #{tid}
     </select>
 
 

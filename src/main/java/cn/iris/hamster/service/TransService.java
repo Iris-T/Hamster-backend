@@ -27,4 +27,11 @@ public interface TransService extends IService<Trans> {
      * @return
      */
     Integer getTransCountByLimit(Trans query);
+
+    /**
+     * 获取运单绑定的货物id列表
+     * @param id
+     * @return
+     */
+    List<Long> getCargoListByTid(Long id);
 }

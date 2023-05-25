@@ -19,12 +19,14 @@ import java.util.Date;
 @NoArgsConstructor
 public class TransVo extends BaseVo {
     private Long id;
+    private Long driverId;
+    private Long vehicleId;
+    private Long startWhId;
+    private Long endWhId;
     private String driver;
     private String vehicle;
     private String startWh;
     private String endWh;
-    private String startKeeper;
-    private String endKeeper;
     private Date startTime;
     private Date endTime;
 }

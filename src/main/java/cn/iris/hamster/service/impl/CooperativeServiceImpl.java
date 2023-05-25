@@ -27,7 +27,7 @@ public class CooperativeServiceImpl extends ServiceImpl<CooperativeMapper, Coope
 
     @Override
     public List<CooperativeVo> listByLimit(Cooperative query) {
-        return baseMapper.listByLimit(query);
+        return baseMapper.listByLimit(query, query.getStartIndex());
     }
 
     @Override

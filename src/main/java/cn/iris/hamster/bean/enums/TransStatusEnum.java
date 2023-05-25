@@ -3,6 +3,8 @@ package cn.iris.hamster.bean.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 运输状态枚举类
  *
@@ -41,5 +43,14 @@ public enum TransStatusEnum {
             }
         }
         return UNKNOWN.key;
+    }
+
+    public static Boolean isRightTransStatus(String status) {
+        for (TransStatusEnum e : values()) {
+            if (e.key.equals(status)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

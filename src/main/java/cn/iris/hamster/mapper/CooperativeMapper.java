@@ -29,7 +29,7 @@ public interface CooperativeMapper extends BaseMapper<Cooperative> {
      * @param query
      * @return
      */
-    List<CooperativeVo> listByLimit(@Param("query") Cooperative query);
+    List<CooperativeVo> listByLimit(@Param("query") Cooperative query, @Param("start") Integer start);
 
     /**
      * 根据查询条件返回总结果条数

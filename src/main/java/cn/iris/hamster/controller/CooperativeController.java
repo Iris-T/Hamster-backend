@@ -55,10 +55,10 @@ public class CooperativeController {
         if (ObjectUtils.isEmpty(co)) {
             throw new BaseException("参数错误");
         }
-        Cooperative update = new Cooperative().setId(CommonUtils.randId());
-        BeanUtil.copyProperties(co, update);
-        cooperativeService.updateById(update);
-        return ResultEntity.success("更新客户信息成功");
+        Cooperative add = new Cooperative().setId(CommonUtils.randId());
+        BeanUtil.copyProperties(co, add);
+        cooperativeService.save(add);
+        return ResultEntity.success("新增客户信息成功");
     }
 
     @PostMapping("/userBind")

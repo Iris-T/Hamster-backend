@@ -27,6 +27,11 @@ public class TransServiceImpl extends ServiceImpl<TransMapper, Trans>
     public Integer getTransCountByLimit(Trans query) {
         return baseMapper.getTransCountByLimit(query);
     }
+
+    @Override
+    public List<Long> getCargoListByTid(Long id) {
+        return baseMapper.getCargoListByTid(id);
+    }
 }
 
 

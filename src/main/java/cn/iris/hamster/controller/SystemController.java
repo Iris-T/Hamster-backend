@@ -84,7 +84,7 @@ public class SystemController {
         // TODO 运输统计
         // TODO 仓库统计
         // 当月财务统计
-        data.add(new StaticInfoVo("当月预估营收", financeService.getCurMonFinance().setScale(2, BigDecimal.ROUND_FLOOR), "", UNIT_RMB, UNIT_MONTH));
+        data.add(new StaticInfoVo("当月预估营收", financeService.getCurMonFinance().setScale(2, BigDecimal.ROUND_FLOOR), "", "人民币/元", UNIT_MONTH));
         return ResultEntity.success(data);
     }
 

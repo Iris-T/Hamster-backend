@@ -49,6 +49,7 @@
                 and co.name like concat('%', #{query.keyword}, '%')
             </if>
         </where>
+        limit #{start}, #{query.size}
     </select>
 
     <select id="getCountByLimit" resultType="java.lang.Integer">

@@ -33,6 +33,8 @@ public interface TransMapper extends BaseMapper<Trans> {
      * @return
      */
     Integer getTransCountByLimit(@Param("query") Trans query);
+
+    List<Long> getCargoListByTid(@Param("tid") Long tid);
 }
 
 

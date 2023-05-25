@@ -28,7 +28,6 @@ public class FinanceController {
         CommonUtils.setPageParam(query);
         HashMap<String, Object> data = new HashMap<>();
         List<Finance> fee = financeService.listByLimit(query);
-        System.out.println(fee);
         data.put("fee", fee);
         data.put("total", financeService.getCountByLimit(query));
         data.put("size", query.getSize());
