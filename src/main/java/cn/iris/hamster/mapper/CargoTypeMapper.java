@@ -2,6 +2,9 @@ package cn.iris.hamster.mapper;
 
 import cn.iris.hamster.bean.pojo.CargoType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author asus
@@ -11,6 +14,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface CargoTypeMapper extends BaseMapper<CargoType> {
 
+    List<CargoType> listByLimit(@Param("query") CargoType query, @Param("start") Integer start);
+
+    Integer getCountByLimit(@Param("query") CargoType query);
 }
 
 

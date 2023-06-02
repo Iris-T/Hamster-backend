@@ -5,16 +5,16 @@
 <mapper namespace="cn.iris.hamster.mapper.CargoTypeMapper">
 
     <resultMap id="BaseResultMap" type="cn.iris.hamster.bean.pojo.CargoType">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="`name`" jdbcType="VARCHAR"/>
-            <result property="key" column="`key`" jdbcType="VARCHAR"/>
-            <result property="canUp" column="can_up" jdbcType="TINYINT"/>
-            <result property="status" column="`status`" jdbcType="CHAR"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="remark" column="remark" jdbcType="CHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="`name`" jdbcType="VARCHAR"/>
+        <result property="key" column="`key`" jdbcType="VARCHAR"/>
+        <result property="canUp" column="can_up" jdbcType="TINYINT"/>
+        <result property="status" column="`status`" jdbcType="CHAR"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -23,4 +23,37 @@
         create_time,update_by,update_time,
         remark
     </sql>
+
+    <select id="listByLimit" resultType="cn.iris.hamster.bean.pojo.CargoType">
+        select *
+        from cargo_type ct
+        <where>
+            <if test='query.canUp == "0" or query.canUp == "1"'>
+                and ct.can_up = #{query.canUp}
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and ct.status = #{query.status}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                and ct.name like concat('%', #{query.keyword}, '%')
+            </if>
+        </where>
+        limit #{start}, #{query.size}
+    </select>
+
+    <select id="getCountByLimit" resultType="java.lang.Integer">
+        select count(*)
+        from cargo_type ct
+        <where>
+            <if test='query.canUp == "0" or query.canUp == "1"'>
+                and ct.can_up = #{query.canUp}
+            </if>
+            <if test='query.status == "0" or query.status == "1"'>
+                and ct.status = #{query.status}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                and ct.name like concat('%', #{query.keyword}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>

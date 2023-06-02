@@ -7,10 +7,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.iris.hamster.bean.dto.SysFieldDto;
 import cn.iris.hamster.bean.enums.VehicleStatusEnum;
-import cn.iris.hamster.bean.pojo.SystemField;
-import cn.iris.hamster.bean.pojo.User;
-import cn.iris.hamster.bean.pojo.Vehicle;
-import cn.iris.hamster.bean.pojo.Warehouse;
+import cn.iris.hamster.bean.pojo.*;
 import cn.iris.hamster.common.bean.entity.ResultEntity;
 import cn.iris.hamster.bean.vo.StaticInfoVo;
 import cn.iris.hamster.common.exception.BaseException;
@@ -58,6 +55,8 @@ public class SystemController {
     private VehicleService vehicleService;
     @Autowired
     private CargoService cargoService;
+    @Autowired
+    private CargoTypeService cargoTypeService;
     @Autowired
     private SystemFieldService systemFieldService;
     @Autowired
@@ -173,7 +172,7 @@ public class SystemController {
     }
 
     @PostMapping("/field/{fid}/changeStatus")
-    public ResultEntity systemFieldchangeStatus(@PathVariable Long fid, @RequestBody String status) {
+    public ResultEntity systemFieldChangeStatus(@PathVariable Long fid, @RequestBody String status) {
         if (!CommonUtils.isRightStatus(status)) {
             throw new BaseException("参数错误");
         }
@@ -183,6 +182,50 @@ public class SystemController {
         }
         field.setStatus(status);
         systemFieldService.updateById(field);
+        return ResultEntity.success("更新状态成功");
+    }
+
+    @GetMapping("/cargo/type/list")
+    public ResultEntity cargoTypeList(CargoType query) {
+        CommonUtils.setPageParam(query);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("types", cargoTypeService.listByLimit(query));
+        data.put("total", cargoTypeService.getCountByLimit(query));
+        data.put("size", query.getSize());
+        return ResultEntity.success(data);
+    }
+
+    @PostMapping("/cargo/type/add")
+    public ResultEntity cargoTypeAdd(@RequestBody CargoType cargoType) {
+        long count = cargoTypeService.count(new QueryWrapper<CargoType>().eq("`key`", cargoType.getKey()));
+        if (count > 0) {
+            throw new BaseException("信息重复或有误，请核对重试或联系管理员");
+        }
+        CargoType add = new CargoType();
+        BeanUtil.copyProperties(cargoType, add);
+        cargoTypeService.save(add);
+        return ResultEntity.success("添加成功");
+    }
+
+    @PostMapping("/cargo/type/{ctid}/update")
+    public ResultEntity cargoTypeUpdate(@PathVariable Long ctid, @RequestBody CargoType cargoType) {
+        CargoType update = cargoTypeService.getById(ctid);
+        BeanUtil.copyProperties(cargoType, update);
+        cargoTypeService.updateById(update);
+        return ResultEntity.success("更新成功");
+    }
+
+    @PostMapping("/cargo/type/{ctid}/changeStatus")
+    public ResultEntity cargoTypeChangeStatus(@PathVariable Long ctid, @RequestBody String status) {
+        if (!CommonUtils.isRightStatus(status)) {
+            throw new BaseException("参数错误");
+        }
+        CargoType cargoType = cargoTypeService.getById(ctid);
+        if (cargoType.getStatus().equals(status)) {
+            throw new BaseException("参数错误");
+        }
+        cargoType.setStatus(status);
+        cargoTypeService.updateById(cargoType);
         return ResultEntity.success("更新状态成功");
     }
 

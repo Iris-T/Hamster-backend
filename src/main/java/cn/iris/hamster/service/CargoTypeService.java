@@ -3,6 +3,8 @@ package cn.iris.hamster.service;
 import cn.iris.hamster.bean.pojo.CargoType;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author asus
 * @description 针对表【cargo_type(系统字段-货物类型表)】的数据库操作Service
@@ -10,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CargoTypeService extends IService<CargoType> {
 
+    List<CargoType> listByLimit(CargoType query);
+
+    Integer getCountByLimit(CargoType query);
 }

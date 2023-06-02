@@ -51,12 +51,11 @@
     </select>
 
     <select id="getCurMonFinance" resultType="java.math.BigDecimal">
-        SELECT SUM(c.weight * c.space * c.base_fee * (ST_Distance_Sphere(stwh.point, edwh.point) / 1000)) AS fee
-        FROM trans_cargo_record tcr
-                 LEFT JOIN trans t ON tcr.tid = t.id
-                 LEFT JOIN cargo c ON tcr.cid = c.id
-                 LEFT JOIN warehouse stwh ON t.start_wh_id = stwh.id
-                 LEFT JOIN warehouse edwh ON c.local_wh = edwh.id
-        AND t.update_time between DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+        SELECT SUM(c.weight / 1000.0 * c.space * ST_DISTANCE_SPHERE(w.point, a.point) / 1000.0 * c.base_fee) AS fee
+        FROM cargo c
+                 JOIN warehouse w ON c.start_wh = w.id
+                 JOIN area_info a ON c.dest = a.`code`
+        WHERE c.start_wh IS NOT NULL
+          AND c.create_time between DATE_SUB(NOW(), INTERVAL 1 MONTH) and NOW()
     </select>
 </mapper>
