@@ -7,6 +7,9 @@
   - 数据缓存: Redis
   - 系统权限认证授权通过SpringSecurity及Jwt实现: RBAC0框架
 - 微服务化（待定）: Cloud Alibaba + 部分SpringCloud原生组件（Feign等）
+- 项目相关文档在外部文件夹doc中(例如数据库脚本等)
+- 项目导入了配置信息加密依赖，在启动时需添加字段，各位可根据自己需求对配置进行简化或通过相关加密字段生成器生成(参考 https://blog.csdn.net/ZHOU_VIP/article/details/122343265)
+![](E:\WorkSpace\Hamster-backend\imgs\1.jpg)
 ## 系统角色 - 功能
 - 系统管理员
   - 角色管理
