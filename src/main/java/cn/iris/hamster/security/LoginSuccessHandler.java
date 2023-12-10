@@ -41,12 +41,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private RedisUtils redisUtils;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleService roleService;
 
     @Override
     @Transactional(rollbackFor = BaseException.class)
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         response.setContentType("application/json;charset=utf-8");
         ServletOutputStream outputStream = response.getOutputStream();

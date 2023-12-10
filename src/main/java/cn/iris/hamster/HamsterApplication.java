@@ -15,7 +15,6 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @date 2022/12/27
  */
 @SpringBootApplication
-@EnableEncryptableProperties
 //@MapperScan("cn.iris.hamster.mapper")
 public class HamsterApplication {
     private static final Logger log =LoggerFactory.getLogger(HamsterApplication.class);

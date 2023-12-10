@@ -179,6 +179,14 @@ public class DefaultExceptionAdvice {
         return generateResponse(ResultEntity.unAuthorized(msg), e);
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({ApiException.class})
+    public ResponseEntity<?> handleApiException(ApiException e) {
+        String errMsg = e.getErrMsg();
+        logger.warn("调用接口{}调用失败:{}", e.getApiName(), errMsg);
+        return generateResponse(ResultEntity.error(errMsg), e);
+    }
+
 
     private <T extends ResultEntity> ResponseEntity<T> generateResponse(T body, Exception e) {
         HttpStatus httpStatus = HttpStatus.OK;

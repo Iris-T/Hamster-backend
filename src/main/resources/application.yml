@@ -4,14 +4,13 @@ server:
 spring:
   application:
     name: hamster
-  profiles:
-    active: prod
+#  profiles:
+#    active: prod
 
   datasource:
-    # 腾讯云MySQL
-    url: ENC(QPYJNlT3EoNRnj8vBfiGqiueoE/QVaHfTxCB86sMWPehi7T9ZSOs2lZe+L8Nh93LTpDdkm6DpWLQd02I/Dlaqrtq2Aggq8ONEJfGXjM1LWmkqOnT2NRsHm72LJHDDkSRcYEQmg9DpfRBBJb9JD4MJ4iMn9+gyuPkVow67SS7owWC8QpZSVCc7S3ga1TDvUxi2yOD++AUHsYbHcp17sjFxmmbhRQcNjt4XRqP7VGgOWAl9li+8YqnIIjTyycYokMW)
-    username: ENC(wpgoC+P5pRyG6BMvS7Lhaw==)
-    password: ENC(vWoILrzq6CFUjmvdl/BflzxEfzIdZ9BG)
+    url: jdbc:mysql://localhost:3306/hamster?useSSL=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -46,11 +45,10 @@ spring:
             select-allow: true # 允许执行Select查询操作
             create-table-allow: false # 不允许创建表
   redis:
-    # cloud redis
-    host: ENC(fVApZHs44Ux3BCnTtwCEBOJFtaaEVLhFU+JB7lpo328ZD8bF69QmDc2W3RO5Q9J0S/8ihpG1N+M=)
+    host: localhost
     port: 6379
-    username: ENC(cxgyfjoyXRwnBaRa/2vO7U6z8YcGFsnc)
-    password: ENC(Dbm7PwdnVUEB4arcFgJsmYFHeLYycdbg)
+#    username: foxiris
+    password: foxiris@qq.com
 
   jackson:
     time-zone: GMT+8
@@ -66,14 +64,9 @@ mybatis-plus:
 
 jwt:
   data:
-    secret: ENC(SyNvRbIJGPENR8PvrBsTMqmac6xvZzV8Xgm0QLtu4UCPeh2HnBMxNQ==)
-    header: ENC(ESSPxDEuRzJL00c/dX4I38YjK+x+YwTN)
+    secret: hamster@iris
+    header: hamster
 common:
   id_length: 16
   # 腾讯位置信息服务API-Key
-  lbs_key: ENC(DbKib84Z9fVaf7Zhpzhux/avDVTWA5l4+fnwXTY/aVE39nwY1O08P5xYH0PYHmj4)
-jasypt:
-  encryptor:
-    # 指定加密方式
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+  lbs_key: 6XFBZ-T5R6X-52Z4F-ZJR7P-H3NVH-MOF4Z
